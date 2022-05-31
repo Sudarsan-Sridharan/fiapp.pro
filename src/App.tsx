@@ -1,45 +1,66 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { Fragment } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+
+import {Box, Toolbar, styled, Container} from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+
+import { withErrorHandler } from '@/error-handling';
+import AppErrorBoundaryFallback from '@/error-handling/fallbacks/App';
+import Pages from '@/routes/Pages';
+import Header from '@/sections/Header';
+import HotKeys from '@/sections/HotKeys';
+import Notifications from '@/sections/Notifications';
+import SW from '@/sections/SW';
+import Sidebar from '@/sections/Sidebar';
+import { sideBarWidth } from '@/sections/Sidebar/Sidebar';
+import useSidebar from '@/store/sidebar';
+
+
+const MainContent = styled('main', {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<{
+  open?: boolean;
+}>(({ theme, open }) => ({
+  flexGrow: 1,
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: `-${sideBarWidth}px`,
+  ...(open && {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  }),
+}));
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isSidebarOpen] = useSidebar();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <Fragment>
+      <CssBaseline />
+      <Notifications />
+      <HotKeys />
+      <SW />
+
+      <BrowserRouter>
+        <Header />
+        <Box sx={{ display: 'flex' }}>
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <Toolbar />
+            <MainContent open={isSidebarOpen}>
+              <Container maxWidth={"xl"}>
+                <Pages />
+              </Container>
+            </MainContent>
+          </Box>
+        </Box>
+      </BrowserRouter>
+    </Fragment>
+  );
 }
 
-export default App
+export default withErrorHandler(App, AppErrorBoundaryFallback);

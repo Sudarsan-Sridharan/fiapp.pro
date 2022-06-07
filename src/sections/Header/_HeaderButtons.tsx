@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Button } from '@mui/material';
+import { Button, Link, Stack } from "@mui/material";
+import { LinkedCamera, LoginOutlined } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 
 interface ButtonProp {
   icon: React.ReactElement;
@@ -14,12 +16,16 @@ export interface HeaderButtonProps {
 
 const HeaderButtons: React.FC<HeaderButtonProps> = (props) => {
   return (
-    <>
+    <Stack spacing={1} direction={'row'}>
+      <Link component={RouterLink} to={'/login'}>
+        <Button size={'small'} color={'inherit'} variant={'contained'} endIcon={<LoginOutlined/>}>
+          Login
+        </Button>
+      </Link>
       {props.data.map((item) => (
         <Button
           key={item.text}
           disableElevation
-          sx={{ mr: 1 }}
           size={'small'}
           color={'inherit'}
           endIcon={item.icon}
@@ -30,7 +36,7 @@ const HeaderButtons: React.FC<HeaderButtonProps> = (props) => {
           {item.text}
         </Button>
       ))}
-    </>
+    </Stack>
   );
 };
 

@@ -10,6 +10,7 @@ import { PlainLink } from '@/components/styled';
 import { title } from '@/config';
 import HeaderButtons, { HeaderButtonProps } from '@/sections/Header/_HeaderButtons';
 import useSidebar from '@/store/sidebar';
+import { Link } from "react-router-dom";
 
 
 const linkButtonData: HeaderButtonProps = {
@@ -68,6 +69,8 @@ function Header() {
               <PlainLink sx={{ display: 'block' }}>
                 <ListItemText sx={{ display: { xs: 'none', md: 'block' } }}>
                   <Typography
+                    component={Link}
+                    to={'/'}
                     variant="h6"
                     noWrap
                     sx={{

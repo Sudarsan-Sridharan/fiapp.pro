@@ -5,7 +5,7 @@ name: ReleaseAWSS3
 on:
   push:
     branches:
-    - release
+    - master
 
 jobs:
   deploy:

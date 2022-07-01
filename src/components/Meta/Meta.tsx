@@ -39,8 +39,7 @@ function Meta({
         },
         {
           name: 'twitter:card',
-          content:
-            'Smart trading system for everyone',
+          content: '不需要任何交易知识也可以在股市中赚大钱，交易大师全自动量化平台倾力打造！',
         },
         {
           name: 'twitter:title',

@@ -48,7 +48,7 @@ const loader = {
 
 const defaultMetaTags = {
   image: '/cover.png',
-  description: 'Smart trading system for everyone',
+  description: '不需要任何交易知识也可以在股市中赚大钱，交易大师全自动量化平台倾力打造！',
 };
 const giphy404 = 'https://giphy.com/embed/xTiN0L7EW5trfOvEk0';
 

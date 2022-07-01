@@ -2,11 +2,11 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'Coin Master';
+const title = '交易大师';
 
-const email = 'agd@hedgehog-computing.com';
+const email = 'agdholo@outlook.com';
 
-const repository = 'https://github.com/Hedgehog-Computing/hedgehog-lab';
+const repository = '';
 
 const messages = {
   app: {
@@ -48,8 +48,7 @@ const loader = {
 
 const defaultMetaTags = {
   image: '/cover.png',
-  description:
-    'Smart trading system for everyone',
+  description: 'Smart trading system for everyone',
 };
 const giphy404 = 'https://giphy.com/embed/xTiN0L7EW5trfOvEk0';
 

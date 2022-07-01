@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import {ForumOutlined, GitHub, LibraryBooksOutlined, MenuOutlined} from '@mui/icons-material';
-import { List, ListItem, ListItemIcon, ListItemText, Typography, styled } from '@mui/material';
+import { List, ListItem, ListItemText, Typography, styled } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,17 +10,9 @@ import { PlainLink } from '@/components/styled';
 import { title } from '@/config';
 import HeaderButtons, { HeaderButtonProps } from '@/sections/Header/_HeaderButtons';
 import useSidebar from '@/store/sidebar';
-import { Link } from "react-router-dom";
-
 
 const linkButtonData: HeaderButtonProps = {
-  data: [
-    {
-      text: 'Github',
-      link: 'https://github.com/0xSP4C3',
-      icon: <GitHub />,
-    },
-  ],
+  data: [],
 };
 
 interface AppBarProps extends MuiAppBarProps {
@@ -43,7 +35,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 function Header() {
-  const [isSidebarOpen, sidebarActions] = useSidebar();
+  const [isSidebarOpen] = useSidebar();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -56,16 +48,11 @@ function Header() {
           zIndex: (theme) => theme.zIndex.drawer + 1,
           backdropFilter: 'blur(20px)',
           background: 'rgba(255, 255, 255, 0.7)',
-          transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
           <List>
             <ListItem>
-              {/*<ListItemIcon onClick={sidebarActions.toggle} sx={{ cursor: 'pointer' }}>*/}
-              {/*  <MenuOutlined />*/}
-              {/*</ListItemIcon>*/}
-
               <PlainLink sx={{ display: 'block' }}>
                 <ListItemText sx={{ display: { xs: 'none', md: 'block' } }}>
                   <Typography

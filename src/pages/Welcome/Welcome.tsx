@@ -1,73 +1,72 @@
 import React from 'react';
 
-import { Notifications } from '@mui/icons-material';
-import {
-  Box,
-  Grid,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { green, red } from '@mui/material/colors';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
 import Meta from '@/components/Meta';
 import { PlainDivider } from '@/components/styled';
 
+const actionColor = (params: GridCellParams): string => {
+  if (params.value === '做多') {
+    return 'cold';
+  }
+
+  return 'hot';
+};
+
 const rows: GridRowsProp = [
   {
     id: 1,
+    action: '做多',
     name: 'BTC',
     price: '$31652.79',
-    '30min': '做多',
-    '1hour': '做多',
-    '4hour': '做空',
-    lastupdatedTime: '2022/5/31 14:11',
+    time: '30min',
+    createdTime: '2022/5/31 14:11',
     trend: '做空',
   },
   {
     id: 2,
+    action: '做多',
     name: 'ETH',
     price: '$1980.97',
-    '30min': '做多',
-    '1hour': '做多',
-    '4hour': '做空',
-    lastupdatedTime: '2022/5/30 3:48',
+    time: '30min',
+    createdTime: '2022/5/30 3:48',
     trend: '做空',
   },
   {
     id: 3,
+    action: '做多',
     name: 'BNB',
     price: '$319.80',
-    '30min': '做多',
-    '1hour': '做多',
-    '4hour': '做空',
-    lastupdatedTime: '2022/5/31 16:56',
+    time: '30min',
+    createdTime: '2022/5/31 16:56',
     trend: '做空',
   },
   {
     id: 4,
+    action: '做空',
     name: 'ADA',
     price: '$0.6443',
-    '30min': '做多',
-    '1hour': '做空',
-    '4hour': '做空',
-    lastupdatedTime: '2022/5/28 19:22',
+    time: '30min',
+    createdTime: '2022/5/28 19:22',
     trend: '做空',
   },
 ];
 
 const columns: GridColDef[] = [
+  { field: 'action', headerName: '方向', cellClassName: (params) => actionColor(params) },
   { field: 'name', headerName: '名称' },
   { field: 'price', headerName: '价格' },
-  { field: '30min', headerName: '30min' },
-  { field: '1hour', headerName: '1hour' },
-  { field: '4hour', headerName: '4hour' },
-  { field: 'lastupdatedTime', headerName: '更新日期', width: 200 },
-  { field: 'trend', headerName: '大趋势' },
+  { field: 'time', headerName: '周期' },
+  {
+    field: 'createdTime',
+    headerName: '触发时间',
+    width: 200,
+  },
+  { field: 'lastUpdatedTime', headerName: '平仓时间', width: 200 },
+  { field: 'profit', headerName: '利润', width: 200 },
+  // { field: 'trend', headerName: '大趋势' },
 ];
 
 const dRows: GridRowsProp = [
@@ -75,10 +74,10 @@ const dRows: GridRowsProp = [
     id: 1,
     name: 'BTC',
     price: '$31652.79',
-    '30min': '做多',
+    time: '30min',
     '1hour': '做多',
     '4hour': '做空',
-    lastupdatedTime: '2022/5/31 14:11',
+    lastUpdatedTime: '2022/5/31 14:11',
     trend: '做空',
   },
 ];
@@ -89,8 +88,8 @@ const dColumns: GridColDef[] = [
   { field: '30min', headerName: '30min' },
   { field: '1hour', headerName: '1hour' },
   { field: '4hour', headerName: '4hour' },
-  { field: 'lastupdatedTime', headerName: '更新日期', width: 200 },
-  { field: 'trend', headerName: '大趋势' },
+  { field: 'lastupdatedTime', headerName: '触发时间', width: 200 },
+  // { field: 'trend', headerName: '大趋势' },
 ];
 
 const tColumns: GridColDef[] = [
@@ -98,7 +97,7 @@ const tColumns: GridColDef[] = [
   { field: 'consistentTime', headerName: '持续时间' },
   { field: 'forwardConsistentTime', headerName: '之前趋势持续时间', width: 200 },
   { field: 'tradeChange', headerName: '转换', width: 200 },
-  { field: 'lastupdatedTime', headerName: '更新日期', width: 200 },
+  { field: 'lastupdatedTime', headerName: '触发时间', width: 200 },
 ];
 
 const tRows: GridRowsProp = [
@@ -108,7 +107,7 @@ const tRows: GridRowsProp = [
     consistentTime: '4天',
     forwardConsistentTime: '67天',
     tradeChange: '空头 -> 多头',
-    lastupdatedTime: '2022/5/28 15:31',
+    lastUpdatedTime: '2022/5/28 15:31',
   },
 ];
 
@@ -154,7 +153,17 @@ function Welcome() {
 
       <Grid container>
         <Grid item xs={12} md={9}>
-          <Stack spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              '& .hot': {
+                color: red[500],
+              },
+              '& .cold': {
+                color: green[500],
+              },
+            }}
+          >
             <Typography variant={'h2'}>交易大师每日推荐</Typography>
 
             <DataGrid rows={rows} columns={columns} autoHeight hideFooter />
@@ -166,36 +175,36 @@ function Welcome() {
 
             <PlainDivider />
 
-            <Typography variant={'h2'}>详情</Typography>
-            <DataGrid rows={dRows} columns={dColumns} autoHeight hideFooter />
-            <DataGrid rows={nRows} columns={nColumns} autoHeight hideFooter />
+            {/*<Typography variant={'h2'}>详情</Typography>*/}
+            {/*<DataGrid rows={dRows} columns={dColumns} autoHeight hideFooter />*/}
+            {/*<DataGrid rows={nRows} columns={nColumns} autoHeight hideFooter />*/}
           </Stack>
         </Grid>
 
-        <Grid>
-          <Box>
-            <List dense>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Notifications sx={{ color: green[100] }} />
-                </ListItemIcon>
-                <ListItemText>30min: *BTC* 做多 X1 at 2022/5/28 15:31</ListItemText>
-              </ListItemButton>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Notifications sx={{ color: green[300] }} />
-                </ListItemIcon>
-                <ListItemText>1hour: *ETH* 做多 X3 at 2022/5/31 14:11</ListItemText>
-              </ListItemButton>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Notifications sx={{ color: red[400] }} />
-                </ListItemIcon>
-                <ListItemText>4hour: *ADA* 做空 X4 at 2022/5/31 19:48</ListItemText>
-              </ListItemButton>
-            </List>
-          </Box>
-        </Grid>
+        {/*<Grid>*/}
+        {/*  <Box>*/}
+        {/*    <List dense>*/}
+        {/*      <ListItemButton>*/}
+        {/*        <ListItemIcon>*/}
+        {/*          <Notifications sx={{ color: green[100] }} />*/}
+        {/*        </ListItemIcon>*/}
+        {/*        <ListItemText>30min: *BTC* 做多 X1 at 2022/5/28 15:31</ListItemText>*/}
+        {/*      </ListItemButton>*/}
+        {/*      <ListItemButton>*/}
+        {/*        <ListItemIcon>*/}
+        {/*          <Notifications sx={{ color: green[300] }} />*/}
+        {/*        </ListItemIcon>*/}
+        {/*        <ListItemText>1hour: *ETH* 做多 X3 at 2022/5/31 14:11</ListItemText>*/}
+        {/*      </ListItemButton>*/}
+        {/*      <ListItemButton>*/}
+        {/*        <ListItemIcon>*/}
+        {/*          <Notifications sx={{ color: red[400] }} />*/}
+        {/*        </ListItemIcon>*/}
+        {/*        <ListItemText>4hour: *ADA* 做空 X4 at 2022/5/31 19:48</ListItemText>*/}
+        {/*      </ListItemButton>*/}
+        {/*    </List>*/}
+        {/*  </Box>*/}
+        {/*</Grid>*/}
       </Grid>
     </>
   );

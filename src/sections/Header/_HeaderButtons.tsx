@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 
-import { LoginOutlined } from '@mui/icons-material';
-import { Button, Link, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 interface ButtonProp {
   icon: React.ReactElement;
@@ -17,11 +15,11 @@ export interface HeaderButtonProps {
 const HeaderButtons: React.FC<HeaderButtonProps> = (props) => {
   return (
     <Stack spacing={1} direction={'row'} sx={{ mr: 1 }}>
-      <Link component={RouterLink} to={'/login'}>
-        <Button size={'small'} color={'inherit'} variant={'contained'} endIcon={<LoginOutlined />}>
-          Login
-        </Button>
-      </Link>
+      {/*<Link component={RouterLink} to={'/login'}>*/}
+      {/*  <Button size={'small'} color={'inherit'} variant={'contained'} endIcon={<LoginOutlined />}>*/}
+      {/*    Login*/}
+      {/*  </Button>*/}
+      {/*</Link>*/}
       {props.data.map((item) => (
         <Button
           key={item.text}

@@ -65,7 +65,7 @@ function Header() {
                       textDecoration: 'none',
                     }}
                   >
-                    {title}
+                    {title} fiapp.pro
                   </Typography>
                 </ListItemText>
               </PlainLink>

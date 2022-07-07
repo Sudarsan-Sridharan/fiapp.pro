@@ -1,20 +1,12 @@
-import { useCallback, useEffect, useRef } from 'react';
-import React from 'react';
-
-
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
-
-
 import type { SnackbarKey } from 'notistack';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
-
-
 import useNotifications from '@/store/notifications';
-
 
 // TODO (Suren): this should be a custom hook :)
 function SW() {
@@ -45,14 +37,14 @@ function SW() {
       });
     } else if (needRefresh) {
       notificationKey.current = notificationsActions.push({
-        message: 'New content is available, click on reload button to update.',
+        message: '新内容可用，请及时更新',
         options: {
-          variant: 'warning',
+          variant: 'default',
           persist: true,
           action: (
             <>
-              <Button onClick={() => updateServiceWorker(true)}>Reload</Button>
-              <Button onClick={close}>Close</Button>
+              <Button onClick={() => updateServiceWorker(true)}>更新</Button>
+              <Button onClick={close}>忽略</Button>
             </>
           ),
         },

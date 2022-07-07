@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ArrowCircleRightOutlined } from '@mui/icons-material';
-import { Box, Container, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Container, Grid, IconButton, Rating, Stack, Typography } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
@@ -67,7 +67,11 @@ const columns: GridColDef[] = [
   },
   { field: 'lastUpdatedTime', headerName: '平仓时间', width: 200 },
   { field: 'profit', headerName: '利润' },
-  { field: 'risk', headerName: '风险' },
+  {
+    field: 'risk',
+    headerName: '风险',
+    renderCell: (params) => <Rating value={params.row.risk} readOnly />,
+  },
   // { field: 'trend', headerName: '大趋势' },
 ];
 
@@ -97,6 +101,11 @@ const tColumns: GridColDef[] = [
   { field: 'forwardConsistentTime', headerName: '之前趋势持续时间', width: 200 },
   { field: 'tradeChange', headerName: '转换', width: 200 },
   { field: 'lastupdatedTime', headerName: '触发时间', width: 200 },
+  {
+    field: 'risk',
+    headerName: '风险',
+    renderCell: (params) => <Rating value={params.row.risk} readOnly />,
+  },
 ];
 
 const tRows: GridRowsProp = [
@@ -107,6 +116,7 @@ const tRows: GridRowsProp = [
     forwardConsistentTime: '67天',
     tradeChange: '空头 -> 多头',
     lastUpdatedTime: '2022/5/28 15:31',
+    risk: 1,
   },
 ];
 
@@ -195,7 +205,15 @@ function Welcome() {
             },
           }}
         >
-          <Typography variant={'h2'}>交易大师每日推荐</Typography>
+          <Box>
+            <Typography variant={'h2'}>
+              智能策略{' '}
+              <IconButton>
+                <ArrowCircleRightOutlined />
+              </IconButton>
+            </Typography>
+            <Typography variant={'body1'}>全自动多空信号</Typography>
+          </Box>
 
           <DataGrid rows={rows} columns={columns} autoHeight hideFooter />
 
@@ -206,7 +224,7 @@ function Welcome() {
               趋势转换{' '}
               <IconButton>
                 <ArrowCircleRightOutlined />
-              </IconButton>{' '}
+              </IconButton>
             </Typography>
 
             <Typography variant={'body1'}>实时跟踪趋势反转</Typography>

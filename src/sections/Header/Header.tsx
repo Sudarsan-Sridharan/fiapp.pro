@@ -47,7 +47,6 @@ function Header() {
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           backdropFilter: 'blur(20px)',
-          background: 'rgba(255, 255, 255, 0.7)',
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>

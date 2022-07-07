@@ -70,6 +70,7 @@ const columns: GridColDef[] = [
   {
     field: 'risk',
     headerName: '风险',
+    width: 200,
     renderCell: (params) => <Rating value={params.row.risk} readOnly />,
   },
   // { field: 'trend', headerName: '大趋势' },
@@ -104,6 +105,7 @@ const tColumns: GridColDef[] = [
   {
     field: 'risk',
     headerName: '风险',
+    width: 200,
     renderCell: (params) => <Rating value={params.row.risk} readOnly />,
   },
 ];

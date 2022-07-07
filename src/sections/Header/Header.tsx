@@ -58,12 +58,12 @@ function Header() {
                   <Typography
                     component={Link}
                     to={'/'}
-                    variant="h6"
+                    variant="h4"
                     noWrap
                     sx={{
-                      fontWeight: 'bold',
                       letterSpacing: 0,
                       width: '100%',
+                      textDecoration: 'none',
                     }}
                   >
                     {title}

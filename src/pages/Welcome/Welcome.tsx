@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Grid, Stack, Typography } from '@mui/material';
+import { ArrowCircleRightOutlined } from '@mui/icons-material';
+import { Box, Container, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
@@ -23,7 +24,7 @@ const rows: GridRowsProp = [
     price: '$31652.79',
     time: '30min',
     createdTime: '2022/5/31 14:11',
-    trend: '做空',
+    risk: '1',
   },
   {
     id: 2,
@@ -32,7 +33,7 @@ const rows: GridRowsProp = [
     price: '$1980.97',
     time: '30min',
     createdTime: '2022/5/30 3:48',
-    trend: '做空',
+    risk: '2',
   },
   {
     id: 3,
@@ -41,7 +42,7 @@ const rows: GridRowsProp = [
     price: '$319.80',
     time: '30min',
     createdTime: '2022/5/31 16:56',
-    trend: '做空',
+    risk: '1',
   },
   {
     id: 4,
@@ -50,22 +51,23 @@ const rows: GridRowsProp = [
     price: '$0.6443',
     time: '30min',
     createdTime: '2022/5/28 19:22',
-    trend: '做空',
+    risk: '3',
   },
 ];
 
 const columns: GridColDef[] = [
   { field: 'action', headerName: '方向', cellClassName: (params) => actionColor(params) },
-  { field: 'name', headerName: '名称' },
-  { field: 'price', headerName: '价格' },
+  { field: 'name', headerName: '名称', width: 100 },
   { field: 'time', headerName: '周期' },
+  { field: 'price', headerName: '触发价格' },
   {
     field: 'createdTime',
     headerName: '触发时间',
     width: 200,
   },
   { field: 'lastUpdatedTime', headerName: '平仓时间', width: 200 },
-  { field: 'profit', headerName: '利润', width: 200 },
+  { field: 'profit', headerName: '利润' },
+  { field: 'risk', headerName: '风险' },
   // { field: 'trend', headerName: '大趋势' },
 ];
 
@@ -85,9 +87,6 @@ const dRows: GridRowsProp = [
 const dColumns: GridColDef[] = [
   { field: 'name', headerName: '名称' },
   { field: 'price', headerName: '价格' },
-  { field: '30min', headerName: '30min' },
-  { field: '1hour', headerName: '1hour' },
-  { field: '4hour', headerName: '4hour' },
   { field: 'lastupdatedTime', headerName: '触发时间', width: 200 },
   // { field: 'trend', headerName: '大趋势' },
 ];
@@ -146,66 +145,109 @@ const nColumns: GridColDef[] = [
   { field: 'updatedTime', headerName: '更新时间', width: 200 },
 ];
 
+const desc = [
+  { number: '10+', desc: '个交易策略' },
+  { number: '5+', desc: '个风险预警' },
+  { number: '3+', desc: '个选币系统' },
+  { number: '200+', desc: '个监控标的' },
+];
+
 function Welcome() {
   return (
     <>
-      <Meta title="主页" />
+      <Meta title="智能交易系统" />
 
-      <Grid container>
-        <Grid item xs={12} md={9}>
-          <Stack
-            spacing={2}
-            sx={{
-              '& .hot': {
-                color: red[500],
-              },
-              '& .cold': {
-                color: green[500],
-              },
-            }}
-          >
-            <Typography variant={'h2'}>交易大师每日推荐</Typography>
-
-            <DataGrid rows={rows} columns={columns} autoHeight hideFooter />
-
-            <PlainDivider />
-
-            <Typography variant={'h2'}>趋势转换</Typography>
-            <DataGrid rows={tRows} columns={tColumns} autoHeight hideFooter />
-
-            <PlainDivider />
-
-            {/*<Typography variant={'h2'}>详情</Typography>*/}
-            {/*<DataGrid rows={dRows} columns={dColumns} autoHeight hideFooter />*/}
-            {/*<DataGrid rows={nRows} columns={nColumns} autoHeight hideFooter />*/}
+      <Box py={10} sx={{ background: 'linear-gradient(#f5f9fe, #fff)' }}>
+        <Container maxWidth={'lg'}>
+          <Stack spacing={1}>
+            <Typography variant="h1">智能交易系统</Typography>
+            <Typography variant="subtitle1">
+              轻松抓住市场上
+              <Typography variant="subtitle1" component={'span'} color={red[500]}>
+                所有标的
+              </Typography>
+              交易机会
+            </Typography>
           </Stack>
-        </Grid>
 
-        {/*<Grid>*/}
-        {/*  <Box>*/}
-        {/*    <List dense>*/}
-        {/*      <ListItemButton>*/}
-        {/*        <ListItemIcon>*/}
-        {/*          <Notifications sx={{ color: green[100] }} />*/}
-        {/*        </ListItemIcon>*/}
-        {/*        <ListItemText>30min: *BTC* 做多 X1 at 2022/5/28 15:31</ListItemText>*/}
-        {/*      </ListItemButton>*/}
-        {/*      <ListItemButton>*/}
-        {/*        <ListItemIcon>*/}
-        {/*          <Notifications sx={{ color: green[300] }} />*/}
-        {/*        </ListItemIcon>*/}
-        {/*        <ListItemText>1hour: *ETH* 做多 X3 at 2022/5/31 14:11</ListItemText>*/}
-        {/*      </ListItemButton>*/}
-        {/*      <ListItemButton>*/}
-        {/*        <ListItemIcon>*/}
-        {/*          <Notifications sx={{ color: red[400] }} />*/}
-        {/*        </ListItemIcon>*/}
-        {/*        <ListItemText>4hour: *ADA* 做空 X4 at 2022/5/31 19:48</ListItemText>*/}
-        {/*      </ListItemButton>*/}
-        {/*    </List>*/}
-        {/*  </Box>*/}
-        {/*</Grid>*/}
-      </Grid>
+          <Box mt={10} display={'flex'} justifyContent={'space-between'}>
+            {desc.map((item, index) => (
+              <Typography variant="h3" key={index}>
+                {item.number}
+                <Typography component={'span'} variant={'body1'}>
+                  {item.desc}
+                </Typography>
+              </Typography>
+            ))}
+          </Box>
+        </Container>
+      </Box>
+
+      <Container maxWidth={'lg'} sx={{ mt: 2, pb: 10 }}>
+        <Stack
+          spacing={2}
+          sx={{
+            '& .hot': {
+              color: red[500],
+            },
+            '& .cold': {
+              color: green[500],
+            },
+          }}
+        >
+          <Typography variant={'h2'}>交易大师每日推荐</Typography>
+
+          <DataGrid rows={rows} columns={columns} autoHeight hideFooter />
+
+          <PlainDivider />
+
+          <Box>
+            <Typography variant={'h2'}>
+              趋势转换{' '}
+              <IconButton>
+                <ArrowCircleRightOutlined />
+              </IconButton>{' '}
+            </Typography>
+
+            <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
+          </Box>
+
+          <DataGrid rows={tRows} columns={tColumns} autoHeight hideFooter />
+
+          {/*<Typography variant={'h2'}>详情</Typography>*/}
+          {/*<DataGrid rows={dRows} columns={dColumns} autoHeight hideFooter />*/}
+          {/*<DataGrid rows={nRows} columns={nColumns} autoHeight hideFooter />*/}
+        </Stack>
+
+        <Grid container>
+          <Grid item xs={12} md={9}></Grid>
+
+          {/*<Grid>*/}
+          {/*  <Box>*/}
+          {/*    <List dense>*/}
+          {/*      <ListItemButton>*/}
+          {/*        <ListItemIcon>*/}
+          {/*          <Notifications sx={{ color: green[100] }} />*/}
+          {/*        </ListItemIcon>*/}
+          {/*        <ListItemText>30min: *BTC* 做多 X1 at 2022/5/28 15:31</ListItemText>*/}
+          {/*      </ListItemButton>*/}
+          {/*      <ListItemButton>*/}
+          {/*        <ListItemIcon>*/}
+          {/*          <Notifications sx={{ color: green[300] }} />*/}
+          {/*        </ListItemIcon>*/}
+          {/*        <ListItemText>1hour: *ETH* 做多 X3 at 2022/5/31 14:11</ListItemText>*/}
+          {/*      </ListItemButton>*/}
+          {/*      <ListItemButton>*/}
+          {/*        <ListItemIcon>*/}
+          {/*          <Notifications sx={{ color: red[400] }} />*/}
+          {/*        </ListItemIcon>*/}
+          {/*        <ListItemText>4hour: *ADA* 做空 X4 at 2022/5/31 19:48</ListItemText>*/}
+          {/*      </ListItemButton>*/}
+          {/*    </List>*/}
+          {/*  </Box>*/}
+          {/*</Grid>*/}
+        </Grid>
+      </Container>
     </>
   );
 }

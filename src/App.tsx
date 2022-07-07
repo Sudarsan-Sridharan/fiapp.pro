@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import {Box, Toolbar, styled, Container} from '@mui/material';
+import { Box, Toolbar, styled } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { withErrorHandler } from '@/error-handling';
@@ -11,10 +11,8 @@ import Header from '@/sections/Header';
 import HotKeys from '@/sections/HotKeys';
 import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
-import Sidebar from '@/sections/Sidebar';
 import { sideBarWidth } from '@/sections/Sidebar/Sidebar';
 import useSidebar from '@/store/sidebar';
-
 
 const MainContent = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -52,9 +50,7 @@ function App() {
           <Box component="main" sx={{ flexGrow: 1 }}>
             <Toolbar />
             <MainContent open={isSidebarOpen}>
-              <Container maxWidth={"xl"}>
-                <Pages />
-              </Container>
+              <Pages />
             </MainContent>
           </Box>
         </Box>

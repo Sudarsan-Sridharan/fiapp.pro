@@ -173,21 +173,25 @@ export const getDesignTokens = (mode: string) =>
         fontSize: defaultTheme.typography.pxToRem(36),
         lineHeight: 44 / 36,
         letterSpacing: 0,
+        fontWeight: 800,
       },
       h4: {
         fontSize: defaultTheme.typography.pxToRem(28),
         lineHeight: 42 / 28,
         letterSpacing: 0,
+        fontWeight: 800,
       },
       h5: {
         fontSize: defaultTheme.typography.pxToRem(24),
         lineHeight: 36 / 24,
         letterSpacing: 0,
+        fontWeight: 800,
       },
       h6: {
         fontSize: defaultTheme.typography.pxToRem(20),
         lineHeight: 30 / 20,
         letterSpacing: 0,
+        fontWeight: 800,
       },
       button: {
         textTransform: 'initial',

@@ -104,6 +104,10 @@ const columns: GridColDef[] = [
   // { field: 'trend', headerName: '大趋势' },
 ];
 
+function pad2(n: string | number) {
+  return n < 10 ? '0' + n : n;
+}
+
 export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'currentTrending',
@@ -175,7 +179,9 @@ export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'openTime',
     headerName: '触发时间',
-    renderCell: (params) => new Date(params.value).toLocaleDateString(),
+    renderCell: (params) =>
+      new Date(params.value).toLocaleString('zh-CN', { timeZone: 'Atlantic/Reykjavik' }),
+    width: 200,
   },
   {
     field: 'risk',

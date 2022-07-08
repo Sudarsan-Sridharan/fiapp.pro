@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 
 import { Badge, List, ListItem, ListItemText, Typography, styled } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -37,6 +37,8 @@ const AppBar = styled(MuiAppBar, {
 function Header() {
   const [isSidebarOpen] = useSidebar();
 
+  const detail = useMatch('/d/:name');
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -69,7 +71,7 @@ function Header() {
                         },
                       }}
                     >
-                      {title} fiapp.pro
+                      {title} fiapp.pro {detail && `| ${detail?.params?.name}`}
                     </Typography>
                   </Badge>
                 </ListItemText>

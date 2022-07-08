@@ -1,5 +1,4 @@
 import ArrowDropDownRounded from '@mui/icons-material/ArrowDropDownRounded';
-import { responsiveFontSizes } from '@mui/material';
 import { Theme, ThemeOptions, createTheme } from '@mui/material/styles';
 
 import deepmerge from '../utils/deepmerge';
@@ -507,6 +506,6 @@ export function getThemedComponents(theme: Theme) {
   };
 }
 
-let darkTheme = createTheme(getDesignTokens('light'));
-darkTheme = responsiveFontSizes(darkTheme);
-export const labTheme = () => deepmerge(darkTheme, getThemedComponents(darkTheme));
+const darkTheme = (mode: string) => createTheme(getDesignTokens(mode));
+export const labTheme = (mode: string) =>
+  deepmerge(darkTheme(mode), getThemedComponents(darkTheme(mode)));

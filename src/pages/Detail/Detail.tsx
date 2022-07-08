@@ -5,6 +5,8 @@ import { SymbolOverview } from 'react-ts-tradingview-widgets';
 import { Box, Container, Rating, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
+import Meta from '@/components/Meta';
+
 const tColumns: GridColDef[] = [
   { field: 'name', headerName: '名称', width: 200 },
   { field: 'consistentTime', headerName: '持续时间' },
@@ -36,6 +38,8 @@ const Detail = () => {
 
   return (
     <>
+      <Meta title={name} />
+
       <SymbolOverview
         chartOnly
         lineColor={'rgba(0,0,0,255)'}

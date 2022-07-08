@@ -179,8 +179,7 @@ export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'openTime',
     headerName: '触发时间',
-    renderCell: (params) =>
-      new Date(params.value).toLocaleString('zh-CN', { timeZone: 'Atlantic/Reykjavik' }),
+    renderCell: (params) => new Date(params.value).toLocaleString('zh-CN'),
     width: 200,
   },
   {

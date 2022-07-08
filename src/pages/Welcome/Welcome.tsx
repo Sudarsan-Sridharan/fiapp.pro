@@ -7,8 +7,10 @@ import Button from '@mui/material/Button';
 import { green, red } from '@mui/material/colors';
 import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
+import useSWR from 'swr';
+
+import { domain, fetcher } from '@/ network/fether';
 import Meta from '@/components/Meta';
-import { PlainDivider } from '@/components/styled';
 
 const actionColor = (params: GridCellParams): string => {
   if (params.value === '多') {
@@ -102,85 +104,85 @@ const columns: GridColDef[] = [
   // { field: 'trend', headerName: '大趋势' },
 ];
 
-const dRows: GridRowsProp = [
+const trendingChangeColumns: GridColDef[] = [
   {
-    id: 1,
-    name: 'BTC',
-    price: '$31652.79',
-    time: '30min',
-    '1hour': '多',
-    '4hour': '空',
-    lastUpdatedTime: '2022/5/31 14:11',
-    trend: '空',
+    field: 'currentTrending',
+    headerName: '方向',
+    renderCell: (params) => (
+      <Chip
+        size={'small'}
+        color={params.value === '1' ? 'success' : params.value === '0' ? 'default' : 'error'}
+        label={params.value === '1' ? '多' : params.value === '0' ? '中立' : '空'}
+      />
+    ),
   },
-];
-
-const dColumns: GridColDef[] = [
-  { field: 'name', headerName: '名称' },
-  { field: 'price', headerName: '价格' },
-  { field: 'lastupdatedTime', headerName: '触发时间', width: 200 },
-  // { field: 'trend', headerName: '大趋势' },
-];
-
-const tColumns: GridColDef[] = [
-  { field: 'name', headerName: '名称', width: 200 },
-  { field: 'consistentTime', headerName: '持续时间' },
-  { field: 'forwardConsistentTime', headerName: '之前趋势持续时间', width: 200 },
-  { field: 'tradeChange', headerName: '转换', width: 200 },
-  { field: 'lastupdatedTime', headerName: '触发时间', width: 200 },
+  {
+    field: 'name',
+    headerName: '名称',
+    width: 200,
+    renderCell: (params) => (
+      <Button
+        component={Link}
+        to={`/d/${params.value.split('-')[0]}${params.value.split('-')[1]}`}
+        sx={{ paddingLeft: 0, minWidth: 0 }}
+        endIcon={<ArrowRightOutlined />}
+      >
+        {params.value}
+      </Button>
+    ),
+  },
+  {
+    field: 'timeFrame',
+    headerName: '周期',
+  },
+  {
+    field: 'forwardTimeDuration',
+    headerName: '之前趋势持续时间',
+    width: 200,
+    renderCell: (params) => (
+      <>
+        <Chip
+          size={'small'}
+          sx={{ mr: 1 }}
+          color={
+            params.row.forwardTrending === '1'
+              ? 'success'
+              : params.row.forwardTrending === '0'
+              ? 'default'
+              : 'error'
+          }
+          label={
+            params.row.forwardTrending === '1'
+              ? '多'
+              : params.row.forwardTrending === '0'
+              ? '中立'
+              : '空'
+          }
+        />
+        {params.value.split(' ')[0]}天{params.value.split(' ')[2].split(':')[0]}小时
+        {params.value.split(' ')[2].split(':')[1] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[1]}分钟`}
+        {params.value.split(' ')[2].split(':')[1] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[2]}秒`}
+      </>
+    ),
+  },
+  {
+    field: 'openPrice',
+    headerName: '触发价格',
+    renderCell: (params) => `$${params.value}`,
+  },
+  {
+    field: 'openTime',
+    headerName: '触发时间',
+    renderCell: (params) => new Date(params.value).toLocaleDateString(),
+  },
   {
     field: 'risk',
     headerName: '风险',
     width: 200,
     renderCell: (params) => <Rating value={params.row.risk} readOnly />,
   },
-];
-
-const tRows: GridRowsProp = [
-  {
-    id: 1,
-    name: 'STORJ-USDT-SWAP',
-    consistentTime: '4天',
-    forwardConsistentTime: '67天',
-    tradeChange: '空头 -> 多头',
-    lastUpdatedTime: '2022/5/28 15:31',
-    risk: 1,
-  },
-];
-
-const nRows: GridRowsProp = [
-  {
-    id: 1,
-    level: 'X1',
-    price: '$28200.48',
-    time: '30min',
-    action: '多',
-    updatedTime: '2022/5/28 15:31',
-  },
-  {
-    id: 2,
-    level: 'X3',
-    price: '$30200.96',
-    time: '1hour',
-    action: '多',
-    updatedTime: '2022/5/31 14:11',
-  },
-  {
-    id: 3,
-    level: 'X4',
-    price: '$40797.31',
-    time: '4hour',
-    action: '空',
-    updatedTime: '2022/4/26 08:48',
-  },
-];
-
-const nColumns: GridColDef[] = [
-  { field: 'level', headerName: '等级' },
-  { field: 'price', headerName: '价格' },
-  { field: 'time', headerName: '时间周期' },
-  { field: 'action', headerName: '方向' },
-  { field: 'updatedTime', headerName: '更新时间', width: 200 },
 ];
 
 const desc = [
@@ -191,6 +193,8 @@ const desc = [
 ];
 
 function Welcome() {
+  const { data: trendingChane } = useSWR(`${domain}/trending-change/all`, fetcher);
+
   return (
     <>
       <Meta title="智能交易系统" />
@@ -233,19 +237,19 @@ function Welcome() {
             },
           }}
         >
-          <Box>
-            <Typography variant={'h2'}>
-              智能策略{' '}
-              <IconButton>
-                <ArrowCircleRightOutlined />
-              </IconButton>
-            </Typography>
-            <Typography variant={'body1'}>全自动多空信号</Typography>
-          </Box>
+          {/*<Box>*/}
+          {/*  <Typography variant={'h2'}>*/}
+          {/*    智能策略{' '}*/}
+          {/*    <IconButton>*/}
+          {/*      <ArrowCircleRightOutlined />*/}
+          {/*    </IconButton>*/}
+          {/*  </Typography>*/}
+          {/*  <Typography variant={'body1'}>全自动多空信号</Typography>*/}
+          {/*</Box>*/}
 
-          <DataGrid rows={rows} columns={columns} autoHeight hideFooter />
+          {/*<DataGrid rows={rows} columns={columns} autoHeight hideFooter />*/}
 
-          <PlainDivider />
+          {/*<PlainDivider />*/}
 
           <Box>
             <Typography variant={'h2'}>
@@ -258,7 +262,14 @@ function Welcome() {
             <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
           </Box>
 
-          <DataGrid rows={tRows} columns={tColumns} autoHeight hideFooter />
+          {trendingChane && (
+            <DataGrid
+              rows={trendingChane}
+              columns={trendingChangeColumns}
+              autoHeight
+              localeText={{}}
+            />
+          )}
 
           {/*<Typography variant={'h2'}>详情</Typography>*/}
           {/*<DataGrid rows={dRows} columns={dColumns} autoHeight hideFooter />*/}

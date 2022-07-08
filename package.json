@@ -28,6 +28,7 @@
     "react-hotkeys-hook": "^3.4.6",
     "react-resizable": "^3.0.4",
     "react-router-dom": "^6.3.0",
+    "react-ts-tradingview-widgets": "^1.0.11",
     "recoil": "^0.7.3"
   },
   "devDependencies": {

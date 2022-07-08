@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { List, ListItem, ListItemText, Typography, styled } from '@mui/material';
+import { Badge, List, ListItem, ListItemText, Typography, styled } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -54,19 +54,24 @@ function Header() {
             <ListItem>
               <PlainLink sx={{ display: 'block' }}>
                 <ListItemText sx={{ display: { xs: 'none', md: 'block' } }}>
-                  <Typography
-                    component={Link}
-                    to={'/'}
-                    variant="h4"
-                    noWrap
-                    sx={{
-                      letterSpacing: 0,
-                      width: '100%',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    {title} fiapp.pro
-                  </Typography>
+                  <Badge badgeContent={'alpha'}>
+                    <Typography
+                      component={Link}
+                      to={'/'}
+                      variant="h4"
+                      noWrap
+                      sx={{
+                        letterSpacing: 0,
+                        width: '100%',
+                        textDecoration: 'none',
+                        '&:visited': {
+                          color: 'inherit',
+                        },
+                      }}
+                    >
+                      {title} fiapp.pro
+                    </Typography>
+                  </Badge>
                 </ListItemText>
               </PlainLink>
             </ListItem>

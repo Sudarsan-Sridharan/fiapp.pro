@@ -55,7 +55,7 @@ function Header() {
           <List>
             <ListItem>
               <PlainLink sx={{ display: 'block' }}>
-                <ListItemText sx={{ display: { xs: 'none', md: 'block' } }}>
+                <ListItemText>
                   <Badge badgeContent={'alpha'}>
                     <Typography
                       component={Link}

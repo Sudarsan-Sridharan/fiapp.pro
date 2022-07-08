@@ -53,27 +53,34 @@ function Header() {
       >
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
           <List>
-            <ListItem>
+            <ListItem
+              sx={{ '& a': { '&:hover': { textDecoration: 'none', color: 'initial!important' } } }}
+            >
               <PlainLink sx={{ display: 'block' }}>
                 <ListItemText>
-                  <Badge badgeContent={'alpha'}>
-                    <Typography
-                      component={Link}
-                      to={'/'}
-                      variant="h4"
-                      noWrap
-                      sx={{
-                        letterSpacing: 0,
-                        width: '100%',
-                        textDecoration: 'none',
-                        '&:visited': {
-                          color: 'inherit',
-                        },
-                      }}
-                    >
-                      {title} fiapp.pro {detail && `| ${detail?.params?.name}`}
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Badge badgeContent={'alpha'}>
+                      <Typography
+                        component={Link}
+                        to={'/'}
+                        variant="h4"
+                        noWrap
+                        sx={{
+                          letterSpacing: 0,
+                          textDecoration: 'none',
+                          '&:visited': {
+                            color: 'inherit',
+                          },
+                          mr: 1,
+                        }}
+                      >
+                        {title} fiapp.pro {detail && '|'}
+                      </Typography>
+                    </Badge>
+                    <Typography variant="subtitle2" noWrap>
+                      {detail && `${detail?.params?.name}`}
                     </Typography>
-                  </Badge>
+                  </Box>
                 </ListItemText>
               </PlainLink>
             </ListItem>

@@ -5,7 +5,11 @@ import { SymbolOverview } from 'react-ts-tradingview-widgets';
 import { Box, Container, Rating, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
+import useSWR from 'swr';
+
+import { domain, fetcher } from '@/ network/fether';
 import Meta from '@/components/Meta';
+import { trendingChangeColumns } from '@/pages/Welcome/Welcome';
 
 const tColumns: GridColDef[] = [
   { field: 'name', headerName: '名称', width: 200 },
@@ -35,6 +39,11 @@ const tRows: GridRowsProp = [
 
 const Detail = () => {
   const { name } = useParams();
+  const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
+    name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
+  }`;
+
+  const { data: trendingChane } = useSWR(`${domain}/trending-change/detail?name=${name}`, fetcher);
 
   return (
     <>
@@ -45,7 +54,7 @@ const Detail = () => {
         lineColor={'rgba(0,0,0,255)'}
         topColor={'rgba(0,0,0,0)'}
         bottomColor={'rgba(0,0,0,0)'}
-        symbols={[[`${name}`]]}
+        symbols={[[`${symbol}`]]}
         scaleMode={'Logarithmic'}
         chartType={'candlesticks'}
         width={'100%'}
@@ -59,7 +68,14 @@ const Detail = () => {
           <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
         </Box>
 
-        <DataGrid rows={tRows} columns={tColumns} autoHeight hideFooter />
+        {trendingChane && (
+          <DataGrid
+            rows={trendingChane}
+            columns={trendingChangeColumns}
+            autoHeight
+            localeText={{}}
+          />
+        )}
       </Container>
     </>
   );

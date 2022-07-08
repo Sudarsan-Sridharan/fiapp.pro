@@ -104,7 +104,7 @@ const columns: GridColDef[] = [
   // { field: 'trend', headerName: '大趋势' },
 ];
 
-const trendingChangeColumns: GridColDef[] = [
+export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'currentTrending',
     headerName: '方向',
@@ -123,7 +123,7 @@ const trendingChangeColumns: GridColDef[] = [
     renderCell: (params) => (
       <Button
         component={Link}
-        to={`/d/${params.value.split('-')[0]}${params.value.split('-')[1]}`}
+        to={`/d/${params.value}`}
         sx={{ paddingLeft: 0, minWidth: 0 }}
         endIcon={<ArrowRightOutlined />}
       >

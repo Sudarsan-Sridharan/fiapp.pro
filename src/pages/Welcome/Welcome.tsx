@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import { green, red } from '@mui/material/colors';
 import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
+import BigNumber from 'bignumber.js';
 import useSWR from 'swr';
 
 import { domain, fetcher } from '@/ network/fether';
@@ -176,7 +177,8 @@ export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'openPrice',
     headerName: '触发价格',
-    renderCell: (params) => `$${params.value}`,
+    renderCell: (params) => `$${new BigNumber(params.value).toFixed()}`,
+    width: 150,
   },
   {
     field: 'openTime',

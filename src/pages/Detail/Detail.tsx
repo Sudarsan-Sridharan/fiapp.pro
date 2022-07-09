@@ -49,19 +49,21 @@ const Detail = () => {
     <>
       <Meta title={name} />
 
-      {symbol && (
-        <SymbolOverview
-          chartOnly
-          lineColor={'rgba(0,0,0,255)'}
-          topColor={'rgba(0,0,0,0)'}
-          bottomColor={'rgba(0,0,0,0)'}
-          symbols={[[`${symbol}`]]}
-          scaleMode={'Logarithmic'}
-          chartType={'candlesticks'}
-          width={'100%'}
-          locale={'zh_CN'}
-        />
-      )}
+      <Box maxHeight={'100%'}>
+        {symbol && (
+          <SymbolOverview
+            chartOnly
+            lineColor={'rgba(0,0,0,255)'}
+            topColor={'rgba(0,0,0,0)'}
+            bottomColor={'rgba(0,0,0,0)'}
+            symbols={[[`${symbol}`]]}
+            scaleMode={'Logarithmic'}
+            chartType={'candlesticks'}
+            width={'100%'}
+            locale={'zh_CN'}
+          />
+        )}
+      </Box>
 
       <Container maxWidth={'lg'}>
         <Box>

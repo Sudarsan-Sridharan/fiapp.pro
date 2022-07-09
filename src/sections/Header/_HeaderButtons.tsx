@@ -15,11 +15,24 @@ export interface HeaderButtonProps {
 const HeaderButtons: React.FC<HeaderButtonProps> = (props) => {
   return (
     <Stack spacing={1} direction={'row'} sx={{ mr: 1 }}>
-      {/*<Link component={RouterLink} to={'/login'}>*/}
-      {/*  <Button size={'small'} color={'inherit'} variant={'contained'} endIcon={<LoginOutlined />}>*/}
-      {/*    Login*/}
-      {/*  </Button>*/}
-      {/*</Link>*/}
+      <Button
+        target={'_blank'}
+        href={'https://jq.qq.com/?_wv=1027&k=ThQbfwPX'}
+        size={'small'}
+        color={'inherit'}
+        variant={'contained'}
+      >
+        QQ 群
+      </Button>
+      <Button
+        target={'_blank'}
+        href={'https://discord.gg/HZD7uw5Hp9'}
+        size={'small'}
+        color={'inherit'}
+        variant={'contained'}
+      >
+        Discord 群
+      </Button>
       {props.data.map((item) => (
         <Button
           key={item.text}

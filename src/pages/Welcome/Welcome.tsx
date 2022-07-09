@@ -163,10 +163,12 @@ export const trendingChangeColumns: GridColDef[] = [
               : '空'
           }
         />
-        {params.value.split(' ')[0]}天{params.value.split(' ')[2].split(':')[0]}小时
+        {params.value.split(' ')[0] !== '0' && `${params.value.split(' ')[0]}天`}
+        {params.value.split(' ')[2].split(':')[0] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[0]}小时`}
         {params.value.split(' ')[2].split(':')[1] !== '00' &&
-          `${params.value.split(' ')[2].split(':')[1]}分钟`}
-        {params.value.split(' ')[2].split(':')[1] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[1]}分`}
+        {params.value.split(' ')[2].split(':')[2] !== '00' &&
           `${params.value.split(' ')[2].split(':')[2]}秒`}
       </>
     ),

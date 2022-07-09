@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { SymbolOverview } from 'react-ts-tradingview-widgets';
 
 import { Box, Container, Rating, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowsProp, GridToolbar } from '@mui/x-data-grid';
 
 import useSWR from 'swr';
 
@@ -83,7 +83,14 @@ const Detail = () => {
             rows={trendingChange}
             columns={trendingChangeColumns}
             autoHeight
-            localeText={{}}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
+            disableColumnFilter
+            components={{ Toolbar: GridToolbar }}
           />
         )}
       </Container>

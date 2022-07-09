@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ArrowCircleRightOutlined, ArrowRightOutlined } from '@mui/icons-material';
-import { Box, Chip, Container, Grid, IconButton, Rating, Stack, Typography } from '@mui/material';
+import { ArrowRightOutlined } from '@mui/icons-material';
+import { Badge, Box, Chip, Container, Grid, Rating, Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { green, red } from '@mui/material/colors';
-import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams, GridColDef, GridRowsProp, GridToolbar } from '@mui/x-data-grid';
 
 import BigNumber from 'bignumber.js';
 import useSWR from 'swr';
@@ -263,23 +263,28 @@ function Welcome() {
           {/*<PlainDivider />*/}
 
           <Box>
-            <Typography variant={'h2'}>
-              趋势转换{' '}
-              <IconButton>
-                <ArrowCircleRightOutlined />
-              </IconButton>
-            </Typography>
+            <Badge badgeContent={'alpha'}>
+              <Typography variant={'h2'}>趋势转换 </Typography>
+            </Badge>
 
             <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
           </Box>
 
           {trendingChane && (
-            <DataGrid
-              rows={trendingChane}
-              columns={trendingChangeColumns}
-              autoHeight
-              localeText={{}}
-            />
+            <Box height={'500px'}>
+              <DataGrid
+                componentsProps={{
+                  toolbar: {
+                    showQuickFilter: true,
+                    quickFilterProps: { debounceMs: 500 },
+                  },
+                }}
+                disableColumnFilter
+                components={{ Toolbar: GridToolbar }}
+                rows={trendingChane}
+                columns={trendingChangeColumns}
+              />
+            </Box>
           )}
 
           {/*<Typography variant={'h2'}>详情</Typography>*/}

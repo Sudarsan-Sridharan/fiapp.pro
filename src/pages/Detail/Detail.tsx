@@ -43,7 +43,13 @@ const Detail = () => {
     name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
   }`;
 
-  const { data: trendingChane } = useSWR(`${domain}/trending-change/detail?name=${name}`, fetcher);
+  const { data: trendingChange } = useSWR(
+    `${domain}/trending-change/detail?name=${name}`,
+    fetcher,
+    {
+      refreshInterval: 1000 * 60 * 2,
+    },
+  );
 
   return (
     <>
@@ -72,9 +78,9 @@ const Detail = () => {
           <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
         </Box>
 
-        {trendingChane && (
+        {trendingChange && (
           <DataGrid
-            rows={trendingChane}
+            rows={trendingChange}
             columns={trendingChangeColumns}
             autoHeight
             localeText={{}}

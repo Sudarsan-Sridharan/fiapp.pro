@@ -202,7 +202,9 @@ const desc = [
 ];
 
 function Welcome() {
-  const { data: trendingChane } = useSWR(`${domain}/trending-change/all`, fetcher);
+  const { data: trendingChane } = useSWR(`${domain}/trending-change/all`, fetcher, {
+    refreshInterval: 1000 * 60 * 2,
+  });
 
   return (
     <>

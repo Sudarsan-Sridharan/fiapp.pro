@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { SymbolOverview } from 'react-ts-tradingview-widgets';
 
 import { Box, Container, Rating, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowsProp, GridToolbar } from '@mui/x-data-grid';
@@ -55,21 +54,21 @@ const Detail = () => {
     <>
       <Meta title={name} />
 
-      <Box maxHeight={'100%'}>
-        {symbol && (
-          <SymbolOverview
-            chartOnly
-            lineColor={'rgba(0,0,0,255)'}
-            topColor={'rgba(0,0,0,0)'}
-            bottomColor={'rgba(0,0,0,0)'}
-            symbols={[[`${symbol}`]]}
-            scaleMode={'Logarithmic'}
-            chartType={'candlesticks'}
-            width={'100%'}
-            locale={'zh_CN'}
-          />
-        )}
-      </Box>
+      {/*<Box maxHeight={'100%'}>*/}
+      {/*  {symbol && (*/}
+      {/*    <SymbolOverview*/}
+      {/*      chartOnly*/}
+      {/*      lineColor={'rgba(0,0,0,255)'}*/}
+      {/*      topColor={'rgba(0,0,0,0)'}*/}
+      {/*      bottomColor={'rgba(0,0,0,0)'}*/}
+      {/*      symbols={[[`${symbol}`]]}*/}
+      {/*      scaleMode={'Logarithmic'}*/}
+      {/*      chartType={'candlesticks'}*/}
+      {/*      width={'100%'}*/}
+      {/*      locale={'zh_CN'}*/}
+      {/*    />*/}
+      {/*  )}*/}
+      {/*</Box>*/}
 
       <Container maxWidth={'lg'}>
         <Box>

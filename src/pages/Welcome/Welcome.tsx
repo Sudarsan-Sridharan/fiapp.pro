@@ -13,6 +13,7 @@ import useSWR from 'swr';
 import { domain, fetcher } from '@/ network/fether';
 import Meta from '@/components/Meta';
 import InventStart from '@/pages/Welcome/_inventStart';
+import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
 
 export const trendingChangeColumns: GridColDef[] = [
@@ -127,7 +128,7 @@ export const trendingChangeColumns: GridColDef[] = [
 ];
 
 const desc = [
-  { number: '10+', desc: '个交易策略' },
+  { number: '8+', desc: '个交易策略' },
   { number: '5+', desc: '个风险预警' },
   { number: '3+', desc: '个选币系统' },
   { number: '200+', desc: '个监控标的' },
@@ -213,9 +214,13 @@ function Welcome() {
         </Stack>
       </Container>
 
-      <Box sx={{ background: 'linear-gradient(#f5f9fe, #fff)' }}>
+      <Box sx={{ background: 'linear-gradient(to top, #f5f9fe, #fff)' }}>
         <Container maxWidth={'xl'} sx={{ py: 10 }}>
-          <ProductInfo />
+          <Stack spacing={5}>
+            <ProductInfo />
+
+            <Price />
+          </Stack>
         </Container>
       </Box>
     </>

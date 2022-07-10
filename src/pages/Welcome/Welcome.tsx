@@ -1,113 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ArrowRightOutlined } from '@mui/icons-material';
-import { Badge, Box, Chip, Container, Grid, Rating, Stack, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import { green, red } from '@mui/material/colors';
-import { DataGrid, GridCellParams, GridColDef, GridRowsProp, GridToolbar } from '@mui/x-data-grid';
+import { ArrowRightOutlined } from "@mui/icons-material";
+import { Badge, Box, Chip, Container, Rating, Stack, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import { green, red } from "@mui/material/colors";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 
 import BigNumber from 'bignumber.js';
 import useSWR from 'swr';
 
 import { domain, fetcher } from '@/ network/fether';
-import Meta from '@/components/Meta';
-
-const actionColor = (params: GridCellParams): string => {
-  if (params.value === '多') {
-    return 'cold';
-  }
-
-  return 'hot';
-};
-
-const rows: GridRowsProp = [
-  {
-    id: 1,
-    action: '多',
-    name: 'BTC',
-    price: '$31652.79',
-    time: '30min',
-    createdTime: '2022/5/31 14:11',
-    risk: '1',
-  },
-  {
-    id: 2,
-    action: '多',
-    name: 'ETH',
-    price: '$1980.97',
-    time: '30min',
-    createdTime: '2022/5/30 3:48',
-    risk: '2',
-  },
-  {
-    id: 3,
-    action: '多',
-    name: 'BNB',
-    price: '$319.80',
-    time: '30min',
-    createdTime: '2022/5/31 16:56',
-    risk: '1',
-  },
-  {
-    id: 4,
-    action: '空',
-    name: 'ADA',
-    price: '$0.6443',
-    time: '30min',
-    createdTime: '2022/5/28 19:22',
-    risk: '3',
-  },
-];
-
-const columns: GridColDef[] = [
-  {
-    field: 'action',
-    headerName: '方向',
-    renderCell: (params) => (
-      <Chip
-        size={'small'}
-        color={params.value === '多' ? 'success' : 'error'}
-        label={params.value}
-      />
-    ),
-  },
-  {
-    field: 'name',
-    headerName: '名称',
-    width: 100,
-    renderCell: (params) => (
-      <Button
-        component={Link}
-        to={`/d/${params.value}USDT`}
-        sx={{ paddingLeft: 0, minWidth: 0 }}
-        endIcon={<ArrowRightOutlined />}
-      >
-        {params.value}
-      </Button>
-    ),
-  },
-  { field: 'time', headerName: '周期' },
-  { field: 'price', headerName: '触发价格' },
-  {
-    field: 'createdTime',
-    headerName: '触发时间',
-    width: 200,
-  },
-  { field: 'lastUpdatedTime', headerName: '平仓时间', width: 200 },
-  { field: 'profit', headerName: '利润' },
-  {
-    field: 'risk',
-    headerName: '风险',
-    width: 200,
-    renderCell: (params) => <Rating value={params.row.risk} readOnly />,
-  },
-  // { field: 'trend', headerName: '大趋势' },
-];
-
-function pad2(n: string | number) {
-  return n < 10 ? '0' + n : n;
-}
+import Meta from "@/components/Meta";
+import InventStart from "@/pages/Welcome/_inventStart";
 
 export const trendingChangeColumns: GridColDef[] = [
   {
@@ -274,20 +179,6 @@ function Welcome() {
             },
           }}
         >
-          {/*<Box>*/}
-          {/*  <Typography variant={'h2'}>*/}
-          {/*    智能策略{' '}*/}
-          {/*    <IconButton>*/}
-          {/*      <ArrowCircleRightOutlined />*/}
-          {/*    </IconButton>*/}
-          {/*  </Typography>*/}
-          {/*  <Typography variant={'body1'}>全自动多空信号</Typography>*/}
-          {/*</Box>*/}
-
-          {/*<DataGrid rows={rows} columns={columns} autoHeight hideFooter />*/}
-
-          {/*<PlainDivider />*/}
-
           <Box>
             <Badge badgeContent={'alpha'}>
               <Typography variant={'h2'}>趋势转换 </Typography>
@@ -313,39 +204,8 @@ function Welcome() {
             </Box>
           )}
 
-          {/*<Typography variant={'h2'}>详情</Typography>*/}
-          {/*<DataGrid rows={dRows} columns={dColumns} autoHeight hideFooter />*/}
-          {/*<DataGrid rows={nRows} columns={nColumns} autoHeight hideFooter />*/}
+          <InventStart />
         </Stack>
-
-        <Grid container>
-          <Grid item xs={12} md={9}></Grid>
-
-          {/*<Grid>*/}
-          {/*  <Box>*/}
-          {/*    <List dense>*/}
-          {/*      <ListItemButton>*/}
-          {/*        <ListItemIcon>*/}
-          {/*          <Notifications sx={{ color: green[100] }} />*/}
-          {/*        </ListItemIcon>*/}
-          {/*        <ListItemText>30min: *BTC* 多 X1 at 2022/5/28 15:31</ListItemText>*/}
-          {/*      </ListItemButton>*/}
-          {/*      <ListItemButton>*/}
-          {/*        <ListItemIcon>*/}
-          {/*          <Notifications sx={{ color: green[300] }} />*/}
-          {/*        </ListItemIcon>*/}
-          {/*        <ListItemText>1hour: *ETH* 多 X3 at 2022/5/31 14:11</ListItemText>*/}
-          {/*      </ListItemButton>*/}
-          {/*      <ListItemButton>*/}
-          {/*        <ListItemIcon>*/}
-          {/*          <Notifications sx={{ color: red[400] }} />*/}
-          {/*        </ListItemIcon>*/}
-          {/*        <ListItemText>4hour: *ADA* 空 X4 at 2022/5/31 19:48</ListItemText>*/}
-          {/*      </ListItemButton>*/}
-          {/*    </List>*/}
-          {/*  </Box>*/}
-          {/*</Grid>*/}
-        </Grid>
       </Container>
     </>
   );

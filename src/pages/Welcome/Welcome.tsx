@@ -12,7 +12,8 @@ import useSWR from 'swr';
 
 import { domain, fetcher } from '@/ network/fether';
 import Meta from '@/components/Meta';
-import InventStart from '@/pages/Welcome/_inventStart';
+import InventStart from "@/pages/Welcome/_inventStart";
+import ProductInfo from "@/pages/Welcome/_productInfo";
 
 export const trendingChangeColumns: GridColDef[] = [
   {
@@ -207,6 +208,12 @@ function Welcome() {
           <InventStart />
         </Stack>
       </Container>
+
+      <Box sx={{ background: "linear-gradient(#f5f9fe, #fff)" }}>
+        <Container maxWidth={"xl"} sx={{ py: 10 }}>
+          <ProductInfo />
+        </Container>
+      </Box>
     </>
   );
 }

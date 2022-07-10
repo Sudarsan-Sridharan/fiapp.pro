@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useMatch } from 'react-router-dom';
 
 import { Badge, List, ListItem, ListItemText, Typography, styled } from '@mui/material';
@@ -36,14 +36,6 @@ const AppBar = styled(MuiAppBar, {
 
 function Header() {
   const [isSidebarOpen] = useSidebar();
-  const [refreshTime, setRefreshTime] = useState(60);
-
-  setTimeout(() => {
-    setRefreshTime(refreshTime - 1);
-    if (refreshTime === 0) {
-      setRefreshTime(60);
-    }
-  }, 1000);
 
   const detail = useMatch('/d/:name');
 
@@ -60,9 +52,7 @@ function Header() {
         }}
       >
         <Box sx={{ bgcolor: '#000', color: '#fff', textAlign: 'center' }}>
-          <Typography variant={'body1'}>
-            加入交流群免费获取全功能内测资格， {refreshTime} 秒后刷新数据{' '}
-          </Typography>
+          <Typography variant={'body1'}>加入交流群免费获取全功能内测资格</Typography>
         </Box>
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
           <List>

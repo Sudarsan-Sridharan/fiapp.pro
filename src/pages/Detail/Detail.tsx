@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Container, Rating, Typography } from '@mui/material';
+import { Box, Container, Rating, Toolbar, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowsProp, GridToolbar } from '@mui/x-data-grid';
 
 import useSWR from 'swr';
@@ -46,7 +46,7 @@ const Detail = () => {
     `${domain}/trending-change/detail?name=${name}`,
     fetcher,
     {
-      refreshInterval: 1000 * 60 * 2,
+      refreshInterval: 1000 * 60 * 1,
     },
   );
 
@@ -70,6 +70,7 @@ const Detail = () => {
       {/*  )}*/}
       {/*</Box>*/}
 
+      <Toolbar />
       <Container maxWidth={'lg'}>
         <Box>
           <Typography variant={'h2'}>趋势转换 </Typography>
@@ -77,21 +78,22 @@ const Detail = () => {
           <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
         </Box>
 
-        {trendingChange && (
-          <DataGrid
-            rows={trendingChange}
-            columns={trendingChangeColumns}
-            autoHeight
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
-              },
-            }}
-            disableColumnFilter
-            components={{ Toolbar: GridToolbar }}
-          />
-        )}
+        <Box height={'500px'}>
+          {trendingChange && (
+            <DataGrid
+              rows={trendingChange}
+              columns={trendingChangeColumns}
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  quickFilterProps: { debounceMs: 500 },
+                },
+              }}
+              disableColumnFilter
+              components={{ Toolbar: GridToolbar }}
+            />
+          )}
+        </Box>
       </Container>
     </>
   );

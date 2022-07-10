@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ArrowRightOutlined } from "@mui/icons-material";
-import { Badge, Box, Chip, Container, Rating, Stack, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import { green, red } from "@mui/material/colors";
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { ArrowRightOutlined } from '@mui/icons-material';
+import { Badge, Box, Chip, Container, Rating, Stack, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import { green, red } from '@mui/material/colors';
+import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
 import BigNumber from 'bignumber.js';
 import useSWR from 'swr';
 
 import { domain, fetcher } from '@/ network/fether';
-import Meta from "@/components/Meta";
-import InventStart from "@/pages/Welcome/_inventStart";
+import Meta from '@/components/Meta';
+import InventStart from '@/pages/Welcome/_inventStart';
 
 export const trendingChangeColumns: GridColDef[] = [
   {

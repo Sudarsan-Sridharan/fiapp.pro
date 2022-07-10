@@ -184,13 +184,39 @@ export const trendingChangeColumns: GridColDef[] = [
     field: 'openTime',
     headerName: '触发时间',
     renderCell: (params) => new Date(params.value).toLocaleString(),
-    width: 200,
+    width: 150,
   },
   {
     field: 'risk',
     headerName: '风险',
-    width: 200,
+    width: 150,
     renderCell: (params) => <Rating value={params.row.risk} readOnly />,
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    width: 200,
+    renderCell: (params) => {
+      const name = params.row.name;
+      const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
+        name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
+      }`;
+
+      return (
+        <>
+          <Button
+            color={'inherit'}
+            target={'_blank'}
+            href={`https://cn.tradingview.com/chart/?symbol=${symbol}`}
+          >
+            图表
+          </Button>
+          <Button target={'_blank'} href={`https://www.okx.com/trade-swap/${name.toLowerCase()}`}>
+            交易
+          </Button>
+        </>
+      );
+    },
   },
 ];
 
@@ -211,7 +237,7 @@ function Welcome() {
       <Meta title="智能交易系统" />
 
       <Box py={10} sx={{ background: 'linear-gradient(#f5f9fe, #fff)' }}>
-        <Container maxWidth={'lg'}>
+        <Container maxWidth={'xl'}>
           <Stack spacing={1}>
             <Typography variant="h1">智能交易系统</Typography>
             <Typography variant="subtitle1">
@@ -236,7 +262,7 @@ function Welcome() {
         </Container>
       </Box>
 
-      <Container maxWidth={'lg'} sx={{ mt: 2, pb: 10 }}>
+      <Container maxWidth={'xl'} sx={{ mt: 2, pb: 10 }}>
         <Stack
           spacing={2}
           sx={{

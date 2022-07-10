@@ -168,7 +168,7 @@ function Welcome() {
         </Container>
       </Box>
 
-      <Container maxWidth={'xl'} sx={{ mt: 2, pb: 10 }}>
+      <Container maxWidth={'xl'} sx={{ mt: 2, pb: 5 }}>
         <Stack
           spacing={2}
           sx={{
@@ -204,7 +204,11 @@ function Welcome() {
               />
             </Box>
           )}
+        </Stack>
+      </Container>
 
+      <Container maxWidth={'xl'} sx={{ pb: 5 }}>
+        <Stack spacing={2}>
           <InventStart />
         </Stack>
       </Container>

@@ -184,7 +184,7 @@ export const trendingChangeColumns: GridColDef[] = [
     field: 'openTime',
     headerName: '触发时间',
     renderCell: (params) => new Date(params.value).toLocaleString(),
-    width: 150,
+    width: 200,
   },
   {
     field: 'risk',

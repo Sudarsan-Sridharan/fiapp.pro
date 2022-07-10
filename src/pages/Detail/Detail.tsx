@@ -71,7 +71,7 @@ const Detail = () => {
       {/*</Box>*/}
 
       <Toolbar />
-      <Container maxWidth={'lg'}>
+      <Container maxWidth={'xl'}>
         <Box>
           <Typography variant={'h2'}>趋势转换 </Typography>
 

@@ -26,7 +26,7 @@ const price = [
 
 const Price = () => {
   return (
-    <Stack spacing={2}>
+    <Stack spacing={1}>
       <Typography variant={'h2'}>会员价格</Typography>
 
       <Grid container spacing={2}>

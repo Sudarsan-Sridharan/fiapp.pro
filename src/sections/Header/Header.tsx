@@ -62,6 +62,7 @@ function Header() {
               <PlainLink sx={{ display: 'block' }}>
                 <ListItemText>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <img src={'/black-48dp/1x/outline_currency_bitcoin_black_48dp.png'} />
                     <Badge badgeContent={'alpha'}>
                       <Typography
                         component={Link}

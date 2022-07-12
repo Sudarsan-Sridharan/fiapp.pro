@@ -114,7 +114,7 @@ export const trendingChangeColumns: GridColDef[] = [
           <Button
             color={'inherit'}
             target={'_blank'}
-            href={`https://cn.tradingview.com/chart/?symbol=${symbol}`}
+            href={`https://cn.tradingview.com/chart/?symbol=OKX:${symbol}`}
           >
             图表
           </Button>

@@ -29,7 +29,7 @@ const Price = () => {
     <Stack spacing={1}>
       <Typography variant={'h2'}>会员价格</Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         {price.map((item, index) => (
           <Grid item xs={12} sm={6} key={index}>
             <Card variant={'outlined'} sx={{ p: 2, height: '100%' }}>

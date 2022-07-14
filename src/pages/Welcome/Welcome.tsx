@@ -182,11 +182,13 @@ function Welcome() {
           }}
         >
           <Box>
-            <Badge badgeContent={'alpha'}>
+            <Badge badgeContent={'beta'}>
               <Typography variant={'h2'}>趋势转换 </Typography>
             </Badge>
 
-            <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
+            <Typography variant={'body1'}>
+              实时跟踪趋势反转，信号稳定版已发布，持续监控中，监控周期：30m，1h，4h
+            </Typography>
           </Box>
 
           {trendingChane && (

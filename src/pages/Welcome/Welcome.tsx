@@ -47,40 +47,7 @@ export const trendingChangeColumns: GridColDef[] = [
     field: 'timeFrame',
     headerName: '周期',
   },
-  {
-    field: 'forwardTimeDuration',
-    headerName: '之前趋势持续时间',
-    width: 200,
-    renderCell: (params) => (
-      <>
-        <Chip
-          size={'small'}
-          sx={{ mr: 1 }}
-          color={
-            params.row.forwardTrending === '1'
-              ? 'success'
-              : params.row.forwardTrending === '0'
-              ? 'default'
-              : 'error'
-          }
-          label={
-            params.row.forwardTrending === '1'
-              ? '多'
-              : params.row.forwardTrending === '0'
-              ? '中立'
-              : '空'
-          }
-        />
-        {params.value.split(' ')[0] !== '0' && `${params.value.split(' ')[0]}天`}
-        {params.value.split(' ')[2].split(':')[0] !== '00' &&
-          `${params.value.split(' ')[2].split(':')[0]}小时`}
-        {params.value.split(' ')[2].split(':')[1] !== '00' &&
-          `${params.value.split(' ')[2].split(':')[1]}分`}
-        {params.value.split(' ')[2].split(':')[2] !== '00' &&
-          `${params.value.split(' ')[2].split(':')[2]}秒`}
-      </>
-    ),
-  },
+
   {
     field: 'openPrice',
     headerName: '触发价格',
@@ -96,8 +63,24 @@ export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'risk',
     headerName: '风险',
-    width: 150,
+    width: 200,
     renderCell: (params) => <Rating value={params.row.risk} readOnly />,
+  },
+  {
+    field: 'forwardTimeDuration',
+    headerName: '之前趋势持续时间',
+    width: 200,
+    renderCell: (params) => (
+      <>
+        {params.value.split(' ')[0] !== '0' && `${params.value.split(' ')[0]}天`}
+        {params.value.split(' ')[2].split(':')[0] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[0]}小时`}
+        {params.value.split(' ')[2].split(':')[1] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[1]}分`}
+        {params.value.split(' ')[2].split(':')[2] !== '00' &&
+          `${params.value.split(' ')[2].split(':')[2]}秒`}
+      </>
+    ),
   },
   {
     field: 'actions',

@@ -108,13 +108,21 @@ export const trendingChangeColumns: GridColDef[] = [
       const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
         name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
       }`;
+      let time = params.row.timeFrame.split('');
+      if (time.length === 3 && time[2] === 'm') {
+        time = time[0] * 10;
+      } else if (time.length === 2 && time[1] === 'H') {
+        time = time[0] * 60;
+      } else {
+        time = 60;
+      }
 
       return (
         <>
           <Button
             color={'inherit'}
             target={'_blank'}
-            href={`https://cn.tradingview.com/chart/?symbol=OKX:${symbol}`}
+            href={`https://cn.tradingview.com/chart/?symbol=OKX:${symbol}&interval=${time}`}
           >
             图表
           </Button>

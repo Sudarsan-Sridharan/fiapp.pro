@@ -49,12 +49,6 @@ export const trendingChangeColumns: GridColDef[] = [
   },
 
   {
-    field: 'openPrice',
-    headerName: '触发价格',
-    renderCell: (params) => `$${new BigNumber(params.value).toFixed()}`,
-    width: 150,
-  },
-  {
     field: 'openTime',
     headerName: '触发时间',
     renderCell: (params) => new Date(params.value).toLocaleString(),
@@ -65,6 +59,12 @@ export const trendingChangeColumns: GridColDef[] = [
     headerName: '风险',
     width: 200,
     renderCell: (params) => <Rating value={params.row.risk} readOnly />,
+  },
+  {
+    field: 'openPrice',
+    headerName: '触发价格',
+    renderCell: (params) => `$${new BigNumber(params.value).toFixed()}`,
+    width: 150,
   },
   {
     field: 'forwardTimeDuration',

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { ArrowRightOutlined } from '@mui/icons-material';
-import { Badge, Box, Chip, Container, Rating, Stack, Typography } from '@mui/material';
+import { Badge, Box, Chip, Container, Grid, Rating, Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { green, red } from '@mui/material/colors';
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
@@ -130,24 +130,66 @@ function Welcome() {
     refreshInterval: 1000 * 60 * 1,
   });
 
+  const { data: trendingOverview } = useSWR(`${domain}/trending-change/overview`, fetcher, {
+    refreshInterval: 1000 * 60 * 1,
+  });
+
   return (
     <>
       <Meta title="智能交易系统" />
 
       <Box py={10} sx={{ background: 'linear-gradient(#f5f9fe, #fff)' }}>
         <Container maxWidth={'xl'}>
-          <Stack spacing={1}>
-            <Typography variant="h1">智能交易系统</Typography>
-            <Typography variant="subtitle1">
-              轻松抓住市场上
-              <Typography variant="subtitle1" component={'span'} color={red[500]}>
-                所有标的
-              </Typography>
-              交易机会
-            </Typography>
-          </Stack>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Stack spacing={1}>
+                <Typography variant="h1">智能交易系统</Typography>
+                <Typography variant="subtitle1">
+                  轻松抓住市场上
+                  <Typography variant="subtitle1" component={'span'} color={red[500]}>
+                    所有标的
+                  </Typography>
+                  交易机会
+                </Typography>
 
-          <Box mt={10} display={'flex'} justifyContent={'space-between'}>
+                <Stack spacing={1} direction={'row'}>
+                  <Button
+                    variant={'contained'}
+                    color={'inherit'}
+                    href={'https://jq.qq.com/?_wv=1027&k=ThQbfwPX'}
+                    target={'_blank'}
+                  >
+                    QQ 群
+                  </Button>
+                  <Button
+                    variant={'contained'}
+                    color={'inherit'}
+                    target={'_blank'}
+                    href={'https://discord.gg/HZD7uw5Hp9'}
+                  >
+                    Discord 群
+                  </Button>
+                </Stack>
+              </Stack>
+            </Grid>
+
+            {trendingOverview && (
+              <Grid item xs={12} md={6}>
+                <Box height={'300px'}>
+                  {trendingOverview && (
+                    <DataGrid
+                      disableColumnFilter
+                      rows={trendingOverview.btc.latest}
+                      columns={trendingChangeColumns}
+                      hideFooterPagination
+                    />
+                  )}
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+
+          <Box mt={1} display={'flex'} justifyContent={'space-between'}>
             {desc.map((item, index) => (
               <Typography variant="h3" key={index}>
                 {item.number}
@@ -173,12 +215,23 @@ function Welcome() {
           }}
         >
           <Box>
-            <Badge badgeContent={'beta'}>
-              <Typography variant={'h2'}>趋势转换 </Typography>
-            </Badge>
+            <Stack spacing={1} direction={'row'} sx={{ alignItems: 'end' }}>
+              <Badge badgeContent={'稳定版'}>
+                <Typography variant={'h2'}>趋势转换 </Typography>
+              </Badge>
+
+              <Typography variant={'h6'}>今日</Typography>
+
+              <Typography variant={'h6'} sx={{ color: green[500] }}>
+                {trendingOverview && trendingOverview.full.long} 多头
+              </Typography>
+              <Typography variant={'h6'} sx={{ color: red[500] }}>
+                {trendingOverview && trendingOverview.full.short} 空头
+              </Typography>
+            </Stack>
 
             <Typography variant={'body1'}>
-              实时跟踪趋势反转，信号稳定版已发布，持续监控中，监控周期：30m，1h，4h
+              7 X 24小时跟踪趋势反转，持续监控中，监控周期：30m，1h，4h
             </Typography>
           </Box>
 

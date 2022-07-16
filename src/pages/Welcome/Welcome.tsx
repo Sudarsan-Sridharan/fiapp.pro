@@ -19,7 +19,7 @@ import ProductInfo from '@/pages/Welcome/_productInfo';
 export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'currentTrending',
-    headerName: '方向',
+    headerName: '趋势方向',
     renderCell: (params) => (
       <Chip
         size={'small'}
@@ -232,6 +232,10 @@ function Welcome() {
 
             <Typography variant={'body1'}>
               7 X 24小时跟踪趋势反转，持续监控中，监控周期：30m，1h，4h
+            </Typography>
+
+            <Typography variant={'body1'}>
+              趋势追踪是环境信号，可以辅助观察标的当前趋势情况，不对任何交易做出任何投资决策。
             </Typography>
           </Box>
 

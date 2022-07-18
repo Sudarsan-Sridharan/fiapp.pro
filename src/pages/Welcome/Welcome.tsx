@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ArrowRightOutlined } from '@mui/icons-material';
-import { Badge, Box, Chip, Container, Grid, Rating, Stack, Typography } from '@mui/material';
+import {
+  Badge,
+  Box,
+  ButtonGroup,
+  Chip,
+  Container,
+  Grid,
+  Rating,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import { green, red } from '@mui/material/colors';
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
@@ -125,8 +135,13 @@ const desc = [
   { number: '200+', desc: '个监控标的' },
 ];
 
+const timeFrames = ['30m', '1H', '4H'];
+
 function Welcome() {
-  const { data: trendingChane } = useSWR(`${domain}/trending-change/all`, fetcher, {
+  const [timeFrame, setTimeFrame] = useState<string>('');
+  const conditions = timeFrame && `timeFrame=${timeFrame}`;
+
+  const { data: trendingChane } = useSWR(`${domain}/trending-change/all?${conditions}`, fetcher, {
     refreshInterval: 1000 * 60 * 1,
   });
 
@@ -239,20 +254,42 @@ function Welcome() {
             </Typography>
           </Box>
 
+          <Box>
+            <ButtonGroup variant="outlined">
+              {timeFrames.map((item, index) => (
+                <Button
+                  key={index}
+                  onClick={() => setTimeFrame(item)}
+                  variant={item === timeFrame ? 'contained' : 'outlined'}
+                >
+                  {item}
+                </Button>
+              ))}
+              <Button
+                onClick={() => setTimeFrame('')}
+                variant={timeFrame === '' ? 'contained' : 'outlined'}
+              >
+                所有时间
+              </Button>
+            </ButtonGroup>
+          </Box>
+
           {trendingChane && (
-            <Box height={'500px'}>
-              <DataGrid
-                componentsProps={{
-                  toolbar: {
-                    showQuickFilter: true,
-                    quickFilterProps: { debounceMs: 500 },
-                  },
-                }}
-                disableColumnFilter
-                components={{ Toolbar: GridToolbar }}
-                rows={trendingChane}
-                columns={trendingChangeColumns}
-              />
+            <Box>
+              <Box height={'500px'}>
+                <DataGrid
+                  componentsProps={{
+                    toolbar: {
+                      showQuickFilter: true,
+                      quickFilterProps: { debounceMs: 500 },
+                    },
+                  }}
+                  disableColumnFilter
+                  components={{ Toolbar: GridToolbar }}
+                  rows={trendingChane}
+                  columns={trendingChangeColumns}
+                />
+              </Box>
             </Box>
           )}
         </Stack>

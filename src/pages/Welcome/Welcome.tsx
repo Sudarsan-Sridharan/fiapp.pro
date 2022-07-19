@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ArrowRightOutlined } from '@mui/icons-material';
+import { ArrowRightOutlined, CancelOutlined } from '@mui/icons-material';
 import {
   Badge,
   Box,
@@ -9,6 +9,7 @@ import {
   Chip,
   Container,
   Grid,
+  IconButton,
   Rating,
   Stack,
   Typography,
@@ -139,9 +140,17 @@ const timeFrames = ['30m', '1H', '4H'];
 
 function Welcome() {
   const [timeFrame, setTimeFrame] = useState<string>('');
-  const conditions = timeFrame && `timeFrame=${timeFrame}`;
+  const [risk, setRisk] = useState<number>(0);
 
-  const { data: trendingChane } = useSWR(`${domain}/trending-change/all?${conditions}`, fetcher, {
+  const urlRisk = risk !== 0 ? risk.toString() : '';
+
+  const conditions = {
+    risk: urlRisk,
+    timeFrame,
+  };
+  const sendUrl = new URLSearchParams(conditions).toString();
+
+  const { data: trendingChane } = useSWR(`${domain}/trending-change/all?${sendUrl}`, fetcher, {
     refreshInterval: 1000 * 60 * 1,
   });
 
@@ -254,7 +263,7 @@ function Welcome() {
             </Typography>
           </Box>
 
-          <Box>
+          <Stack spacing={2} direction={'row'}>
             <ButtonGroup variant="outlined">
               {timeFrames.map((item, index) => (
                 <Button
@@ -272,7 +281,18 @@ function Welcome() {
                 所有时间
               </Button>
             </ButtonGroup>
-          </Box>
+
+            <Stack direction={'row'} sx={{ alignItems: 'center' }}>
+              <Typography variant={'body1'}>风险：</Typography>
+              <Rating value={risk} onChange={(event, value) => setRisk(value ?? 0)} />
+
+              {risk !== 0 && risk && (
+                <IconButton size={'small'} onClick={() => setRisk(0)}>
+                  <CancelOutlined />
+                </IconButton>
+              )}
+            </Stack>
+          </Stack>
 
           {trendingChane && (
             <Box>

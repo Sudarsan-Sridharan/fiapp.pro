@@ -68,8 +68,22 @@ export const trendingChangeColumns: GridColDef[] = [
   {
     field: 'risk',
     headerName: '风险',
-    width: 200,
-    renderCell: (params) => <Rating value={params.row.risk} readOnly />,
+    renderCell: (params) => {
+      return (
+        <Chip
+          size={'small'}
+          sx={{ color: '#fff' }}
+          color={
+            params.value < 2
+              ? 'primary'
+              : params.value >= 2 && params.value <= 4
+              ? 'warning'
+              : 'error'
+          }
+          label={params.value < 2 ? '低' : params.value >= 2 && params.value <= 4 ? '中' : '高'}
+        />
+      );
+    },
   },
   {
     field: 'openPrice',

@@ -155,12 +155,14 @@ const timeFrames = ['30m', '1H', '4H'];
 function Welcome() {
   const [timeFrame, setTimeFrame] = useState<string>('');
   const [risk, setRisk] = useState<number>(0);
+  const [currentTrending, setCurrentTrending] = useState<string>('');
 
   const urlRisk = risk !== 0 ? risk.toString() : '';
 
   const conditions = {
     risk: urlRisk,
     timeFrame,
+    currentTrending,
   };
   const sendUrl = new URLSearchParams(conditions).toString();
 
@@ -277,24 +279,47 @@ function Welcome() {
             </Typography>
           </Box>
 
-          <Stack spacing={2} direction={'row'}>
-            <ButtonGroup variant="outlined">
-              {timeFrames.map((item, index) => (
+          <Stack spacing={2} direction={'column'}>
+            <Stack spacing={1} direction={'row'}>
+              <ButtonGroup variant={'outlined'} color={'primary'}>
+                {[
+                  { label: '多', value: '1' },
+                  {
+                    label: '空',
+                    value: '-1',
+                  },
+                  {
+                    label: '全部',
+                    value: '',
+                  },
+                ].map((item, i) => (
+                  <Button
+                    key={i}
+                    onClick={() => setCurrentTrending(item.value)}
+                    variant={currentTrending === item.value ? 'contained' : 'outlined'}
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </ButtonGroup>
+              <ButtonGroup variant="outlined">
+                {timeFrames.map((item, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => setTimeFrame(item)}
+                    variant={item === timeFrame ? 'contained' : 'outlined'}
+                  >
+                    {item}
+                  </Button>
+                ))}
                 <Button
-                  key={index}
-                  onClick={() => setTimeFrame(item)}
-                  variant={item === timeFrame ? 'contained' : 'outlined'}
+                  onClick={() => setTimeFrame('')}
+                  variant={timeFrame === '' ? 'contained' : 'outlined'}
                 >
-                  {item}
+                  所有时间
                 </Button>
-              ))}
-              <Button
-                onClick={() => setTimeFrame('')}
-                variant={timeFrame === '' ? 'contained' : 'outlined'}
-              >
-                所有时间
-              </Button>
-            </ButtonGroup>
+              </ButtonGroup>
+            </Stack>
 
             <Stack direction={'row'} sx={{ alignItems: 'center' }}>
               <Typography variant={'body1'}>风险：</Typography>

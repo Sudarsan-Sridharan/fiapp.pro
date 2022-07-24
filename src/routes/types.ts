@@ -8,6 +8,7 @@ enum Pages {
   login,
   NotFound,
   Detail,
+  RiskWarning,
 }
 
 type PathRouteCustomProps = {

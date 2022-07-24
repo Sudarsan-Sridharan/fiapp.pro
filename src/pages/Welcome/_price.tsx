@@ -12,7 +12,7 @@ const price = [
     items: ['1个交易信号', '趋势预警', '风险预警'],
   },
   {
-    title: '高级会员',
+    title: '高级会员（内测中，全部免费）',
     subtitle: '解锁 fiapp.pro 所有功能',
     price: (
       <>

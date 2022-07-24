@@ -16,8 +16,8 @@ const InventStart = () => {
             <Link target={'_blank'} href={'https://www.okx.com/join/5083273'} sx={{ ml: '2px' }}>
               https://www.okx.com/join/5083273
             </Link>
-            ，走正常注册账号流程，注册时填写邀请码：5083273。注册成功后，满足 okx 入金条件，即可
-            成功激活 fiapp 交易大师的基础会员 （免费解锁众多功能）。
+            ，走正常注册账号流程，注册时填写邀请码：5083273。注册成功后，满足 okx 入金条件，在 fiapp
+            后台绑定 okx 账户，即可成功激活 fiapp 交易大师的基础会员 （免费解锁众多功能）。
           </Typography>
         </Box>
 

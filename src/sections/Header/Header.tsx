@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 import { PlainLink } from '@/components/styled';
 import { title } from '@/config';
-import HeaderButtons, { HeaderButtonProps } from '@/sections/Header/_HeaderButtons';
+import { HeaderButtonProps } from '@/sections/Header/_HeaderButtons';
 import useSidebar from '@/store/sidebar';
 
 const linkButtonData: HeaderButtonProps = {
@@ -90,9 +90,7 @@ function Header() {
             </ListItem>
           </List>
 
-          <Box>
-            <HeaderButtons {...linkButtonData} />
-          </Box>
+          <Box>{/*<HeaderButtons {...linkButtonData} />*/}</Box>
         </Toolbar>
       </AppBar>
     </Box>

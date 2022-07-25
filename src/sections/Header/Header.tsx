@@ -52,7 +52,7 @@ function Header() {
         }}
       >
         <Box sx={{ bgcolor: '#000', color: '#fff', textAlign: 'center' }}>
-          <Typography variant={'body1'}>服务器升级中，服务暂时中断</Typography>
+          <Typography variant={'body1'}>加入群组获取更多福利和内测资格</Typography>
         </Box>
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
           <List>

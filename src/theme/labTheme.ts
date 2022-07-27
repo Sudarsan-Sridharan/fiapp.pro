@@ -385,6 +385,9 @@ export function getThemedComponents(theme: Theme) {
             },
             color: theme.palette.mode === 'dark' ? theme.palette.grey[200] : '',
           },
+          elevation: {
+            boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.625rem 0.9375rem -0.1875rem, rgb(0 0 0 / 5%) 0rem 0.25rem 0.375rem -0.125rem'
+          },
           outlined: {
             display: 'block',
             borderColor:

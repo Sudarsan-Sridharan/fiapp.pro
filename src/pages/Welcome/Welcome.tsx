@@ -7,7 +7,7 @@ import {
   Box,
   ButtonGroup,
   Chip,
-  Container,
+  Container, Divider,
   Grid,
   IconButton,
   Rating,
@@ -364,6 +364,8 @@ function Welcome() {
         <Container maxWidth={'xl'} sx={{ py: 10 }}>
           <Stack spacing={5}>
             <ProductInfo />
+
+            <Divider/>
 
             <Price />
           </Stack>

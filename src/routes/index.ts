@@ -26,6 +26,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/RiskWarning')),
     path: '/risk-warning',
   },
+  [Pages.TrendingChange]: {
+    component: asyncComponentLoader(() => import('@/pages/TrendingChange')),
+    path: '/trending-change',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',

@@ -9,6 +9,7 @@ enum Pages {
   NotFound,
   Detail,
   RiskWarning,
+  TrendingChange
 }
 
 type PathRouteCustomProps = {

@@ -29,8 +29,8 @@ export const trendingChangeColumns: GridColDef[] = [
             <Button
                 component={Link}
                 to={`/d/${params.value}`}
-                sx={{ paddingLeft: 0, minWidth: 0 }}
-                endIcon={<ArrowRightOutlined />}
+                sx={{paddingLeft: 0, minWidth: 0}}
+                endIcon={<ArrowRightOutlined/>}
             >
                 {params.value}
             </Button>
@@ -54,7 +54,7 @@ export const trendingChangeColumns: GridColDef[] = [
             return (
                 <Chip
                     size={'small'}
-                    sx={{ color: '#fff' }}
+                    sx={{color: '#fff'}}
                     color={
                         params.value < 2
                             ? 'primary'
@@ -141,7 +141,7 @@ const TrendingChange = () => {
     };
     const sendUrl = new URLSearchParams(conditions).toString();
 
-    const { data: trendingChane } = useSWR(`${domain}/trending-change/all?${sendUrl}`, fetcher, {
+    const {data: trendingChane} = useSWR(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 1,
     });
 
@@ -149,108 +149,108 @@ const TrendingChange = () => {
         <>
             <Toolbar/>
 
-        <Container maxWidth={"xl"}>
-            <Stack
-                spacing={2}
-                sx={{
-                    '& .hot': {
-                        color: red[500],
-                    },
-                    '& .cold': {
-                        color: green[500],
-                    },
-                }}
-            >
-                <Box>
-                    <Stack spacing={1} direction={'row'} sx={{ alignItems: 'end' }}>
-                        <Badge badgeContent={'稳定版'}>
-                            <Typography variant={'h2'}>趋势转换 </Typography>
-                        </Badge>
-                    </Stack>
-
-                    <Typography variant={'body1'}>
-                        7 X 24小时跟踪趋势反转，持续监控中，监控周期：30m，1h，4h
-                    </Typography>
-
-                    <Typography variant={'body1'}>
-                        趋势追踪是环境信号，可以辅助观察标的当前趋势情况，不对任何交易做出任何投资决策。
-                    </Typography>
-                </Box>
-
-                <Stack spacing={2} direction={'column'}>
-                    <Stack spacing={1} direction={'row'}>
-                        <ButtonGroup variant={'outlined'} color={'primary'}>
-                            {[
-                                { label: '多', value: '1' },
-                                {
-                                    label: '空',
-                                    value: '-1',
-                                },
-                                {
-                                    label: '全部',
-                                    value: '',
-                                },
-                            ].map((item, i) => (
-                                <Button
-                                    key={i}
-                                    onClick={() => setCurrentTrending(item.value)}
-                                    variant={currentTrending === item.value ? 'contained' : 'outlined'}
-                                >
-                                    {item.label}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
-                        <ButtonGroup variant="outlined">
-                            {timeFrames.map((item, index) => (
-                                <Button
-                                    key={index}
-                                    onClick={() => setTimeFrame(item)}
-                                    variant={item === timeFrame ? 'contained' : 'outlined'}
-                                >
-                                    {item}
-                                </Button>
-                            ))}
-                            <Button
-                                onClick={() => setTimeFrame('')}
-                                variant={timeFrame === '' ? 'contained' : 'outlined'}
-                            >
-                                所有时间
-                            </Button>
-                        </ButtonGroup>
-                    </Stack>
-
-                    <Stack direction={'row'} sx={{ alignItems: 'center' }}>
-                        <Typography variant={'body1'}>风险：</Typography>
-                        <Rating value={risk} onChange={(event, value) => setRisk(value ?? 0)} />
-
-                        {risk !== 0 && risk && (
-                            <IconButton size={'small'} onClick={() => setRisk(0)}>
-                                <CancelOutlined />
-                            </IconButton>
-                        )}
-                    </Stack>
-                </Stack>
-
-                {trendingChane && (
+            <Container maxWidth={"xl"}>
+                <Stack
+                    spacing={2}
+                    sx={{
+                        '& .hot': {
+                            color: red[500],
+                        },
+                        '& .cold': {
+                            color: green[500],
+                        },
+                    }}
+                >
                     <Box>
-                        <Box height={'60vh'}>
-                            <DataGrid
-                                componentsProps={{
-                                    toolbar: {
-                                        showQuickFilter: true,
-                                        quickFilterProps: { debounceMs: 500 },
-                                    },
-                                }}
-                                disableColumnFilter
-                                components={{ Toolbar: GridToolbar }}
-                                rows={trendingChane}
-                                columns={trendingChangeColumns}
-                            />
-                        </Box>
+                        <Stack spacing={1} direction={'row'} sx={{alignItems: 'end'}}>
+                            <Badge badgeContent={'稳定版'}>
+                                <Typography variant={'h2'}>趋势转换 </Typography>
+                            </Badge>
+                        </Stack>
+
+                        <Typography variant={'body1'}>
+                            7 X 24小时跟踪趋势反转，持续监控中，监控周期：30m，1h，4h
+                        </Typography>
+
+                        <Typography variant={'body1'}>
+                            趋势追踪是环境信号，可以辅助观察标的当前趋势情况，不对任何交易做出任何投资决策。
+                        </Typography>
                     </Box>
-                )}
-            </Stack>
-        </Container>
+
+                    <Stack spacing={2} direction={'column'}>
+                        <Stack spacing={1} direction={'row'}>
+                            <ButtonGroup variant={'outlined'} color={'primary'}>
+                                {[
+                                    {label: '多', value: '1'},
+                                    {
+                                        label: '空',
+                                        value: '-1',
+                                    },
+                                    {
+                                        label: '全部',
+                                        value: '',
+                                    },
+                                ].map((item, i) => (
+                                    <Button
+                                        key={i}
+                                        onClick={() => setCurrentTrending(item.value)}
+                                        variant={currentTrending === item.value ? 'contained' : 'outlined'}
+                                    >
+                                        {item.label}
+                                    </Button>
+                                ))}
+                            </ButtonGroup>
+                            <ButtonGroup variant="outlined">
+                                {timeFrames.map((item, index) => (
+                                    <Button
+                                        key={index}
+                                        onClick={() => setTimeFrame(item)}
+                                        variant={item === timeFrame ? 'contained' : 'outlined'}
+                                    >
+                                        {item}
+                                    </Button>
+                                ))}
+                                <Button
+                                    onClick={() => setTimeFrame('')}
+                                    variant={timeFrame === '' ? 'contained' : 'outlined'}
+                                >
+                                    所有时间
+                                </Button>
+                            </ButtonGroup>
+                        </Stack>
+
+                        <Stack direction={'row'} sx={{alignItems: 'center'}}>
+                            <Typography variant={'body1'}>风险：</Typography>
+                            <Rating value={risk} onChange={(event, value) => setRisk(value ?? 0)}/>
+
+                            {risk !== 0 && risk && (
+                                <IconButton size={'small'} onClick={() => setRisk(0)}>
+                                    <CancelOutlined/>
+                                </IconButton>
+                            )}
+                        </Stack>
+                    </Stack>
+
+                    {trendingChane && (
+                        <Box>
+                            <Box height={'60vh'}>
+                                <DataGrid
+                                    componentsProps={{
+                                        toolbar: {
+                                            showQuickFilter: true,
+                                            quickFilterProps: {debounceMs: 500},
+                                        },
+                                    }}
+                                    disableColumnFilter
+                                    components={{Toolbar: GridToolbar}}
+                                    rows={trendingChane}
+                                    columns={trendingChangeColumns}
+                                />
+                            </Box>
+                        </Box>
+                    )}
+                </Stack>
+            </Container>
         </>
     )
 }

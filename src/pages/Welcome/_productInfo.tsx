@@ -15,7 +15,7 @@ const info = [
     },
     {
         title: '趋势转换（已上线）',
-        link: '/trending-change',
+        link: '/TrendingChange',
         ready: true,
         desc: '市面上数千个标的都是一起波动，但是每个标的的趋势都不一样，fiapp.pro 交易大师可以全自动追踪所有趋势状况，更好的增强你持仓信心和减少入场难度。',
     },

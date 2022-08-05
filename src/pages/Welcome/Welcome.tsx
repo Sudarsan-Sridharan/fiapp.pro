@@ -41,7 +41,7 @@ function Welcome() {
         refreshInterval: 1000 * 60 * 1,
     });
 
-    const {data: trendingOverview} = useSWR(`${domain}/TrendingChange/overview`, fetcher, {
+    const {data: trendingOverview} = useSWR(`${domain}/TrendingChange/overview?name=BTC-USDT-SWAP`, fetcher, {
         refreshInterval: 1000 * 60 * 1,
     });
 
@@ -90,7 +90,7 @@ function Welcome() {
                                     {trendingOverview && (
                                         <DataGrid
                                             disableColumnFilter
-                                            rows={trendingOverview.btc.latest}
+                                            rows={trendingOverview.coin.coin}
                                             columns={trendingChangeColumns}
                                             hideFooterPagination
                                         />
@@ -133,12 +133,16 @@ function Welcome() {
 
                             <Typography variant={'h6'}>今日</Typography>
 
-                            <Typography variant={'h6'} sx={{color: green[500]}}>
-                                {trendingOverview && trendingOverview.full.long} 多头
-                            </Typography>
-                            <Typography variant={'h6'} sx={{color: red[500]}}>
-                                {trendingOverview && trendingOverview.full.short} 空头
-                            </Typography>
+                            {trendingOverview && (
+                                <>
+                                    <Typography variant={'h6'} sx={{color: green[500]}}>
+                                        {trendingOverview.analysis.today.allLong[0] ?? 0} 多头
+                                    </Typography>
+                                    <Typography variant={'h6'} sx={{color: red[500]}}>
+                                        {trendingOverview.analysis.today.allShort[0] ?? 0} 空头
+                                    </Typography>
+                                </>
+                            )}
                         </Stack>
 
                         <Typography variant={'body1'}>

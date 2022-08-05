@@ -52,18 +52,20 @@ export const trendingChangeColumns: GridColDef[] = [
         headerName: '风险',
         renderCell: (params) => {
             return (
-                <Chip
-                    size={'small'}
-                    sx={{color: '#fff'}}
-                    color={
-                        params.value < 2
-                            ? 'primary'
-                            : params.value >= 2 && params.value <= 4
-                                ? 'warning'
-                                : 'error'
-                    }
-                    label={params.value < 2 ? '低' : params.value >= 2 && params.value <= 4 ? '中' : '高'}
-                />
+                <Badge badgeContent={params.value}>
+                    <Chip
+                        size={'small'}
+                        sx={{color: '#fff'}}
+                        color={
+                            params.value < 2
+                                ? 'primary'
+                                : params.value >= 2 && params.value <= 4
+                                    ? 'warning'
+                                    : 'error'
+                        }
+                        label={params.value < 2 ? '低' : params.value >= 2 && params.value <= 4 ? '中' : '高'}
+                    />
+                </Badge>
             );
         },
     },

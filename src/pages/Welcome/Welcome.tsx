@@ -87,7 +87,8 @@ function Welcome() {
                         {trendingOverview && (
                             <Grid item xs={12} md={6}>
                                 <Typography variant={"subtitle2"}>
-                                    当前大盘偏{trendingOverview.coin.coinLong[0] ?? 0 > trendingOverview.coin.coinShort[0] ?? 0 ? '多' : '空'}： {trendingOverview.coin.coinLong[0] ?? 0} 多， {trendingOverview.coin.coinShort[0] ?? 0} 空
+                                    当前 BTC
+                                    偏{trendingOverview.coin.coinLong[0] ?? 0 > trendingOverview.coin.coinShort[0] ?? 0 ? '多' : '空'}： {trendingOverview.coin.coinLong[0] ?? 0} 多， {trendingOverview.coin.coinShort[0] ?? 0} 空
                                 </Typography>
                                 <Box height={'300px'}>
                                     {trendingOverview && (

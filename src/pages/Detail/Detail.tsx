@@ -8,7 +8,7 @@ import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
 import Meta from '@/components/Meta';
-import {trendingChangeColumns} from '@/pages/Welcome/Welcome';
+import {trendingChangeColumns} from "@/pages/TrendingChange/TrendingChange";
 
 const Detail = () => {
     const {name} = useParams();

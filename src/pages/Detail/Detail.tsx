@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 
-import {Box, ButtonGroup, Container, Stack, Toolbar, Typography} from '@mui/material';
+import {Box, ButtonGroup, Container, Menu, Stack, Toolbar, Typography} from '@mui/material';
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 
 import useSWR from 'swr';
@@ -11,6 +11,9 @@ import Meta from '@/components/Meta';
 import {timeFrames, trendingChangeColumns} from "@/pages/TrendingChange/TrendingChange";
 import EChartsReact from "echarts-for-react";
 import Button from "@mui/material/Button";
+import Asynchronous from "@/components/Search/Asynchronous";
+import {bindHover, bindMenu, usePopupState} from "material-ui-popup-state/hooks";
+import {ArrowDropDown} from "@mui/icons-material";
 
 const Detail = () => {
     let {name} = useParams();
@@ -53,6 +56,7 @@ const Detail = () => {
         },
         series: [
             {
+                name: `${name} - ${timeFrame}`,
                 data: klines?.data?.klines.map((item: { open_bid: any; close_bid: any; highest_bid: any; lowest_bid: any; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
                 type: 'candlestick',
                 smooth: true,
@@ -100,6 +104,8 @@ const Detail = () => {
         },
     };
 
+    const popupState = usePopupState({variant: 'popover', popupId: 'demoMenu'})
+
     return (
         <>
             <Meta title={name}/>
@@ -108,6 +114,26 @@ const Detail = () => {
 
             <Box px={2}>
                 <Stack spacing={2}>
+                    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+                        <Asynchronous/>
+
+                        <Button variant={'contained'}
+                                endIcon={<ArrowDropDown/>}
+                                {...bindHover(popupState)}>
+                            交易
+                        </Button>
+
+                        <Menu {...bindMenu(popupState)}>
+                            <Stack spacing={1}>
+                                <Button fullWidth href={`https://www.binance.com/zh-CN/trade/${name}`}
+                                        target={'_blank'}>币安</Button>
+                                <Button
+                                    href={`https://www.okx.com/trade-spot/${name.split('USDT')[0]}-USDT`}
+                                    target={'_blank'}>OKX</Button>
+                            </Stack>
+                        </Menu>
+                    </Box>
+
                     <ButtonGroup variant="outlined">
                         {timeFrames.map((item, index) => (
                             <Button

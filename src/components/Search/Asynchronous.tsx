@@ -31,11 +31,12 @@ export default function Asynchronous() {
     React.useEffect(() => {
         if (!open) {
             setOptions([]);
-        } else {
-            if (data) {
-                setOptions([...data.data])
-            }
         }
+
+        if (data) {
+            setOptions([...data.data])
+        }
+
     }, [data, open]);
 
     return (

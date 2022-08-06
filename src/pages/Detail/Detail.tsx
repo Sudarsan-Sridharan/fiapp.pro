@@ -1,18 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 
-import {Box, Container, Toolbar, Typography} from '@mui/material';
+import {Box, ButtonGroup, Container, Stack, Toolbar, Typography} from '@mui/material';
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 
 import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
 import Meta from '@/components/Meta';
-import {trendingChangeColumns} from "@/pages/TrendingChange/TrendingChange";
+import {timeFrames, trendingChangeColumns} from "@/pages/TrendingChange/TrendingChange";
 import EChartsReact from "echarts-for-react";
+import Button from "@mui/material/Button";
 
 const Detail = () => {
-    const {name} = useParams();
+    let {name} = useParams();
     const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
         name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
     }`;
@@ -25,7 +26,18 @@ const Detail = () => {
         },
     );
 
-    const {data: klines} = useSWR(`${domain}/Coin?name=${name}&timeframe=30M`, fetcher, {
+    const [timeFrame, setTimeFrame] = useState('30M');
+
+    name = name as string
+
+    const conditions = {
+        timeFrame,
+        name
+    };
+    const sendUrl = new URLSearchParams(conditions).toString();
+
+
+    const {data: klines} = useSWR(`${domain}/Coin?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 30,
     });
 
@@ -33,7 +45,7 @@ const Detail = () => {
         grid: {top: 8, right: 8, bottom: 24, left: 36},
         xAxis: {
             type: 'category',
-            data: klines?.data?.klines.map((item: { open_at: any; }) => item.open_at),
+            data: klines?.data?.klines.map((item: { open_at: any; }) => item.open_at.toLocaleString()),
         },
         yAxis: {
             type: 'value',
@@ -95,7 +107,21 @@ const Detail = () => {
             <Toolbar/>
 
             <Box px={2}>
-                <EChartsReact option={options} style={{height: '300px'}}/>
+                <Stack spacing={2}>
+                    <ButtonGroup variant="outlined">
+                        {timeFrames.map((item, index) => (
+                            <Button
+                                key={index}
+                                onClick={() => setTimeFrame(item)}
+                                variant={item === timeFrame ? 'contained' : 'outlined'}
+                            >
+                                {item}
+                            </Button>
+                        ))}
+                    </ButtonGroup>
+
+                    <EChartsReact option={options} style={{height: '300px'}}/>
+                </Stack>
             </Box>
 
             <Container maxWidth={'xl'} sx={{mt: 2}}>

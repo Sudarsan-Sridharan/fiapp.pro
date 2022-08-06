@@ -127,7 +127,7 @@ export const trendingChangeColumns: GridColDef[] = [
     },
 ];
 
-const timeFrames = ['30m', '1H', '4H'];
+export const timeFrames = ['30M', '1H', '4H'];
 
 const TrendingChange = () => {
     const [timeFrame, setTimeFrame] = useState<string>('');

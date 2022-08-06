@@ -4,7 +4,7 @@ import {CancelOutlined} from '@mui/icons-material';
 import {Badge, Box, ButtonGroup, Container, Divider, Grid, IconButton, Rating, Stack, Typography,} from '@mui/material';
 import Button from '@mui/material/Button';
 import {green, red} from '@mui/material/colors';
-import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
@@ -13,6 +13,7 @@ import InventStart from '@/pages/Welcome/_inventStart';
 import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
 import {trendingChangeColumns} from "@/pages/TrendingChange/TrendingChange";
+import Asynchronous from "@/components/Search/Asynchronous";
 
 const desc = [
     {number: '8+', desc: '个交易策略'},
@@ -129,6 +130,10 @@ function Welcome() {
                         },
                     }}
                 >
+                    <Box textAlign={'center'} display={'flex'} alignItems={'center'} justifyContent={"center"}>
+                        <Asynchronous/>
+                    </Box>
+
                     <Box>
                         <Stack spacing={1} direction={'row'} sx={{alignItems: 'end'}}>
                             <Badge badgeContent={'稳定版'}>
@@ -216,14 +221,6 @@ function Welcome() {
                         <Box>
                             <Box height={'500px'}>
                                 <DataGrid
-                                    componentsProps={{
-                                        toolbar: {
-                                            showQuickFilter: true,
-                                            quickFilterProps: {debounceMs: 500},
-                                        },
-                                    }}
-                                    disableColumnFilter
-                                    components={{Toolbar: GridToolbar}}
                                     rows={trendingChane}
                                     columns={trendingChangeColumns}
                                 />

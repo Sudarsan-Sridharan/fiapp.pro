@@ -8,6 +8,7 @@ import React, {useState} from "react";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {green, red} from "@mui/material/colors";
+import {useAPIQuery} from "@/hooks/useAPIQuery";
 
 export const trendingChangeColumns: GridColDef[] = [
     {
@@ -130,15 +131,16 @@ export const trendingChangeColumns: GridColDef[] = [
 export const timeframes = ['30M', '1H', '4H'];
 
 const TrendingChangeTable = () => {
-    const [timeframe, setTimeframe] = useState<string>('');
     const [risk, setRisk] = useState<number>(0);
     const [currentTrending, setCurrentTrending] = useState<string>('');
+
+    const APIQuery = useAPIQuery()
 
     const urlRisk = risk !== 0 ? risk.toString() : '';
 
     const conditions = {
         risk: urlRisk,
-        timeframe,
+        timeframe: APIQuery.value.timeframe ?? '',
         currentTrending,
     };
     const sendUrl = new URLSearchParams(conditions).toString();
@@ -203,15 +205,19 @@ const TrendingChangeTable = () => {
                             {timeframes.map((item, index) => (
                                 <Button
                                     key={index}
-                                    onClick={() => setTimeframe(item)}
-                                    variant={item === timeframe ? 'contained' : 'outlined'}
+                                    onClick={() => APIQuery.setValue({
+                                        timeframe: item
+                                    })}
+                                    variant={item === APIQuery.value.timeframe ? 'contained' : 'outlined'}
                                 >
                                     {item}
                                 </Button>
                             ))}
                             <Button
-                                onClick={() => setTimeframe('')}
-                                variant={timeframe === '' ? 'contained' : 'outlined'}
+                                onClick={() => APIQuery.setValue({
+                                    timeframe: ''
+                                })}
+                                variant={APIQuery.value.timeframe === '' ? 'contained' : 'outlined'}
                             >
                                 所有时间
                             </Button>

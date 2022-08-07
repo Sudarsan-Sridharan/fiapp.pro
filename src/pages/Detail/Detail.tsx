@@ -1,25 +1,28 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useParams} from 'react-router-dom';
 
-import {Box, ButtonGroup, Container, Menu, Stack, Toolbar, Typography} from '@mui/material';
-import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {Box, ButtonGroup, Chip, Container, Menu, Stack, Toolbar} from '@mui/material';
 
 import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
 import Meta from '@/components/Meta';
-import {timeFrames, trendingChangeColumns} from "@/pages/TrendingChange/TrendingChange";
 import EChartsReact from "echarts-for-react";
 import Button from "@mui/material/Button";
 import Asynchronous from "@/components/Search/Asynchronous";
 import {bindHover, bindMenu, usePopupState} from "material-ui-popup-state/hooks";
 import {ArrowDropDown} from "@mui/icons-material";
+import {green, red} from "@mui/material/colors";
+import {useAPIQuery} from "@/hooks/useAPIQuery";
+import TrendingChangeTable, {timeframes} from "@/components/Table/TrendingChange";
 
 const Detail = () => {
     let {name} = useParams();
     const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
         name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
     }`;
+
+    const APIQuery = useAPIQuery()
 
     const {data: trendingChange} = useSWR(
         `${domain}/TrendingChange?name=${name}`,
@@ -29,12 +32,10 @@ const Detail = () => {
         },
     );
 
-    const [timeFrame, setTimeFrame] = useState('30M');
-
     name = name as string
 
     const conditions = {
-        timeFrame,
+        timeFrame: APIQuery.value.timeframe ?? '',
         name
     };
     const sendUrl = new URLSearchParams(conditions).toString();
@@ -45,7 +46,7 @@ const Detail = () => {
     });
 
     const options = {
-        grid: {top: 8, right: 8, bottom: 24, left: 36},
+        grid: {top: 8, right: 8, bottom: 24, left: 45},
         xAxis: {
             type: 'category',
             data: klines?.data?.klines.map((item: { open_at: any; }) => item.open_at.toLocaleString()),
@@ -56,13 +57,13 @@ const Detail = () => {
         },
         series: [
             {
-                name: `${name} - ${timeFrame}`,
-                data: klines?.data?.klines.map((item: { open_bid: any; close_bid: any; highest_bid: any; lowest_bid: any; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
+                name: `${name} - ${APIQuery.value.timeframe}`,
+                data: klines?.data?.klines.map((item: { open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
                 type: 'candlestick',
                 smooth: true,
                 itemStyle: {
-                    color: '#4ca05a',
-                    color0: '#d82e27',
+                    color: green[500],
+                    color0: red[500],
                     borderWidth: 0
                 },
                 markPoint: {
@@ -119,6 +120,7 @@ const Detail = () => {
 
             <Box px={2}>
                 <Stack spacing={2}>
+                    <Chip label={name} sx={{width: '250px'}}/>
                     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
                         <Asynchronous/>
 
@@ -140,15 +142,19 @@ const Detail = () => {
                     </Box>
 
                     <ButtonGroup variant="outlined">
-                        {timeFrames.map((item, index) => (
-                            <Button
-                                key={index}
-                                onClick={() => setTimeFrame(item)}
-                                variant={item === timeFrame ? 'contained' : 'outlined'}
-                            >
-                                {item}
-                            </Button>
-                        ))}
+                        {timeframes.map((item, index) => {
+                            return (
+                                <Button
+                                    key={index}
+                                    onClick={() => APIQuery.setValue({
+                                        timeframe: item
+                                    })}
+                                    variant={item === APIQuery.value.timeframe ? 'contained' : 'outlined'}
+                                >
+                                    {item}
+                                </Button>
+                            )
+                        })}
                     </ButtonGroup>
 
                     <EChartsReact option={options} style={{height: '300px'}}/>
@@ -156,28 +162,7 @@ const Detail = () => {
             </Box>
 
             <Container maxWidth={'xl'} sx={{mt: 2}}>
-                <Box>
-                    <Typography variant={'h2'}>趋势转换 </Typography>
-
-                    <Typography variant={'body1'}>实时跟踪趋势反转</Typography>
-                </Box>
-
-                <Box height={'500px'}>
-                    {trendingChange && (
-                        <DataGrid
-                            rows={trendingChange}
-                            columns={trendingChangeColumns}
-                            componentsProps={{
-                                toolbar: {
-                                    showQuickFilter: true,
-                                    quickFilterProps: {debounceMs: 500},
-                                },
-                            }}
-                            disableColumnFilter
-                            components={{Toolbar: GridToolbar}}
-                        />
-                    )}
-                </Box>
+                <TrendingChangeTable/>
             </Container>
         </>
     );

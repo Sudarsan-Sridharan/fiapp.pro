@@ -52,7 +52,7 @@ export default function Asynchronous() {
             {data ? (
                 <Autocomplete
                     id="asynchronous-demo"
-                    sx={{width: 300}}
+                    sx={{maxWidth: 250, width: '100%'}}
                     size={'small'}
                     open={open}
                     onOpen={() => {

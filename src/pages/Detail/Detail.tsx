@@ -25,7 +25,7 @@ const Detail = () => {
         `${domain}/TrendingChange?name=${name}`,
         fetcher,
         {
-            refreshInterval: 1000 * 60 * 1,
+            refreshInterval: 1000 * 60,
         },
     );
 
@@ -41,7 +41,7 @@ const Detail = () => {
 
 
     const {data: klines} = useSWR(`${domain}/Coin?${sendUrl}`, fetcher, {
-        refreshInterval: 1000 * 60 * 30,
+        refreshInterval: 1000 * 60 * 5,
     });
 
     const options = {
@@ -60,6 +60,11 @@ const Detail = () => {
                 data: klines?.data?.klines.map((item: { open_bid: any; close_bid: any; highest_bid: any; lowest_bid: any; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
                 type: 'candlestick',
                 smooth: true,
+                itemStyle: {
+                    color: '#4ca05a',
+                    color0: '#d82e27',
+                    borderWidth: 0
+                },
                 markPoint: {
                     symbolSize: 100,
                     label: {

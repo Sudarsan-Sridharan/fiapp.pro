@@ -8,8 +8,9 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import {useNavigate} from "react-router-dom";
 import {OutlinedInput, Skeleton} from "@mui/material";
+import {List} from "linqts";
 
-interface Film {
+interface ICoin {
     name: string;
     exchange: string;
 }
@@ -22,7 +23,7 @@ function sleep(delay = 0) {
 
 export default function Asynchronous() {
     const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState<readonly Film[]>([]);
+    const [options, setOptions] = React.useState<readonly ICoin[]>([]);
 
     const {data} = useSWR(`${domain}/Coin`, fetcher)
 
@@ -37,7 +38,11 @@ export default function Asynchronous() {
         }
 
         if (data) {
-            setOptions([...data.data])
+            const coins = new List<ICoin>(data.data)
+                .OrderBy(x => x.name)
+                .ToArray()
+
+            setOptions(coins)
         }
 
     }, [data, open]);

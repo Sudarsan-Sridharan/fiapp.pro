@@ -215,14 +215,6 @@ const TrendingChangeTable = () => {
                                     {item}
                                 </Button>
                             ))}
-                            <Button
-                                onClick={() => APIQuery.setValue({
-                                    timeframe: ''
-                                })}
-                                variant={APIQuery.value.timeframe === '' ? 'contained' : 'outlined'}
-                            >
-                                所有时间
-                            </Button>
                         </ButtonGroup>
                     </Stack>
 

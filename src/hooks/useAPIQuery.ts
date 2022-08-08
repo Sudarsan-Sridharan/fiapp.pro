@@ -1,13 +1,15 @@
-import {useState} from "react";
+import {atom, useAtom} from "jotai";
 
 interface IQuery {
     timeframe?: string;
 }
 
+const APIQueryAtom = atom<IQuery>({
+    timeframe: "30M",
+})
+
 export const useAPIQuery = () => {
-    const [value, setValue] = useState<IQuery>({
-        timeframe: '30M'
-    });
+    const [value, setValue] = useAtom<IQuery>(APIQueryAtom);
 
     return {
         value,

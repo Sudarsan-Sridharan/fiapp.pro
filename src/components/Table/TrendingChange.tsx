@@ -10,6 +10,19 @@ import {domain, fetcher} from "@/ network/fether";
 import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import TradeButton from "@/components/Market/TradeButton";
+import {atom, useAtom} from "jotai";
+
+export interface ITrendingChange {
+    name?: string,
+    time_frame?: string,
+    current_trending?: number,
+    forward_time_duration?: number,
+    open_price?: number,
+    open_time?: Date,
+    risk?: number
+}
+
+export const trendingChangeAtom = atom<ITrendingChange[]>([])
 
 export const trendingChangeColumns: GridColDef[] = [
     {
@@ -128,9 +141,15 @@ const TrendingChangeTable = () => {
     };
     const sendUrl = new URLSearchParams(conditions).toString();
 
-    const {data: trendingChane} = useSWR(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
+    const {data: trendingChange} = useSWR(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 1,
     });
+
+    const [trendingChangeData, setTrendingChangeData] = useAtom(trendingChangeAtom);
+
+    if (trendingChange) {
+        setTrendingChangeData(trendingChange)
+    }
 
     return (
         <>
@@ -219,11 +238,11 @@ const TrendingChangeTable = () => {
                     </Stack>
                 </Stack>
 
-                {trendingChane && (
+                {trendingChange && (
                     <Box>
                         <Box height={'60vh'}>
                             <DataGrid
-                                rows={trendingChane}
+                                rows={trendingChange}
                                 columns={trendingChangeColumns}
                             />
                         </Box>

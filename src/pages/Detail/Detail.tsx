@@ -12,8 +12,10 @@ import Button from "@mui/material/Button";
 import Asynchronous from "@/components/Search/Asynchronous";
 import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
-import TrendingChangeTable, {timeframes} from "@/components/Table/TrendingChange";
+import TrendingChangeTable, {ITrendingChange, timeframes, trendingChangeAtom} from "@/components/Table/TrendingChange";
 import TradeButton from "@/components/Market/TradeButton";
+import {useAtom} from "jotai";
+import {List} from "linqts";
 
 const Detail = () => {
     let {name} = useParams();
@@ -35,6 +37,19 @@ const Detail = () => {
     const {data: klines} = useSWR(`${domain}/Coin?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 5,
     });
+
+    const [trendingChangeData, setTrendingChangeData] = useAtom<ITrendingChange[]>(trendingChangeAtom);
+
+    const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
+        .Select(x => ({
+            name: x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空',
+            coord: [x.open_time?.toLocaleString(), x.open_price],
+            value: x.open_price,
+            itemStyle: {
+                color: x.current_trending === 1 ? green[500] : x.current_trending === 0 ? '#fff' : red[500],
+            }
+        }))
+        .ToArray()
 
     const options = {
         grid: {top: 8, right: 8, bottom: 24, left: 45},
@@ -65,14 +80,7 @@ const Detail = () => {
                         }
                     },
                     data: [
-                        {
-                            name: '趋势转多',
-                            coord: ['2022-08-03T01:30:00Z', 3.815],
-                            value: 3.815,
-                            itemStyle: {
-                                color: 'green'
-                            }
-                        },
+                        ...chartTrendingChange
                     ],
                     tooltip: {
                         formatter: function (param: { name: string; data: { coord: any; }; }) {

@@ -102,14 +102,14 @@ const Detail = () => {
         dataZoom: [
             {
                 type: 'inside',
-                start: 80,
+                start: 90,
                 end: 100
             },
             {
                 show: true,
                 type: 'slider',
                 top: '90%',
-                start: 80,
+                start: 90,
                 end: 100
             }
         ],

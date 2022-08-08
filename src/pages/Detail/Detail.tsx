@@ -16,6 +16,7 @@ import TrendingChangeTable, {ITrendingChange, timeframes, trendingChangeAtom} fr
 import TradeButton from "@/components/Market/TradeButton";
 import {List} from "linqts";
 import {useRecoilState} from "recoil";
+import RiskWarningTable from "@/components/Table/RiskWarning";
 
 interface IKline {
     open_bid: number;
@@ -155,6 +156,8 @@ const Detail = () => {
 
             <Container maxWidth={'xl'} sx={{mt: 2}}>
                 <TrendingChangeTable/>
+
+                <RiskWarningTable/>
             </Container>
         </>
     );

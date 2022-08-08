@@ -1,8 +1,8 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
-import {Badge, Box, ButtonGroup, Chip, IconButton, Rating, Stack, Typography} from "@mui/material";
+import {Badge, Box, Chip, Stack, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Link, useMatch} from "react-router-dom";
-import {ArrowRightOutlined, CancelOutlined} from "@mui/icons-material";
+import {ArrowRightOutlined} from "@mui/icons-material";
 import BigNumber from "bignumber.js";
 import React, {useState} from "react";
 import useSWR from "swr";
@@ -11,6 +11,7 @@ import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import TradeButton from "@/components/Market/TradeButton";
 import {atom, useRecoilState} from "recoil";
+import QueryTable from "@/components/Table/Query";
 
 export interface ITrendingChange {
     name?: string,
@@ -183,55 +184,7 @@ const TrendingChangeTable = () => {
                     </Typography>
                 </Box>
 
-                <Stack spacing={2} direction={'column'}>
-                    <Stack spacing={1} direction={'row'}>
-                        <ButtonGroup variant={'outlined'} color={'primary'}>
-                            {[
-                                {label: '多', value: '1'},
-                                {
-                                    label: '空',
-                                    value: '-1',
-                                },
-                                {
-                                    label: '全部',
-                                    value: '',
-                                },
-                            ].map((item, i) => (
-                                <Button
-                                    key={i}
-                                    onClick={() => setCurrentTrending(item.value)}
-                                    variant={currentTrending === item.value ? 'contained' : 'outlined'}
-                                >
-                                    {item.label}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
-                        <ButtonGroup variant="outlined">
-                            {timeframes.map((item, index) => (
-                                <Button
-                                    key={index}
-                                    onClick={() => APIQuery.setValue({
-                                        timeframe: item
-                                    })}
-                                    variant={item === APIQuery.value.timeframe ? 'contained' : 'outlined'}
-                                >
-                                    {item}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
-                    </Stack>
-
-                    <Stack direction={'row'} sx={{alignItems: 'center'}}>
-                        <Typography variant={'body1'}>风险：</Typography>
-                        <Rating value={risk} onChange={(event, value) => setRisk(value ?? 0)}/>
-
-                        {risk !== 0 && risk && (
-                            <IconButton size={'small'} onClick={() => setRisk(0)}>
-                                <CancelOutlined/>
-                            </IconButton>
-                        )}
-                    </Stack>
-                </Stack>
+                <QueryTable/>
 
                 {trendingChange && (
                     <Box>

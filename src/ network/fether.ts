@@ -4,4 +4,4 @@ export const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json
 
 const hostname = location.hostname;
 export const domain =
-    hostname === 'localhost' ? `http://${hostname}:5148` : 'https://api.fiapp.pro';
+    hostname === '127.0.0.1' ? `http://${hostname}:5148` : 'https://api.fiapp.pro';

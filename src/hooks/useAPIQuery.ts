@@ -2,6 +2,9 @@ import {atom, useRecoilState} from "recoil";
 
 interface IQuery {
     timeframe?: string;
+    risk?: number | null,
+    currentTrending?: string,
+    name?: string,
 }
 
 export const APIQueryAtom = atom<IQuery>({

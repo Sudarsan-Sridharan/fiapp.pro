@@ -12,6 +12,8 @@ const info = [
     {
         title: '风险预警（内测中）',
         desc: '全自动智能提示大周期的关口位，fiapp.pro 交易大师帮助你更快的判断当前局势，更好的找到止赢止损点位。',
+        link: '/RiskWarning',
+        ready: true
     },
     {
         title: '趋势转换（已上线）',

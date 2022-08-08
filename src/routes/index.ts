@@ -24,7 +24,7 @@ const routes: Routes = {
     },
     [Pages.RiskWarning]: {
         component: asyncComponentLoader(() => import('@/pages/RiskWarning')),
-        path: '/risk-warning',
+        path: '/RiskWarning',
     },
     [Pages.TrendingChange]: {
         component: asyncComponentLoader(() => import('@/pages/TrendingChange')),

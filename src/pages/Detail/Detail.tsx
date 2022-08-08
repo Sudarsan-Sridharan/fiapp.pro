@@ -1,7 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 
-import {Box, ButtonGroup, Chip, Container, Menu, Stack, Toolbar} from '@mui/material';
+import {Box, ButtonGroup, Chip, Container, Stack, Toolbar} from '@mui/material';
 
 import useSWR from 'swr';
 
@@ -10,11 +10,10 @@ import Meta from '@/components/Meta';
 import EChartsReact from "echarts-for-react";
 import Button from "@mui/material/Button";
 import Asynchronous from "@/components/Search/Asynchronous";
-import {bindHover, bindMenu, usePopupState} from "material-ui-popup-state/hooks";
-import {ArrowDropDown} from "@mui/icons-material";
 import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import TrendingChangeTable, {timeframes} from "@/components/Table/TrendingChange";
+import TradeButton from "@/components/Market/TradeButton";
 
 const Detail = () => {
     let {name} = useParams();
@@ -110,7 +109,6 @@ const Detail = () => {
         },
     };
 
-    const popupState = usePopupState({variant: 'popover', popupId: 'demoMenu'})
 
     return (
         <>
@@ -124,21 +122,7 @@ const Detail = () => {
                     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
                         <Asynchronous/>
 
-                        <Button variant={'contained'}
-                                endIcon={<ArrowDropDown/>}
-                                {...bindHover(popupState)}>
-                            交易
-                        </Button>
-
-                        <Menu {...bindMenu(popupState)}>
-                            <Stack spacing={1}>
-                                <Button fullWidth href={`https://www.binance.com/zh-CN/trade/${name}`}
-                                        target={'_blank'}>币安</Button>
-                                <Button
-                                    href={`https://www.okx.com/trade-spot/${name.split('USDT')[0]}-USDT`}
-                                    target={'_blank'}>OKX</Button>
-                            </Stack>
-                        </Menu>
+                        <TradeButton name={name}/>
                     </Box>
 
                     <ButtonGroup variant="outlined">

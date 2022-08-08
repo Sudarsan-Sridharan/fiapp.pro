@@ -9,10 +9,11 @@ import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
+import TradeButton from "@/components/Market/TradeButton";
 
 export const trendingChangeColumns: GridColDef[] = [
     {
-        field: 'currentTrending',
+        field: 'current_trending',
         headerName: '趋势方向',
         renderCell: (params) => (
             <Chip
@@ -38,12 +39,12 @@ export const trendingChangeColumns: GridColDef[] = [
         ),
     },
     {
-        field: 'timeFrame',
+        field: 'time_frame',
         headerName: '周期',
     },
 
     {
-        field: 'openTime',
+        field: 'open_time',
         headerName: '触发时间',
         renderCell: (params) => new Date(params.value).toLocaleString(),
         width: 200,
@@ -71,57 +72,37 @@ export const trendingChangeColumns: GridColDef[] = [
         },
     },
     {
-        field: 'openPrice',
+        field: 'open_price',
         headerName: '触发价格',
         renderCell: (params) => `$${new BigNumber(params.value).toFixed()}`,
         width: 150,
     },
-    {
-        field: 'forwardTimeDuration',
-        headerName: '之前趋势持续时间',
-        width: 200,
-        renderCell: (params) => (
-            <>
-                {params.value.split(' ')[0] !== '0' && `${params.value.split(' ')[0]}天`}
-                {params.value.split(' ')[2].split(':')[0] !== '00' &&
-                    `${params.value.split(' ')[2].split(':')[0]}小时`}
-                {params.value.split(' ')[2].split(':')[1] !== '00' &&
-                    `${params.value.split(' ')[2].split(':')[1]}分`}
-                {params.value.split(' ')[2].split(':')[2] !== '00' &&
-                    `${params.value.split(' ')[2].split(':')[2]}秒`}
-            </>
-        ),
-    },
+    // {
+    //     field: 'forward_time_duration',
+    //     headerName: '之前趋势持续时间',
+    //     width: 200,
+    //     renderCell: (params) => (
+    //         <>
+    //             {params.value.split(' ')[0] !== '0' && `${params.value.split(' ')[0]}天`}
+    //             {params.value.split(' ')[2].split(':')[0] !== '00' &&
+    //                 `${params.value.split(' ')[2].split(':')[0]}小时`}
+    //             {params.value.split(' ')[2].split(':')[1] !== '00' &&
+    //                 `${params.value.split(' ')[2].split(':')[1]}分`}
+    //             {params.value.split(' ')[2].split(':')[2] !== '00' &&
+    //                 `${params.value.split(' ')[2].split(':')[2]}秒`}
+    //         </>
+    //     ),
+    // },
     {
         field: 'actions',
         headerName: '',
         width: 200,
         renderCell: (params) => {
             const name = params.row.name;
-            const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
-                name && name?.split('-')?.length > 1 && name?.split('-')[2] === 'SWAP' && 'PERP'
-            }`;
-            let time = params.row.timeFrame.split('');
-            if (time.length === 3 && time[2] === 'm') {
-                time = time[0] * 10;
-            } else if (time.length === 2 && time[1] === 'H') {
-                time = time[0] * 60;
-            } else {
-                time = 60;
-            }
 
             return (
                 <>
-                    <Button
-                        color={'inherit'}
-                        target={'_blank'}
-                        href={`https://cn.tradingview.com/chart/?symbol=OKX:${symbol}&interval=${time}`}
-                    >
-                        图表
-                    </Button>
-                    <Button target={'_blank'} href={`https://www.okx.com/trade-swap/${name.toLowerCase()}`}>
-                        交易
-                    </Button>
+                    <TradeButton name={name}/>
                 </>
             );
         },

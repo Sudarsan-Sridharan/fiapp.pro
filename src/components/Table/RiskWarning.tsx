@@ -74,7 +74,7 @@ const RiskWarningTable = () => {
     const detail = useMatch('/d/:name');
 
     const conditions = {
-        risk: APIQuery.value.risk as unknown as string ?? '',
+        risk: APIQuery.value.risk !== 0 ? (APIQuery.value.risk?.toString() ?? '') : '',
         timeframe: APIQuery.value.timeframe ?? '',
         currentTrending: APIQuery.value.currentTrending ?? '',
         name: detail?.params?.name ?? ''

@@ -1,15 +1,18 @@
-import {atom, useAtom} from "jotai";
+import {atom, useRecoilState} from "recoil";
 
 interface IQuery {
     timeframe?: string;
 }
 
-const APIQueryAtom = atom<IQuery>({
-    timeframe: "30M",
+export const APIQueryAtom = atom<IQuery>({
+    key: "APIQueryAtom",
+    default: {
+        timeframe: "30M"
+    }
 })
 
 export const useAPIQuery = () => {
-    const [value, setValue] = useAtom<IQuery>(APIQueryAtom);
+    const [value, setValue] = useRecoilState<IQuery>(APIQueryAtom);
 
     return {
         value,

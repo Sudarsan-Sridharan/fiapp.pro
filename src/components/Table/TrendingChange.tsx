@@ -10,7 +10,7 @@ import {domain, fetcher} from "@/ network/fether";
 import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import TradeButton from "@/components/Market/TradeButton";
-import {atom, useAtom} from "jotai";
+import {atom, useRecoilState} from "recoil";
 
 export interface ITrendingChange {
     name?: string,
@@ -22,7 +22,10 @@ export interface ITrendingChange {
     risk?: number
 }
 
-export const trendingChangeAtom = atom<ITrendingChange[]>([])
+export const trendingChangeAtom = atom<ITrendingChange[]>({
+    key: "trendingChangeAtom",
+    default: []
+})
 
 export const trendingChangeColumns: GridColDef[] = [
     {
@@ -31,8 +34,8 @@ export const trendingChangeColumns: GridColDef[] = [
         renderCell: (params) => (
             <Chip
                 size={'small'}
-                color={params.value === '1' ? 'success' : params.value === '0' ? 'default' : 'error'}
-                label={params.value === '1' ? '多' : params.value === '0' ? '中立' : '空'}
+                color={params.value === 1 ? 'success' : params.value === 0 ? 'default' : 'error'}
+                label={params.value === 1 ? '多' : params.value === 0 ? '中立' : '空'}
             />
         ),
     },
@@ -145,7 +148,7 @@ const TrendingChangeTable = () => {
         refreshInterval: 1000 * 60 * 1,
     });
 
-    const [trendingChangeData, setTrendingChangeData] = useAtom(trendingChangeAtom);
+    const [trendingChangeData, setTrendingChangeData] = useRecoilState(trendingChangeAtom);
 
     if (trendingChange) {
         setTrendingChangeData(trendingChange)

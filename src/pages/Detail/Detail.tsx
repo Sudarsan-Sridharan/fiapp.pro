@@ -14,8 +14,8 @@ import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import TrendingChangeTable, {ITrendingChange, timeframes, trendingChangeAtom} from "@/components/Table/TrendingChange";
 import TradeButton from "@/components/Market/TradeButton";
-import {useAtom} from "jotai";
 import {List} from "linqts";
+import {useRecoilState} from "recoil";
 
 interface IKline {
     open_bid: number;
@@ -46,7 +46,7 @@ const Detail = () => {
         refreshInterval: 1000 * 60 * 5,
     });
 
-    const [trendingChangeData, setTrendingChangeData] = useAtom<ITrendingChange[]>(trendingChangeAtom);
+    const [trendingChangeData, setTrendingChangeData] = useRecoilState<ITrendingChange[]>(trendingChangeAtom);
 
     const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
         .Select(x => ({

@@ -3278,6 +3278,11 @@ jsonpointer@^5.0.0:
     array-includes "^3.1.5"
     object.assign "^4.1.2"
 
+klinecharts@^8.6.1:
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/klinecharts/-/klinecharts-8.6.1.tgz#9e79074580b82785edd753472397c19749422812"
+  integrity sha512-1YUbcK82NTkcL9qioRpL7quU9xaqliVdBWukmYv07AYnngCWEQIEYXdSnk8abIVvBgjpGIujN8y8PP5j5XW1AA==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"

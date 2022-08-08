@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {Box, ButtonGroup, Chip, Container, Stack, Toolbar} from '@mui/material';
@@ -7,7 +7,6 @@ import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
 import Meta from '@/components/Meta';
-import EChartsReact from "echarts-for-react";
 import Button from "@mui/material/Button";
 import Asynchronous from "@/components/Search/Asynchronous";
 import {green, red} from "@mui/material/colors";
@@ -17,6 +16,7 @@ import TradeButton from "@/components/Market/TradeButton";
 import {List} from "linqts";
 import {useRecoilState} from "recoil";
 import AllTabTable from "@/components/Table/AllTab";
+import {Coordinate, dispose, init} from "klinecharts";
 
 interface IKline {
     open_bid: number;
@@ -118,6 +118,97 @@ const Detail = () => {
         },
     };
 
+    function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string) {
+        ctx.font = '12px Roboto'
+        ctx.fillStyle = '#2d6187'
+        ctx.strokeStyle = '#2d6187'
+
+        const textWidth = ctx.measureText(text).width
+        const startX = coordinate.x
+        let startY = coordinate.y + 6
+        ctx.beginPath()
+        ctx.moveTo(startX, startY)
+        startY += 5
+        ctx.lineTo(startX - 4, startY)
+        ctx.lineTo(startX + 4, startY)
+        ctx.closePath()
+        ctx.fill()
+
+        const rectX = startX - textWidth / 2 - 6
+        const rectY = startY
+        const rectWidth = textWidth + 12
+        const rectHeight = 28
+        const r = 2
+        ctx.beginPath()
+        ctx.moveTo(rectX + r, rectY)
+        ctx.arcTo(rectX + rectWidth, rectY, rectX + rectWidth, rectY + rectHeight, r)
+        ctx.arcTo(rectX + rectWidth, rectY + rectHeight, rectX, rectY + rectHeight, r)
+        ctx.arcTo(rectX, rectY + rectHeight, rectX, rectY, r)
+        ctx.arcTo(rectX, rectY, rectX + rectWidth, rectY, r)
+        ctx.closePath()
+        ctx.fill()
+
+        ctx.fillStyle = '#fff'
+        ctx.textBaseline = 'middle'
+        ctx.textAlign = 'center'
+        ctx.fillText(text, startX, startY + 14)
+    }
+
+
+    useEffect(() => {
+        if (klines) {
+            // Init chart
+            const chart = init('simple_chart');
+
+            chart.overrideTechnicalIndicator({
+                name: 'EMA',
+                shortName: 'EMA',
+                calcParams: [50, 100, 200],
+            })
+
+            chart.createTechnicalIndicator('EMA', true, {id: 'candle_pane'});
+
+            const newChartData = klines?.data?.coinKlines?.klines.map((item: { open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; open_at: Date }) =>
+                (
+                    {
+                        open: item.open_bid,
+                        close: item.close_bid,
+                        low: item.lowest_bid,
+                        high: item.highest_bid,
+                        time: new Date(item.open_at).getTime(),
+                    }
+                )
+            )
+
+
+            // Fill data
+            chart.applyNewData(newChartData);
+
+            // chart.createAnnotation([{
+            //     point: {timestamp: 1657587600000, value: 0.4271},
+            //     drawExtend: (params) => {
+            //         const {ctx, coordinate} = params
+            //         annotationDrawExtend(ctx, coordinate, '这是一个固定显示标记')
+            //     },
+            // }])
+
+            chart.createAnnotation([{
+                point: {timestamp: newChartData[newChartData.length - 10].timestamp},
+                styles: {
+                    offset: [0, 20],
+                    position: 'top',
+                    symbol: {
+                        type: 'circle',
+                    }
+                },
+            }])
+
+            return () => {
+                dispose('simple_chart');
+            }
+        }
+    }, [klines]);
+
 
     return (
         <>
@@ -150,7 +241,13 @@ const Detail = () => {
                         })}
                     </ButtonGroup>
 
-                    <EChartsReact option={options} style={{height: '300px'}}/>
+                    {klines ? (
+                        <>
+                            <div id="simple_chart" style={{height: 600}}/>
+                        </>
+                    ) : <></>}
+
+                    {/*<EChartsReact option={options} style={{height: '300px'}}/>*/}
                 </Stack>
             </Box>
 
@@ -162,3 +259,4 @@ const Detail = () => {
 };
 
 export default Detail;
+

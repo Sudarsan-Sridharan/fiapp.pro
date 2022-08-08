@@ -26,6 +26,7 @@
     "echarts-for-react": "^3.0.2",
     "is-mobile": "^3.1.1",
     "jotai": "^1.7.8",
+    "klinecharts": "^8.6.1",
     "linqts": "^1.14.4",
     "material-ui-popup-state": "^4.0.1",
     "notistack": "^2.0.5",

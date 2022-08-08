@@ -1,7 +1,7 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {Badge, Box, ButtonGroup, Chip, IconButton, Rating, Stack, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import {Link} from "react-router-dom";
+import {Link, useMatch} from "react-router-dom";
 import {ArrowRightOutlined, CancelOutlined} from "@mui/icons-material";
 import BigNumber from "bignumber.js";
 import React, {useState} from "react";
@@ -116,6 +116,7 @@ const TrendingChangeTable = () => {
     const [currentTrending, setCurrentTrending] = useState<string>('');
 
     const APIQuery = useAPIQuery()
+    const detail = useMatch('/d/:name');
 
     const urlRisk = risk !== 0 ? risk.toString() : '';
 
@@ -123,6 +124,7 @@ const TrendingChangeTable = () => {
         risk: urlRisk,
         timeframe: APIQuery.value.timeframe ?? '',
         currentTrending,
+        name: detail?.params?.name ?? ''
     };
     const sendUrl = new URLSearchParams(conditions).toString();
 

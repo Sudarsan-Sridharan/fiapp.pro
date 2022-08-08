@@ -23,14 +23,6 @@ const Detail = () => {
 
     const APIQuery = useAPIQuery()
 
-    const {data: trendingChange} = useSWR(
-        `${domain}/TrendingChange?name=${name}`,
-        fetcher,
-        {
-            refreshInterval: 1000 * 60,
-        },
-    );
-
     name = name as string
 
     const conditions = {

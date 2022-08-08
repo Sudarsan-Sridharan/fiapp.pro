@@ -17,6 +17,14 @@ import TradeButton from "@/components/Market/TradeButton";
 import {useAtom} from "jotai";
 import {List} from "linqts";
 
+interface IKline {
+    open_bid: number;
+    close_bid: number;
+    highest_bid: number;
+    lowest_bid: number;
+    open_at: Date
+}
+
 const Detail = () => {
     let {name} = useParams();
     const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
@@ -42,7 +50,7 @@ const Detail = () => {
 
     const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
         .Select(x => ({
-            name: x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空',
+            name: `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 风险${x.risk}`,
             coord: [x.open_time?.toLocaleString(), x.open_price],
             value: x.open_price,
             itemStyle: {
@@ -55,7 +63,7 @@ const Detail = () => {
         grid: {top: 8, right: 8, bottom: 24, left: 45},
         xAxis: {
             type: 'category',
-            data: klines?.data?.klines.map((item: { open_at: any; }) => item.open_at.toLocaleString()),
+            data: klines?.data?.coinKlines?.klines?.map((item: { open_at: { toLocaleString: () => any; }; }) => item.open_at.toLocaleString()),
         },
         yAxis: {
             type: 'value',
@@ -64,7 +72,7 @@ const Detail = () => {
         series: [
             {
                 name: `${name} - ${APIQuery.value.timeframe}`,
-                data: klines?.data?.klines.map((item: { open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
+                data: klines?.data?.coinKlines?.klines.map((item: { open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
                 type: 'candlestick',
                 smooth: true,
                 itemStyle: {
@@ -93,14 +101,14 @@ const Detail = () => {
         dataZoom: [
             {
                 type: 'inside',
-                start: 50,
+                start: 80,
                 end: 100
             },
             {
                 show: true,
                 type: 'slider',
                 top: '90%',
-                start: 50,
+                start: 80,
                 end: 100
             }
         ],

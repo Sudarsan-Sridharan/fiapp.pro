@@ -12,11 +12,11 @@ import Button from "@mui/material/Button";
 import Asynchronous from "@/components/Search/Asynchronous";
 import {green, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
-import TrendingChangeTable, {ITrendingChange, timeframes, trendingChangeAtom} from "@/components/Table/TrendingChange";
+import {ITrendingChange, timeframes, trendingChangeAtom} from "@/components/Table/TrendingChange";
 import TradeButton from "@/components/Market/TradeButton";
 import {List} from "linqts";
 import {useRecoilState} from "recoil";
-import RiskWarningTable from "@/components/Table/RiskWarning";
+import AllTabTable from "@/components/Table/AllTab";
 
 interface IKline {
     open_bid: number;
@@ -155,9 +155,7 @@ const Detail = () => {
             </Box>
 
             <Container maxWidth={'xl'} sx={{mt: 2}}>
-                <TrendingChangeTable/>
-
-                <RiskWarningTable/>
+                <AllTabTable/>
             </Container>
         </>
     );

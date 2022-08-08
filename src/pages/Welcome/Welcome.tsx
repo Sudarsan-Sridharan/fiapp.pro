@@ -11,7 +11,8 @@ import InventStart from '@/pages/Welcome/_inventStart';
 import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
 import Asynchronous from "@/components/Search/Asynchronous";
-import TrendingChangeTable, {trendingChangeColumns} from "@/components/Table/TrendingChange";
+import {trendingChangeColumns} from "@/components/Table/TrendingChange";
+import AllTabTable from "@/components/Table/AllTab";
 
 const desc = [
     {number: '8+', desc: '个交易策略'},
@@ -114,7 +115,7 @@ function Welcome() {
                     </Box>
 
                     <Box>
-                        <TrendingChangeTable/>
+                        <AllTabTable/>
                     </Box>
 
                 </Stack>

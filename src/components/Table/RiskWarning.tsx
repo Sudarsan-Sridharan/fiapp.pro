@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Container, Stack, Toolbar, Typography} from '@mui/material';
+import {Box, Stack} from '@mui/material';
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
 
 import useSWR from 'swr';
@@ -87,19 +87,15 @@ const RiskWarningTable = () => {
     });
 
     return (
-        <Container maxWidth={'xl'}>
-            <Toolbar/>
+        <Stack spacing={2}>
+            {/*<Typography variant={'h4'}>风险预警</Typography>*/}
 
-            <Stack spacing={2}>
-                <Typography variant={'h4'}>风险预警</Typography>
+            <QueryTable/>
 
-                <QueryTable/>
-
-                <Box height={'60vh'}>
-                    {data && <DataGrid disableColumnFilter rows={data} columns={columns}/>}
-                </Box>
-            </Stack>
-        </Container>
+            <Box height={'60vh'}>
+                {data && <DataGrid disableColumnFilter rows={data} columns={columns}/>}
+            </Box>
+        </Stack>
     );
 };
 

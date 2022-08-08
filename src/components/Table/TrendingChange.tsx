@@ -169,11 +169,11 @@ const TrendingChangeTable = () => {
                 }}
             >
                 <Box>
-                    <Stack spacing={1} direction={'row'} sx={{alignItems: 'end'}}>
-                        <Badge badgeContent={'稳定版'}>
-                            <Typography variant={'h2'}>趋势转换 </Typography>
-                        </Badge>
-                    </Stack>
+                    {/*<Stack spacing={1} direction={'row'} sx={{alignItems: 'end'}}>*/}
+                    {/*    <Badge badgeContent={'稳定版'}>*/}
+                    {/*        <Typography variant={'h2'}>趋势转换 </Typography>*/}
+                    {/*    </Badge>*/}
+                    {/*</Stack>*/}
 
                     <Typography variant={'body1'}>
                         7 X 24小时跟踪趋势反转，持续监控中，监控周期：30m，1h，4h

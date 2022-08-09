@@ -79,7 +79,7 @@ const Detail = () => {
             drawExtend: (params: any) => {
                 const {ctx, coordinate} = params
                 annotationDrawExtend(ctx, coordinate,
-                    `${messageType[x.description_type as keyof typeof messageType]} `,
+                    `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} `,
                     red[500])
             },
         }))

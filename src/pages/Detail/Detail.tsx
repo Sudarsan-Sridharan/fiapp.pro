@@ -205,6 +205,7 @@ const Detail = () => {
                 )
             )
 
+            chart.setPriceVolumePrecision(10, 10)
 
             // Fill data
             chart.applyNewData(newChartData);

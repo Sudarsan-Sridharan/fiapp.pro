@@ -12,6 +12,21 @@ import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {Link, useMatch} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {ArrowRightOutlined} from "@mui/icons-material";
+import {atom, useRecoilState} from "recoil";
+
+export interface IRiskWarning {
+    description_type: number,
+    name?: string,
+    open_price?: number,
+    open_time: Date,
+    time_frame?: string,
+    risk?: number
+}
+
+export const riskWarningAtom = atom<IRiskWarning[]>({
+    key: "riskWarningAtom",
+    default: []
+})
 
 const columns: GridColDef[] = [
     {
@@ -85,6 +100,12 @@ const RiskWarningTable = () => {
     const {data} = useSWR(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 1,
     });
+
+    const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
+
+    if (data) {
+        setRiskWarning(data)
+    }
 
     return (
         <Stack spacing={2}>

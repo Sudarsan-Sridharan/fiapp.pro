@@ -17,6 +17,7 @@ import {List} from "linqts";
 import {useRecoilState} from "recoil";
 import AllTabTable from "@/components/Table/AllTab";
 import {Coordinate, dispose, init} from "klinecharts";
+import {IRiskWarning, riskWarningAtom} from "@/components/Table/RiskWarning";
 
 interface IKline {
     open_bid: number;
@@ -24,6 +25,15 @@ interface IKline {
     highest_bid: number;
     lowest_bid: number;
     open_at: Date
+}
+
+export const messageType = {
+    0: '到达关口位',
+    4000: "到达前高关口位",
+    5050: "到达均线 ema50 关口位",
+    5100: "到达均线 ema100 关口位",
+    5200: "到达均线 ema200 关口位",
+    3000: "布林带突破",
 }
 
 const Detail = () => {
@@ -51,12 +61,27 @@ const Detail = () => {
 
     const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
         .Select(x => ({
-            name: `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 风险${x.risk}`,
-            coord: [x.open_time?.toLocaleString(), x.open_price],
-            value: x.open_price,
-            itemStyle: {
-                color: x.current_trending === 1 ? green[500] : x.current_trending === 0 ? '#fff' : red[500],
-            }
+            point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
+            drawExtend: (params: any) => {
+                const {ctx, coordinate} = params
+                annotationDrawExtend(ctx, coordinate,
+                    `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 风险${x.risk}`,
+                    x.current_trending === 1 ? green[500] : x.current_trending === 0 ? 'default' : red[500])
+            },
+        }))
+        .ToArray()
+
+    const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
+
+    const chartRiskWarning = new List<IRiskWarning>(riskWarning)
+        .Select(x => ({
+            point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
+            drawExtend: (params: any) => {
+                const {ctx, coordinate} = params
+                annotationDrawExtend(ctx, coordinate,
+                    `${messageType[x.description_type as keyof typeof messageType]} `,
+                    red[500])
+            },
         }))
         .ToArray()
 
@@ -118,16 +143,16 @@ const Detail = () => {
         },
     };
 
-    function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string) {
+    function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
         ctx.font = '12px Roboto'
-        ctx.fillStyle = '#2d6187'
+        ctx.fillStyle = color
         ctx.strokeStyle = '#2d6187'
 
         const textWidth = ctx.measureText(text).width
         const startX = coordinate.x
         let startY = coordinate.y + 6
         ctx.beginPath()
-        ctx.moveTo(startX, startY)
+        ctx.moveTo(startX, startY + 48)
         startY += 5
         ctx.lineTo(startX - 4, startY)
         ctx.lineTo(startX + 4, startY)
@@ -175,7 +200,7 @@ const Detail = () => {
                         close: item.close_bid,
                         low: item.lowest_bid,
                         high: item.highest_bid,
-                        time: new Date(item.open_at).getTime(),
+                        timestamp: new Date(item.open_at).getTime(),
                     }
                 )
             )
@@ -192,22 +217,13 @@ const Detail = () => {
             //     },
             // }])
 
-            chart.createAnnotation([{
-                point: {timestamp: newChartData[newChartData.length - 10].timestamp},
-                styles: {
-                    offset: [0, 20],
-                    position: 'top',
-                    symbol: {
-                        type: 'circle',
-                    }
-                },
-            }])
+            chart.createAnnotation([...chartTrendingChange, ...chartRiskWarning])
 
             return () => {
                 dispose('simple_chart');
             }
         }
-    }, [klines]);
+    }, [klines, chartTrendingChange]);
 
 
     return (

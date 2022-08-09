@@ -19,7 +19,7 @@ export interface ITrendingChange {
     current_trending?: number,
     forward_time_duration?: number,
     open_price?: number,
-    open_time?: Date,
+    open_time: Date,
     risk?: number
 }
 

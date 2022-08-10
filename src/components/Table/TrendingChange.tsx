@@ -126,7 +126,7 @@ export const trendingChangeColumns: GridColDef[] = [
     },
 ];
 
-export const timeframes = ['5M', '30M', '1H', '4H'];
+export const timeframes = ['5M', '30M', '1H', '4H', '1D'];
 
 const TrendingChangeTable = () => {
     const [risk, setRisk] = useState<number>(0);

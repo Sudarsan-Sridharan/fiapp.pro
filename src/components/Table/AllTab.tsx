@@ -1,8 +1,13 @@
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {Box, Tab} from "@mui/material";
 import React from "react";
-import TrendingChangeTable from "@/components/Table/TrendingChange";
-import RiskWarningTable from "@/components/Table/RiskWarning";
+import TrendingChangeTable, {trendingChangeAtom} from "@/components/Table/TrendingChange";
+import RiskWarningTable, {riskWarningAtom} from "@/components/Table/RiskWarning";
+import useSWR from "swr";
+import {domain, fetcher} from "@/ network/fether";
+import {useRecoilState} from "recoil";
+import {useAPIQuery} from "@/hooks/useAPIQuery";
+import {useMatch} from "react-router-dom";
 
 const AllTabTable = () => {
     const [value, setValue] = React.useState('1');
@@ -10,6 +15,39 @@ const AllTabTable = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
+
+    const APIQuery = useAPIQuery()
+    const detail = useMatch('/d/:name');
+
+    const conditions = {
+        risk: '',
+        timeframe: APIQuery.value.timeframe ?? '',
+        currentTrending: '',
+        name: detail?.params?.name ?? ''
+    };
+    const sendUrl = new URLSearchParams(conditions).toString();
+
+
+    const {data: trendingChange} = useSWR(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
+        refreshInterval: 1000 * 60 * 1,
+    });
+
+    const [trendingChangeData, setTrendingChangeData] = useRecoilState(trendingChangeAtom);
+
+    if (trendingChange) {
+        setTrendingChangeData(trendingChange)
+    }
+
+    const {data: riskWarningData} = useSWR(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
+        refreshInterval: 1000 * 60 * 1,
+    });
+
+    const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
+
+    if (riskWarningData) {
+        setRiskWarning(riskWarningData)
+    }
+
 
     return (
         <Box sx={{

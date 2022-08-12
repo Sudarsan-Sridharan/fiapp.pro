@@ -85,72 +85,18 @@ const Detail = () => {
     const chartRiskWarning = new List<IRiskWarning>(riskWarning)
         .Select(x => ({
             point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
+            styles: {
+                offset: [-100, 0],
+                position: 'bottom',
+            },
             drawExtend: (params: any) => {
                 const {ctx, coordinate} = params
                 annotationDrawExtend(ctx, coordinate,
-                    `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} `,
+                    `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} \n 风险${x.risk}`,
                     red[500])
             },
         }))
         .ToArray()
-
-    const options = {
-        grid: {top: 8, right: 8, bottom: 24, left: 45},
-        xAxis: {
-            type: 'category',
-            data: klines?.data?.coinKlines?.klines?.map((item: { open_at: { toLocaleString: () => any; }; }) => item.open_at.toLocaleString()),
-        },
-        yAxis: {
-            type: 'value',
-            scale: true,
-        },
-        series: [
-            {
-                name: `${name} - ${APIQuery.value.timeframe}`,
-                data: klines?.data?.coinKlines?.klines.map((item: { open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid]),
-                type: 'candlestick',
-                smooth: true,
-                itemStyle: {
-                    color: green[500],
-                    color0: red[500],
-                    borderWidth: 0
-                },
-                markPoint: {
-                    symbolSize: 100,
-                    label: {
-                        formatter: function (param: any) {
-                            return param.name;
-                        }
-                    },
-                    data: [
-                        ...chartTrendingChange
-                    ],
-                    tooltip: {
-                        formatter: function (param: { name: string; data: { coord: any; }; }) {
-                            return param.name + '<br>' + (param.data.coord || '');
-                        }
-                    }
-                },
-            },
-        ],
-        dataZoom: [
-            {
-                type: 'inside',
-                start: 90,
-                end: 100
-            },
-            {
-                show: true,
-                type: 'slider',
-                top: '90%',
-                start: 90,
-                end: 100
-            }
-        ],
-        tooltip: {
-            trigger: 'axis',
-        },
-    };
 
     function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
         ctx.font = '12px Roboto'

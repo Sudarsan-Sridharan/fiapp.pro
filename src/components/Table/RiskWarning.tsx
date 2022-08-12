@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Stack} from '@mui/material';
+import {Badge, Box, Chip, Stack} from '@mui/material';
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
 
 import useSWR from 'swr';
@@ -13,6 +13,7 @@ import {Link, useMatch} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {ArrowRightOutlined} from "@mui/icons-material";
 import {atom, useRecoilState} from "recoil";
+import {messageType} from "@/pages/Detail/Detail";
 
 export interface IRiskWarning {
     description_type: number,
@@ -57,16 +58,38 @@ const columns: GridColDef[] = [
     {
         field: 'open_price',
         headerName: '触发价格',
-        renderCell: (params) => `${params.value}`,
+        renderCell: (params) => `$${params.value}`,
         width: 200,
     },
     {
         field: 'risk',
         headerName: '风险',
+        renderCell: (params) => {
+            return (
+                <Badge badgeContent={params.value}>
+                    <Chip
+                        size={'small'}
+                        sx={{color: '#fff'}}
+                        color={
+                            params.value < 2
+                                ? 'primary'
+                                : params.value >= 2 && params.value <= 4
+                                    ? 'warning'
+                                    : 'error'
+                        }
+                        label={params.value < 2 ? '低' : params.value >= 2 && params.value <= 4 ? '中' : '高'}
+                    />
+                </Badge>
+            );
+        },
     },
     {
-        field: 'description',
+        field: 'description_type',
         headerName: '描述',
+        renderCell: (params) => {
+            return messageType[params.value as keyof typeof messageType];
+        },
+        width: 200
     },
     {
         field: 'actions',

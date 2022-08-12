@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {Badge, Box, Chip, Stack} from '@mui/material';
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
@@ -126,9 +126,10 @@ const RiskWarningTable = () => {
 
     const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
 
-    if (data) {
-        setRiskWarning(data)
-    }
+    useEffect(() => {
+        setRiskWarning(riskWarning)
+    }, [riskWarning])
+
 
     return (
         <Stack spacing={2}>

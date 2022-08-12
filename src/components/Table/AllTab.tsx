@@ -1,6 +1,6 @@
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {Box, Tab} from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import TrendingChangeTable, {trendingChangeAtom} from "@/components/Table/TrendingChange";
 import RiskWarningTable, {riskWarningAtom} from "@/components/Table/RiskWarning";
 import useSWR from "swr";
@@ -34,9 +34,9 @@ const AllTabTable = () => {
 
     const [trendingChangeData, setTrendingChangeData] = useRecoilState(trendingChangeAtom);
 
-    if (trendingChange) {
+    useEffect(() => {
         setTrendingChangeData(trendingChange)
-    }
+    }, [trendingChange])
 
     const {data: riskWarningData} = useSWR(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 1,
@@ -44,9 +44,9 @@ const AllTabTable = () => {
 
     const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
 
-    if (riskWarningData) {
+    useEffect(() => {
         setRiskWarning(riskWarningData)
-    }
+    }, [trendingChange])
 
 
     return (

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import {Link, useMatch} from "react-router-dom";
 import {ArrowRightOutlined} from "@mui/icons-material";
 import BigNumber from "bignumber.js";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {green, red} from "@mui/material/colors";
@@ -130,7 +130,6 @@ export const timeframes = ['30M', '1H', '4H', '1D'];
 
 const TrendingChangeTable = () => {
     const [risk, setRisk] = useState<number>(0);
-    const [currentTrending, setCurrentTrending] = useState<string>('');
 
     const APIQuery = useAPIQuery()
     const detail = useMatch('/d/:name');
@@ -140,7 +139,7 @@ const TrendingChangeTable = () => {
     const conditions = {
         risk: urlRisk,
         timeframe: APIQuery.value.timeframe ?? '',
-        currentTrending,
+        currentTrending: APIQuery.value.currentTrending ?? '',
         name: detail?.params?.name ?? ''
     };
     const sendUrl = new URLSearchParams(conditions).toString();
@@ -151,9 +150,9 @@ const TrendingChangeTable = () => {
 
     const [trendingChangeData, setTrendingChangeData] = useRecoilState(trendingChangeAtom);
 
-    if (trendingChange) {
+    useEffect(() => {
         setTrendingChangeData(trendingChange)
-    }
+    }, [trendingChange])
 
     return (
         <>

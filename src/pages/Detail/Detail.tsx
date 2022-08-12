@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {Box, ButtonGroup, Chip, Container, Stack, Toolbar} from '@mui/material';
@@ -68,35 +68,39 @@ const Detail = () => {
 
     const [trendingChangeData, setTrendingChangeData] = useRecoilState<ITrendingChange[]>(trendingChangeAtom);
 
-    const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
-        .Select(x => ({
-            point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
-            drawExtend: (params: any) => {
-                const {ctx, coordinate} = params
-                annotationDrawExtend(ctx, coordinate,
-                    `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 风险${x.risk}`,
-                    x.current_trending === 1 ? green[500] : x.current_trending === 0 ? 'default' : red[500])
-            },
-        }))
-        .ToArray()
+    const chartTrendingChange = useCallback(() => {
+        return new List<ITrendingChange>(trendingChangeData)
+            .Select(x => ({
+                point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
+                drawExtend: (params: any) => {
+                    const {ctx, coordinate} = params
+                    annotationDrawExtend(ctx, coordinate,
+                        `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 风险${x.risk}`,
+                        x.current_trending === 1 ? green[500] : x.current_trending === 0 ? 'default' : red[500])
+                },
+            }))
+            .ToArray()
+    }, [trendingChangeData])
 
     const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
 
-    const chartRiskWarning = new List<IRiskWarning>(riskWarning)
-        .Select(x => ({
-            point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
-            styles: {
-                offset: [-100, 0],
-                position: 'bottom',
-            },
-            drawExtend: (params: any) => {
-                const {ctx, coordinate} = params
-                annotationDrawExtend(ctx, coordinate,
-                    `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} \n 风险${x.risk}`,
-                    red[500])
-            },
-        }))
-        .ToArray()
+    const chartRiskWarning = useCallback(() => {
+        return new List<IRiskWarning>(riskWarning)
+            .Select(x => ({
+                point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
+                styles: {
+                    offset: [-100, 0],
+                    position: 'bottom',
+                },
+                drawExtend: (params: any) => {
+                    const {ctx, coordinate} = params
+                    annotationDrawExtend(ctx, coordinate,
+                        `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} \n 风险${x.risk}`,
+                        red[500])
+                },
+            }))
+            .ToArray()
+    }, [riskWarning])
 
     function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
         ctx.font = '12px Roboto'
@@ -173,13 +177,13 @@ const Detail = () => {
             //     },
             // }])
 
-            chart.createAnnotation([...chartTrendingChange, ...chartRiskWarning])
+            chart.createAnnotation([...chartTrendingChange() ?? [], ...chartRiskWarning() ?? []])
 
             return () => {
                 dispose('simple_chart');
             }
         }
-    }, [klines, chartTrendingChange]);
+    }, [klines, chartTrendingChange, chartRiskWarning]);
 
 
     return (

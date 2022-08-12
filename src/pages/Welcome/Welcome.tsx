@@ -2,7 +2,6 @@ import React from 'react';
 import {Box, Container, Divider, Grid, Stack, Typography,} from '@mui/material';
 import Button from '@mui/material/Button';
 import {green, red} from '@mui/material/colors';
-import {DataGrid} from '@mui/x-data-grid';
 import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
@@ -11,7 +10,6 @@ import InventStart from '@/pages/Welcome/_inventStart';
 import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
 import Asynchronous from "@/components/Search/Asynchronous";
-import {trendingChangeColumns} from "@/components/Table/TrendingChange";
 import AllTabTable from "@/components/Table/AllTab";
 
 const desc = [
@@ -65,24 +63,24 @@ function Welcome() {
                             </Stack>
                         </Grid>
 
-                        {trendingOverview && (
-                            <Grid item xs={12} md={6}>
-                                <Typography variant={"subtitle2"}>
-                                    当前 BTC
-                                    偏{trendingOverview.coin.coinLong[0] ?? 0 > trendingOverview.coin.coinShort[0] ?? 0 ? '多' : '空'}： {trendingOverview.coin.coinLong[0] ?? 0} 多， {trendingOverview.coin.coinShort[0] ?? 0} 空
-                                </Typography>
-                                <Box height={'300px'}>
-                                    {trendingOverview && (
-                                        <DataGrid
-                                            disableColumnFilter
-                                            rows={trendingOverview?.coin?.coin}
-                                            columns={trendingChangeColumns}
-                                            hideFooterPagination
-                                        />
-                                    )}
-                                </Box>
-                            </Grid>
-                        )}
+                        {/*{trendingOverview && (*/}
+                        {/*    <Grid item xs={12} md={6}>*/}
+                        {/*        <Typography variant={"subtitle2"}>*/}
+                        {/*            当前 BTC*/}
+                        {/*            偏{trendingOverview.coin.coinLong[0] ?? 0 > trendingOverview.coin.coinShort[0] ?? 0 ? '多' : '空'}： {trendingOverview.coin.coinLong[0] ?? 0} 多， {trendingOverview.coin.coinShort[0] ?? 0} 空*/}
+                        {/*        </Typography>*/}
+                        {/*        <Box height={'300px'}>*/}
+                        {/*            {trendingOverview && (*/}
+                        {/*                <DataGrid*/}
+                        {/*                    disableColumnFilter*/}
+                        {/*                    rows={trendingOverview?.coin?.coin}*/}
+                        {/*                    columns={trendingChangeColumns}*/}
+                        {/*                    hideFooterPagination*/}
+                        {/*                />*/}
+                        {/*            )}*/}
+                        {/*        </Box>*/}
+                        {/*    </Grid>*/}
+                        {/*)}*/}
                     </Grid>
 
                     <Box mt={1} display={'flex'} justifyContent={'space-between'}>

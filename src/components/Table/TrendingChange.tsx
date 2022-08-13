@@ -43,7 +43,7 @@ export const trendingChangeColumns: GridColDef[] = [
     {
         field: 'name',
         headerName: '名称',
-        width: 200,
+        width: 150,
         renderCell: (params) => (
             <Button
                 component={Link}
@@ -58,13 +58,14 @@ export const trendingChangeColumns: GridColDef[] = [
     {
         field: 'time_frame',
         headerName: '周期',
+        width: 80
     },
 
     {
         field: 'open_time',
         headerName: '触发时间',
         renderCell: (params) => new Date(params.value).toLocaleString(),
-        width: 200,
+        width: 180,
     },
     {
         field: 'risk',

@@ -48,6 +48,21 @@ export const messageType = {
     8030: "价格只突破 ema200 且徘徊一段时间，高风险快速趋势转换检测",
 }
 
+const countDecimals = function (value: number) {
+    const text = value.toString()
+    // verify if number 0.000005 is represented as "5e-6"
+    if (text.indexOf('e-') > -1) {
+        const [base, trail] = text.split('e-');
+        const deg = parseInt(trail, 10);
+        return deg;
+    }
+    // count decimals for number in representation like "0.123456"
+    if (Math.floor(value) !== value) {
+        return value.toString().split(".")[1].length || 0;
+    }
+    return 0;
+};
+
 const Detail = () => {
     let {name} = useParams();
     const symbol = `${name?.split('-')[0]}${name?.split('-')[1]}${
@@ -104,6 +119,7 @@ const Detail = () => {
             }))
             .ToArray()
     }, [riskWarning])
+
 
     function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
         ctx.font = '12px Roboto'
@@ -167,7 +183,7 @@ const Detail = () => {
                 )
             )
 
-            chart.setPriceVolumePrecision(10, 10)
+            chart.setPriceVolumePrecision(countDecimals(newChartData[0].open), 10)
 
             // Fill data
             chart.applyNewData(newChartData);

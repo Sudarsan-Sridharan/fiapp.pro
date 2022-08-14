@@ -43,7 +43,7 @@ const QueryTable = () => {
                         <Button
                             key={index}
                             onClick={() => APIQuery.setValue({
-                                timeframe: item
+                                timeframe: item,
                             })}
                             variant={item === APIQuery.value.timeframe ? 'contained' : 'outlined'}
                         >

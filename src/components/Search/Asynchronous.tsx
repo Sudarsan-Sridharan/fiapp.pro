@@ -9,26 +9,27 @@ import match from 'autosuggest-highlight/match';
 import {useNavigate} from "react-router-dom";
 import {OutlinedInput, Skeleton} from "@mui/material";
 import {List} from "linqts";
+import {useAPIQuery} from "@/hooks/useAPIQuery";
 
 interface ICoin {
     name: string;
     exchange: string;
 }
 
-function sleep(delay = 0) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
+interface IAsynchronous {
+    height?: number;
+    mode?: 'link' | 'switch';
+    label?: string;
 }
 
-export default function Asynchronous() {
+const Asynchronous: React.FC<IAsynchronous> = (props) => {
+    const {mode, label} = props
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState<readonly ICoin[]>([]);
-
+    const APIQuery = useAPIQuery()
     const {data} = useSWR(`${domain}/Coin`, fetcher)
 
     const loading = open && options.length === 0;
-
 
     const nav = useNavigate()
 
@@ -47,12 +48,18 @@ export default function Asynchronous() {
 
     }, [data, open]);
 
+    const handleChange = (option: any) => {
+        nav(`/d/${option.name}`)
+    }
+
     return (
         <>
             {data ? (
                 <Autocomplete
                     id="asynchronous-demo"
-                    sx={{maxWidth: 250, width: '100%'}}
+                    sx={{
+                        maxWidth: 250, width: '100%',
+                    }}
                     size={'small'}
                     open={open}
                     onOpen={() => {
@@ -68,7 +75,8 @@ export default function Asynchronous() {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="搜索币种"
+                            size={'small'}
+                            label={label ?? (APIQuery.value.name ?? '搜索币种')}
                             InputProps={{
                                 ...params.InputProps,
                                 endAdornment: (
@@ -84,9 +92,9 @@ export default function Asynchronous() {
                         const matches = match(option.name, inputValue);
                         const parts = parse(option.name, matches);
 
-
                         return (
-                            <li {...props} onClick={() => nav(`/d/${option.name}`)}>
+                            <li {...props}
+                                onClick={() => handleChange(option)}>
                                 <div>
                                     {parts.map((part, index) => (
                                         <span
@@ -95,17 +103,19 @@ export default function Asynchronous() {
                                                 fontWeight: part.highlight ? 700 : 400,
                                             }}
                                         >
-                  {part.text}
-                </span>
+                                          {part.text}
+                                        </span>
                                     ))}
                                 </div>
                             </li>
                         );
                     }}
                 />
-            ) : <Skeleton sx={{width: '300px'}}>
+            ) : <Skeleton sx={{width: '250px'}}>
                 <OutlinedInput/>
             </Skeleton>}
         </>
     );
 }
+
+export default Asynchronous;

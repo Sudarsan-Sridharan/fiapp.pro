@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Container, Divider, Grid, Stack, Typography,} from '@mui/material';
 import Button from '@mui/material/Button';
-import {green, red} from '@mui/material/colors';
+import {red} from '@mui/material/colors';
 import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
@@ -11,6 +11,7 @@ import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
 import Asynchronous from "@/components/Search/Asynchronous";
 import AllTabTable from "@/components/Table/AllTab";
+import Chart from "@/pages/Welcome/_chart";
 
 const desc = [
     {number: '8+', desc: '个交易策略'},
@@ -83,7 +84,7 @@ function Welcome() {
                         {/*)}*/}
                     </Grid>
 
-                    <Box mt={1} display={'flex'} justifyContent={'space-between'}>
+                    <Box my={2} display={'flex'} justifyContent={'space-between'}>
                         {desc.map((item, index) => (
                             <Typography variant="h3" key={index}>
                                 {item.number}
@@ -93,23 +94,17 @@ function Welcome() {
                             </Typography>
                         ))}
                     </Box>
+
+                    <Chart/>
                 </Container>
             </Box>
 
             <Container maxWidth={'xl'} sx={{mt: 2, pb: 5}}>
                 <Stack
                     spacing={2}
-                    sx={{
-                        '& .hot': {
-                            color: red[500],
-                        },
-                        '& .cold': {
-                            color: green[500],
-                        },
-                    }}
                 >
                     <Box textAlign={'center'} display={'flex'} alignItems={'center'} justifyContent={"center"}>
-                        <Asynchronous/>
+                        <Asynchronous mode={"link"} label={'搜索币种'}/>
                     </Box>
 
                     <Box>

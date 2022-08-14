@@ -78,12 +78,12 @@ function Header() {
                                                     mr: 1,
                                                 }}
                                             >
-                                                {title} fiapp.pro {detail && '|'}
+                                                {title} fiapp.pro
                                             </Typography>
                                         </Badge>
-                                        <Typography variant="subtitle2" noWrap>
-                                            {detail && `${detail?.params?.name}`}
-                                        </Typography>
+                                        {/*<Typography variant="subtitle2" noWrap>*/}
+                                        {/*    {detail && `${detail?.params?.name}`}*/}
+                                        {/*</Typography>*/}
                                     </Box>
                                 </ListItemText>
                             </PlainLink>

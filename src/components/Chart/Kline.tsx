@@ -92,7 +92,7 @@ const KlineChart: React.FC<IKline> = (props) => {
     });
 
     const chartTrendingChange = useCallback(() => {
-        return new List<ITrendingChange>()
+        return new List<ITrendingChange>(trendingChangeData)
             .Select(x => ({
                 point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
                 drawExtend: (params: any) => {

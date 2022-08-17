@@ -1,6 +1,5 @@
-import {ButtonGroup, IconButton, Rating, Stack, Typography} from "@mui/material";
+import {ButtonGroup, Rating, Stack, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import {CancelOutlined} from "@mui/icons-material";
 import React from "react";
 import {timeframes} from "@/components/Table/TrendingChange";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
@@ -60,15 +59,6 @@ const QueryTable = () => {
                     ...APIQuery.value,
                     risk: value,
                 })}/>
-
-                {APIQuery.value.risk !== 0 && APIQuery.value.risk && (
-                    <IconButton size={'small'} onClick={() => APIQuery.setValue({
-                        ...APIQuery.value,
-                        risk: 0,
-                    })}>
-                        <CancelOutlined/>
-                    </IconButton>
-                )}
             </Stack>
         </Stack>
     )

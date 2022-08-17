@@ -93,7 +93,11 @@ const KlineChart: React.FC<IKline> = (props) => {
 
     const chartTrendingChange = useCallback(() => {
         return new List<ITrendingChange>(trendingChangeData)
-            .Select(x => ({
+            .Select((x, index) => ({
+                styles: {
+                    offset: [index % 2 === 0 ? 50 : 80, 0],
+                    position: 'top',
+                },
                 point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
                 drawExtend: (params: any) => {
                     const {ctx, coordinate} = params
@@ -107,10 +111,10 @@ const KlineChart: React.FC<IKline> = (props) => {
 
     const chartRiskWarning = useCallback(() => {
         return new List<IRiskWarning>(riskWarningData)
-            .Select(x => ({
+            .Select((x, index) => ({
                 point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
                 styles: {
-                    offset: [-100, 0],
+                    offset: [index % 2 === 0 ? -50 : -80, 0],
                     position: 'bottom',
                 },
                 drawExtend: (params: any) => {

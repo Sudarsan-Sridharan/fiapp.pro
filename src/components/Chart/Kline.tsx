@@ -98,7 +98,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                 drawExtend: (params: any) => {
                     const {ctx, coordinate} = params
                     annotationDrawExtend(ctx, coordinate,
-                        `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 风险${x.risk}`,
+                        `${x.current_trending === 1 ? '趋势多' : x.current_trending === 0 ? '趋势中立' : '趋势空'} \n 可靠度${6 - x.risk}`,
                         x.current_trending === 1 ? green[500] : x.current_trending === 0 ? 'default' : red[500])
                 },
             }))
@@ -116,7 +116,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                 drawExtend: (params: any) => {
                     const {ctx, point, coordinate, viewport, isActive, styles} = params
                     annotationDrawExtend(ctx, coordinate,
-                        `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} \n 风险${x.risk}`,
+                        `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} \n 反转度${x.risk}`,
                         red[500])
                 },
             }))

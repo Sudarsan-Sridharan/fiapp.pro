@@ -54,11 +54,20 @@ const QueryTable = () => {
             </Stack>
 
             <Stack direction={'row'} sx={{alignItems: 'center'}}>
-                <Typography variant={'body1'}>风险：</Typography>
-                <Rating value={APIQuery.value.risk} onChange={(event, value) => APIQuery.setValue({
-                    ...APIQuery.value,
-                    risk: value,
-                })}/>
+                <Typography variant={'body1'}>可靠度：</Typography>
+                <Rating value={APIQuery.value.risk} onChange={(event, value) => {
+                    let risk = value
+                    if (!risk) {
+                        risk = 0
+                    } else {
+                        risk = 6 - risk
+                    }
+
+                    APIQuery.setValue({
+                        ...APIQuery.value,
+                        risk: risk,
+                    })
+                }}/>
             </Stack>
         </Stack>
     )

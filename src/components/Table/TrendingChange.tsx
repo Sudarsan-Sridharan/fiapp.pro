@@ -20,7 +20,7 @@ export interface ITrendingChange {
     forward_time_duration?: number,
     open_price?: number,
     open_time: Date,
-    risk?: number
+    risk: number
 }
 
 export const trendingChangeAtom = atom<ITrendingChange[]>({
@@ -69,21 +69,26 @@ export const trendingChangeColumns: GridColDef[] = [
     },
     {
         field: 'risk',
-        headerName: '风险',
+        headerName: '可靠度',
         renderCell: (params) => {
+            let value = params.value
+            value = 6 - value
+            if (value === 0) {
+                value = 1
+            }
             return (
-                <Badge badgeContent={params.value}>
+                <Badge badgeContent={value}>
                     <Chip
                         size={'small'}
                         sx={{color: '#fff'}}
                         color={
-                            params.value < 2
+                            value < 2
                                 ? 'primary'
-                                : params.value >= 2 && params.value <= 4
+                                : value >= 2 && value <= 4
                                     ? 'warning'
                                     : 'error'
                         }
-                        label={params.value < 2 ? '低' : params.value >= 2 && params.value <= 4 ? '中' : '高'}
+                        label={value < 2 ? '低' : value >= 2 && value <= 4 ? '中' : '高'}
                     />
                 </Badge>
             );

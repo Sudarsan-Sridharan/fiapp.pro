@@ -1,7 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 
-import {Container, Toolbar} from '@mui/material';
+import {Container} from '@mui/material';
 import Meta from '@/components/Meta';
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {ITrendingChange, trendingChangeAtom} from "@/components/Table/TrendingChange";
@@ -52,7 +52,7 @@ const Detail = () => {
         <>
             <Meta title={name}/>
 
-            <Toolbar/>
+            {/*<Toolbar/>*/}
 
             <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}/>
 

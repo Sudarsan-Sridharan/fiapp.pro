@@ -1,15 +1,13 @@
 import React from 'react';
 import {Link, useMatch} from 'react-router-dom';
 
-import {Badge, List, ListItem, ListItemText, styled, Typography} from '@mui/material';
+import {Badge, List, ListItem, ListItemText, styled, Toolbar, Typography} from '@mui/material';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-
-import {PlainLink} from '@/components/styled';
-import {title} from '@/config';
 import {HeaderButtonProps} from '@/sections/Header/_HeaderButtons';
 import useSidebar from '@/store/sidebar';
+import {title} from "@/config";
+import {PlainLink} from "@/components/styled";
 
 const linkButtonData: HeaderButtonProps = {
     data: [],
@@ -49,6 +47,7 @@ function Header() {
                 sx={{
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                     backdropFilter: 'blur(20px)',
+                    height: '84px'
                 }}
             >
                 <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center'}}>
@@ -67,7 +66,7 @@ function Header() {
                                             <Typography
                                                 component={Link}
                                                 to={'/'}
-                                                variant="h4"
+                                                variant="h5"
                                                 noWrap
                                                 sx={{
                                                     letterSpacing: 0,

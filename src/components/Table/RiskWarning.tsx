@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import {ArrowRightOutlined} from "@mui/icons-material";
 import {atom, useRecoilState} from "recoil";
 import {messageType} from "@/pages/Detail/Detail";
+import {blueGrey, grey} from "@mui/material/colors";
 
 export interface IRiskWarning {
     description_type: number,
@@ -65,14 +66,13 @@ const columns: GridColDef[] = [
                 <Badge badgeContent={value}>
                     <Chip
                         size={'small'}
-                        sx={{color: '#fff'}}
-                        color={
-                            value < 2
-                                ? 'primary'
+                        sx={{
+                            color: '#fff', bgcolor: value < 2
+                                ? grey[400]
                                 : value >= 2 && value <= 4
-                                    ? 'warning'
-                                    : 'error'
-                        }
+                                    ? grey[600]
+                                    : blueGrey[800]
+                        }}
                         label={value < 2 ? '低' : value >= 2 && value <= 4 ? '中' : '高'}
                     />
                 </Badge>

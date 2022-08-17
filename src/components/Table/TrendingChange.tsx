@@ -7,7 +7,7 @@ import BigNumber from "bignumber.js";
 import React, {useEffect} from "react";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
-import {green, red} from "@mui/material/colors";
+import {blueGrey, green, grey, red} from "@mui/material/colors";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import TradeButton from "@/components/Market/TradeButton";
 import {atom, useRecoilState} from "recoil";
@@ -80,14 +80,13 @@ export const trendingChangeColumns: GridColDef[] = [
                 <Badge badgeContent={value}>
                     <Chip
                         size={'small'}
-                        sx={{color: '#fff'}}
-                        color={
-                            value < 2
-                                ? 'primary'
+                        sx={{
+                            color: '#fff', bgcolor: value < 2
+                                ? grey[400]
                                 : value >= 2 && value <= 4
-                                    ? 'warning'
-                                    : 'error'
-                        }
+                                    ? grey[600]
+                                    : blueGrey[800]
+                        }}
                         label={value < 2 ? '低' : value >= 2 && value <= 4 ? '中' : '高'}
                     />
                 </Badge>

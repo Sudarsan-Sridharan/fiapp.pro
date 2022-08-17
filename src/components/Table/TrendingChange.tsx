@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import {Link, useMatch} from "react-router-dom";
 import {ArrowRightOutlined} from "@mui/icons-material";
 import BigNumber from "bignumber.js";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {green, red} from "@mui/material/colors";
@@ -24,7 +24,7 @@ export interface ITrendingChange {
 }
 
 export const trendingChangeAtom = atom<ITrendingChange[]>({
-    key: "trendingChangeAtom",
+    key: "trendingChangeAtomKey",
     default: []
 })
 
@@ -130,12 +130,10 @@ export const trendingChangeColumns: GridColDef[] = [
 export const timeframes = ['30M', '1H', '4H', '1D'];
 
 const TrendingChangeTable = () => {
-    const [risk, setRisk] = useState<number>(0);
-
     const APIQuery = useAPIQuery()
     const detail = useMatch('/d/:name');
 
-    const urlRisk = risk !== 0 ? risk.toString() : '';
+    const urlRisk = APIQuery.value.risk !== 0 ? (APIQuery.value.risk?.toString() ?? '') : '';
 
     const conditions = {
         risk: urlRisk,

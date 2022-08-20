@@ -1,14 +1,28 @@
 import {Coordinate, dispose, init} from "klinecharts";
 import React, {useCallback, useEffect, useState} from "react";
-import {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
+import TrendingChangeTable, {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
 import {List} from "linqts";
 import {green, red} from "@mui/material/colors";
-import {IRiskWarning} from "@/components/Table/RiskWarning";
+import RiskWarningTable, {IRiskWarning} from "@/components/Table/RiskWarning";
 import {messageType} from "@/pages/Detail/Detail";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
-import {Box, Button, ButtonGroup, Grid, Paper, Skeleton, Stack} from "@mui/material";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    List as MList,
+    ListItem,
+    ListItemButton,
+    Paper,
+    Skeleton,
+    Stack
+} from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
 
 function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
@@ -52,6 +66,8 @@ interface IKline {
     trendingChangeData?: ITrendingChange[];
     riskWarningData?: IRiskWarning[];
     mode?: 'link' | 'switch';
+    drawer?: boolean;
+    height?: string;
 }
 
 const countDecimals = function (value: number) {
@@ -174,32 +190,42 @@ const KlineChart: React.FC<IKline> = (props) => {
     }, [klines, chartTrendingChange, chartRiskWarning]);
 
     const [tcDialogOpen, setTcDialogOpen] = useState(false)
+    const [rwDialogOpen, setRwDialogOpen] = useState(false)
     return (
         <Paper variant={"outlined"}>
             <Grid container>
-                {/*<Grid item xs={12} md={1}>*/}
-                {/*    <MList disablePadding>*/}
-                {/*        <ListItem disableGutters disablePadding>*/}
-                {/*            <ListItemButton onClick={() => setTcDialogOpen(true)}>*/}
-                {/*                趋势转换*/}
-                {/*            </ListItemButton>*/}
-                {/*            <Dialog open={tcDialogOpen} onClose={() => setTcDialogOpen(false)} maxWidth={"xl"}*/}
-                {/*                    fullWidth>*/}
-                {/*                <DialogTitle>{name} 趋势转换 - {APIQuery.value.timeframe}</DialogTitle>*/}
-                {/*                <DialogContent>*/}
-                {/*                    <TrendingChangeTable/>*/}
-                {/*                </DialogContent>*/}
-                {/*            </Dialog>*/}
-                {/*        </ListItem>*/}
-                {/*        <ListItem disableGutters disablePadding>*/}
-                {/*            <ListItemButton>*/}
-                {/*                风险预警*/}
-                {/*            </ListItemButton>*/}
-                {/*        </ListItem>*/}
-                {/*    </MList>*/}
-                {/*</Grid>*/}
+                {props.drawer && (
+                    <Grid item xs={12} md={1}>
+                        <MList disablePadding>
+                            <ListItem disableGutters disablePadding>
+                                <ListItemButton onClick={() => setTcDialogOpen(true)}>
+                                    趋势转换
+                                </ListItemButton>
+                                <Dialog open={tcDialogOpen} onClose={() => setTcDialogOpen(false)} maxWidth={"xl"}
+                                        fullWidth>
+                                    <DialogTitle>{name} 趋势转换 - {APIQuery.value.timeframe}</DialogTitle>
+                                    <DialogContent>
+                                        <TrendingChangeTable/>
+                                    </DialogContent>
+                                </Dialog>
+                            </ListItem>
+                            <ListItem disableGutters disablePadding>
+                                <ListItemButton onClick={() => setRwDialogOpen(true)}>
+                                    风险预警
+                                </ListItemButton>
+                                <Dialog open={rwDialogOpen} onClose={() => setRwDialogOpen(false)} maxWidth={"xl"}
+                                        fullWidth>
+                                    <DialogTitle>{name} 风险预警 - {APIQuery.value.timeframe}</DialogTitle>
+                                    <DialogContent>
+                                        <RiskWarningTable/>
+                                    </DialogContent>
+                                </Dialog>
+                            </ListItem>
+                        </MList>
+                    </Grid>
+                )}
 
-                <Grid item xs={12}>
+                <Grid item xs={12} md={props.drawer ? 11 : 12}>
                     <Box>
                         <Stack direction={'row'} spacing={1}>
                             <Asynchronous height={30} mode={"switch"}/>
@@ -224,9 +250,9 @@ const KlineChart: React.FC<IKline> = (props) => {
 
                     {klines ? (
                         <Box>
-                            <div id="simple_chart" style={{height: 600}}/>
+                            <div id="simple_chart" style={{height: props.height ?? 600}}/>
                         </Box>
-                    ) : <Skeleton sx={{height: '600px'}}></Skeleton>}
+                    ) : <Skeleton sx={{height: `${props.height ?? `600px`}`}}></Skeleton>}
                 </Grid>
             </Grid>
         </Paper>

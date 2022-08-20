@@ -8,22 +8,9 @@ import {messageType} from "@/pages/Detail/Detail";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
-import {
-    Box,
-    Button,
-    ButtonGroup,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    List as MList,
-    ListItem,
-    ListItemButton,
-    Paper,
-    Skeleton,
-    Stack
-} from "@mui/material";
+import {Box, Button, Dialog, DialogContent, DialogTitle, Divider, Paper, Skeleton, Stack} from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
+import AllTabTable from "@/components/Table/AllTab";
 
 function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
     ctx.font = '12px Roboto'
@@ -192,69 +179,76 @@ const KlineChart: React.FC<IKline> = (props) => {
     const [tcDialogOpen, setTcDialogOpen] = useState(false)
     const [rwDialogOpen, setRwDialogOpen] = useState(false)
     return (
-        <Paper variant={"outlined"}>
-            <Grid container>
-                {props.drawer && (
-                    <Grid item xs={12} md={1}>
-                        <MList disablePadding>
-                            <ListItem disableGutters disablePadding>
-                                <ListItemButton onClick={() => setTcDialogOpen(true)}>
-                                    趋势转换
-                                </ListItemButton>
-                                <Dialog open={tcDialogOpen} onClose={() => setTcDialogOpen(false)} maxWidth={"xl"}
-                                        fullWidth>
-                                    <DialogTitle>{name} 趋势转换 - {APIQuery.value.timeframe}</DialogTitle>
-                                    <DialogContent>
-                                        <TrendingChangeTable/>
-                                    </DialogContent>
-                                </Dialog>
-                            </ListItem>
-                            <ListItem disableGutters disablePadding>
-                                <ListItemButton onClick={() => setRwDialogOpen(true)}>
-                                    风险预警
-                                </ListItemButton>
-                                <Dialog open={rwDialogOpen} onClose={() => setRwDialogOpen(false)} maxWidth={"xl"}
-                                        fullWidth>
-                                    <DialogTitle>{name} 风险预警 - {APIQuery.value.timeframe}</DialogTitle>
-                                    <DialogContent>
-                                        <RiskWarningTable/>
-                                    </DialogContent>
-                                </Dialog>
-                            </ListItem>
-                        </MList>
-                    </Grid>
-                )}
-
-                <Grid item xs={12} md={props.drawer ? 11 : 12}>
+        <Paper variant={"outlined"} sx={{px: 1}}>
+            <Box sx={{pt: 1}}>
+                <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                    <Asynchronous label={name}/>
                     <Box>
-                        <Stack direction={'row'} spacing={1}>
-                            <Asynchronous height={30} mode={"switch"}/>
-                            <ButtonGroup variant="outlined">
-                                {timeframes.map((item, index) => {
-                                    return (
-                                        <Button
-                                            key={index}
-                                            onClick={() => APIQuery.setValue({
-                                                ...APIQuery.value,
-                                                timeframe: item,
-                                            })}
-                                            variant={item === APIQuery.value.timeframe ? 'contained' : 'outlined'}
-                                        >
-                                            {item}
-                                        </Button>
-                                    )
-                                })}
-                            </ButtonGroup>
-                        </Stack>
+                        {timeframes.map((item, index) => {
+                            return (
+                                <Button
+                                    size={'small'}
+                                    key={index}
+                                    onClick={() => APIQuery.setValue({
+                                        ...APIQuery.value,
+                                        timeframe: item,
+                                    })}
+                                    variant={item === APIQuery.value.timeframe ? 'contained' : 'text'}
+                                >
+                                    {item}
+                                </Button>
+                            )
+                        })}
                     </Box>
 
-                    {klines ? (
-                        <Box>
-                            <div id="simple_chart" style={{height: props.height ?? 600}}/>
-                        </Box>
-                    ) : <Skeleton sx={{height: `${props.height ?? `600px`}`}}></Skeleton>}
-                </Grid>
-            </Grid>
+                    <Stack spacing={1} direction={"row"} sx={{
+                        '& .MuiButtonBase-root': {
+                            color: 'inherit',
+                        }
+                    }}>
+
+
+                        {props.drawer && (
+                            <>
+                                <Box>
+                                    <Button onClick={() => setTcDialogOpen(true)}>
+                                        趋势转换
+                                    </Button>
+                                    <Dialog open={tcDialogOpen} onClose={() => setTcDialogOpen(false)} maxWidth={"xl"}
+                                            fullWidth>
+                                        <DialogTitle>{name} 趋势转换 - {APIQuery.value.timeframe}</DialogTitle>
+                                        <DialogContent>
+                                            <TrendingChangeTable/>
+                                        </DialogContent>
+                                    </Dialog>
+                                </Box>
+                                <Box>
+                                    <Button onClick={() => setRwDialogOpen(true)}>
+                                        风险预警
+                                    </Button>
+                                    <Dialog open={rwDialogOpen} onClose={() => setRwDialogOpen(false)} maxWidth={"xl"}
+                                            fullWidth>
+                                        <DialogTitle>{name} 风险预警 - {APIQuery.value.timeframe}</DialogTitle>
+                                        <DialogContent>
+                                            <RiskWarningTable/>
+                                        </DialogContent>
+                                    </Dialog>
+                                </Box>
+                            </>
+                        )}
+                    </Stack>
+
+                    <Box display={'none'}>
+                        <AllTabTable/>
+                    </Box>
+                </Stack>
+            </Box>
+            <Divider sx={{my: 1}}/>
+            {klines ? (
+                <Box>
+                    <div id="simple_chart" style={{height: props.height ?? 600}}/>
+                </Box>
+            ) : <Skeleton sx={{height: `${props.height ?? `600px`}`}}></Skeleton>}
         </Paper>
     );
 }

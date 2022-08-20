@@ -52,7 +52,7 @@ const Detail = () => {
             {/*<Toolbar/>*/}
 
             <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning} drawer={true}
-                        height={'calc(100vh - 140px)'}/>
+                        height={'calc(100vh - 160px)'}/>
         </>
     );
 };

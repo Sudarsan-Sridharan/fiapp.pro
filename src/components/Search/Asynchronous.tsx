@@ -2,11 +2,12 @@ import * as React from 'react';
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {useNavigate} from "react-router-dom";
-import {Box, Button, Chip, Dialog, Divider, Typography} from "@mui/material";
+import {Autocomplete, Box, Button, CircularProgress, Dialog, OutlinedInput, Skeleton, TextField} from "@mui/material";
 import {List} from "linqts";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
-import {Command} from "cmdk";
 import './raycast.scss'
+import parse from "autosuggest-highlight/parse";
+import match from "autosuggest-highlight/match";
 
 interface ICoin {
     name: string;
@@ -59,32 +60,67 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
 
             <Dialog open={dialog} onClose={() => setDialog(false)} fullWidth>
                 <Box sx={{p: 1}}>
-                    <Command label="Command Menu" className={'raycast'}>
-                        <Command.Input autoFocus placeholder="搜索币种"/>
-                        <Divider/>
-                        <Command.List>
-                            <Command.Group>
-                                {data && data.data.map((item: { name: string, exchange: string }, index: React.Key | null | undefined) => {
-                                    return (
-                                        <Command.Item key={index} style={{width: '100%'}}
-                                        >
-                                            <Box display={'flex'} justifyContent={'space-between'} width={'100%'}
-                                                 onClick={() => nav(`/d/${item.name}`)}>
-                                                <Typography variant={"subtitle2"}>
-                                                    {item.name}
-                                                </Typography>
+                    {data ? (
+                        <Autocomplete
+                            id="asynchronous-demo"
+                            sx={{
+                                width: '100%',
+                            }}
+                            size={'small'}
+                            open={open}
+                            onOpen={() => {
+                                setOpen(true);
+                            }}
+                            onClose={() => {
+                                setOpen(false);
+                            }}
+                            isOptionEqualToValue={(option, value) => option.name === value.name}
+                            getOptionLabel={(option) => option.name}
+                            options={options}
+                            loading={loading}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    size={'small'}
+                                    autoFocus
+                                    label={label ?? (APIQuery.value.name ?? '搜索币种')}
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: (
+                                            <React.Fragment>
+                                                {loading ? <CircularProgress color="inherit" size={20}/> : null}
+                                                {params.InputProps.endAdornment}
+                                            </React.Fragment>
+                                        ),
+                                    }}
+                                />
+                            )}
+                            renderOption={(props, option, {inputValue}) => {
+                                const matches = match(option.name, inputValue);
+                                const parts = parse(option.name, matches);
 
-                                                <Box>
-                                                    <Chip label={item.exchange} size={"small"}/>
-                                                </Box>
-                                            </Box>
-                                        </Command.Item>
-                                    )
-                                })
-                                }
-                            </Command.Group>
-                        </Command.List>
-                    </Command>
+                                return (
+                                    <li {...props}
+                                        onClick={() => handleChange(option)}>
+                                        <div>
+                                            {parts.map((part, index) => (
+                                                <span
+                                                    key={index}
+                                                    style={{
+                                                        fontWeight: part.highlight ? 700 : 400,
+                                                    }}
+                                                >
+                                                  {part.text}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </li>
+                                );
+                            }}
+                        />
+                    ) : <Skeleton sx={{width: '250px'}}>
+                        <OutlinedInput/>
+                    </Skeleton>}
                 </Box>
             </Dialog>
             {/*{data ? (*/}

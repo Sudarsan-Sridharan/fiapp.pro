@@ -1,8 +1,11 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
+
+import {Container} from '@mui/material';
 import Meta from '@/components/Meta';
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {ITrendingChange, trendingChangeAtom} from "@/components/Table/TrendingChange";
+import AllTabTable from "@/components/Table/AllTab";
 import KlineChart from "@/components/Chart/Kline";
 import {riskWarningAtom} from "@/components/Table/RiskWarning";
 import {useRecoilState} from "recoil";
@@ -51,8 +54,11 @@ const Detail = () => {
 
             {/*<Toolbar/>*/}
 
-            <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning} drawer={true}
-                        height={'calc(100vh - 140px)'}/>
+            <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}/>
+
+            <Container maxWidth={'xl'} sx={{mt: 2}}>
+                <AllTabTable/>
+            </Container>
         </>
     );
 };

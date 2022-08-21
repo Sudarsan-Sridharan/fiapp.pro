@@ -51,7 +51,7 @@ function Header() {
                 }}
             >
                 <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center'}}>
-                    <Typography variant={'body1'}>加入社区群获得第一时间的内测资格</Typography>
+                    <Typography variant={'body1'}>架构升级中，服务暂不可用</Typography>
                 </Box>
                 <Toolbar sx={{justifyContent: 'space-between'}} disableGutters>
                     <List>

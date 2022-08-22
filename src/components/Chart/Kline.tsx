@@ -155,7 +155,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                 )
             )
 
-            chart.setPriceVolumePrecision(countDecimals(newChartData[0].open), 10)
+            chart.setPriceVolumePrecision(countDecimals(newChartData.length > 0 ? newChartData[0].open : 0), 10)
 
             // Fill data
             chart.applyNewData(newChartData);

@@ -21,6 +21,8 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
+import {domain, fetcher} from "@/ network/fether";
+import useSWR from "swr";
 
 interface IKline {
     open_bid: number;
@@ -51,24 +53,6 @@ export const messageType = {
     8030: "价格只突破 ema200 且徘徊一段时间，高风险快速趋势转换检测",
 }
 
-const coinList = [
-    {
-        name: 'BTCUSDT',
-        '30M': '空(5)',
-        '1H': '空(2)',
-    },
-    {
-        name: 'ETHUSDT',
-        '30M': '空(2)',
-        '1H': '空(3)',
-    },
-    {
-        name: 'BNBUSDT',
-        '30M': '空(3)',
-        '1H': '空(4)',
-    },
-]
-
 
 const Detail = () => {
     let {name} = useParams();
@@ -77,19 +61,22 @@ const Detail = () => {
 
     const [trendingChange, setTrendingChange] = useRecoilState<ITrendingChange[]>(trendingChangeAtom);
     const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
+    const {data: coinList} = useSWR(`${domain}/Coin`, fetcher, {
+        refreshInterval: 1000 * 60,
+    })
 
     return (
         <>
             <Meta title={name}/>
 
             <Grid container>
-                <Grid item xs={12} md={8} xl={10}>
+                <Grid item xs={12} md={8} xl={9}>
                     <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}
                                 drawer={true}
                                 height={'calc(100vh - 160px)'}/>
                 </Grid>
 
-                <Grid item xs={12} md={4} xl={2}>
+                <Grid item xs={12} md={4} xl={3}>
                     <Paper variant={"outlined"} sx={{height: 'calc(100vh - 160px)', overflow: 'auto'}}>
                         <MList dense>
                             <ListItem>
@@ -112,7 +99,7 @@ const Detail = () => {
                                             backgroundColor: '#f5f5f5',
                                         },
                                     }}>
-                                        {coinList.map((item, i) => (
+                                        {coinList && coinList.data.map((item: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; trending_change: any[]; }, i: React.Key | null | undefined) => (
                                             <>
                                                 <TableRow key={i} sx={{
                                                     borderLeft: item.name === name ? '1px solid blue' : 'none',
@@ -125,8 +112,20 @@ const Detail = () => {
                                                             {item.name}
                                                         </Typography>
                                                     </TableCell>
-                                                    <TableCell>{item['30M']}</TableCell>
-                                                    <TableCell>{item['1H']}</TableCell>
+                                                    <TableCell>
+                                                        {
+                                                            item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (
+                                                                trending.time_frame === '30M' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${trending.risk})`
+                                                            ))
+                                                        }
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {
+                                                            item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (
+                                                                trending.time_frame === '1H' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${trending.risk})`
+                                                            ))
+                                                        }
+                                                    </TableCell>
                                                 </TableRow>
                                                 <Divider/>
                                             </>

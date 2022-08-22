@@ -78,7 +78,7 @@ function Header() {
                 }}
             >
                 <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center'}}>
-                    <Typography variant={'body1'}>架构升级中，服务暂不可用</Typography>
+                    <Typography variant={'body1'}>算法更新中，部分策略不可用</Typography>
                 </Box>
                 <Toolbar sx={{justifyContent: 'space-between'}} disableGutters>
                     <List>

@@ -16,13 +16,15 @@ interface ICoin {
 
 interface IAsynchronous {
     height?: number;
-    mode?: 'link' | 'switch';
+    mode?: 'input' | 'button';
     label?: string;
 }
 
 
 const Asynchronous: React.FC<IAsynchronous> = (props) => {
-    const {mode, label} = props
+    let {mode} = props
+    const {label} = props
+    mode = mode || 'button'
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState<readonly ICoin[]>([]);
     const APIQuery = useAPIQuery()
@@ -55,9 +57,14 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
 
     return (
         <>
-            <Button variant={'outlined'} sx={{color: 'inherit'}} size={"small"}
-                    onClick={() => setDialog(true)}>{props.label}</Button>
+            {mode === 'button' && (<Button variant={'outlined'} sx={{color: 'inherit'}} size={"small"}
+                                           onClick={() => setDialog(true)}>{props.label}</Button>)
+            }
 
+            {mode === 'input' && (
+                <OutlinedInput readOnly sx={{height: '30px'}} size={"small"} placeholder={'搜索币种'}
+                               onClick={() => setDialog(true)}/>
+            )}
             <Dialog open={dialog} onClose={() => setDialog(false)} fullWidth>
                 <Box sx={{p: 1}}>
                     {data ? (

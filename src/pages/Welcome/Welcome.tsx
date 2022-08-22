@@ -1,15 +1,12 @@
 import React from 'react';
 import {Box, Container, Divider, Grid, Stack, Typography,} from '@mui/material';
-import Button from '@mui/material/Button';
 import {red} from '@mui/material/colors';
 import Meta from '@/components/Meta';
 import InventStart from '@/pages/Welcome/_inventStart';
 import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
-import Asynchronous from "@/components/Search/Asynchronous";
 import AllTabTable from "@/components/Table/AllTab";
 import Chart from "@/pages/Welcome/_chart";
-import MarketOverview from "@/pages/Welcome/_marketOverview";
 
 const desc = [
     {number: '8+', desc: '个交易策略'},
@@ -21,14 +18,14 @@ const desc = [
 function Welcome() {
     return (
         <>
-            <Meta title="智能交易系统"/>
+            <Meta title="量化交易系统"/>
 
             <Box py={10} sx={{background: 'linear-gradient(#f5f9fe, #fff)'}}>
                 <Container maxWidth={'xl'}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
                             <Stack spacing={1}>
-                                <Typography variant="h1">智能交易系统</Typography>
+                                <Typography variant="h1">量化交易系统</Typography>
                                 <Typography variant="subtitle1">
                                     轻松抓住市场上
                                     <Typography variant="subtitle1" component={'span'} color={red[500]}>
@@ -36,47 +33,30 @@ function Welcome() {
                                     </Typography>
                                     交易机会
                                 </Typography>
-
-                                <Stack spacing={1} direction={'row'}>
-                                    <Button
-                                        variant={'contained'}
-                                        color={'inherit'}
-                                        href={'https://jq.qq.com/?_wv=1027&k=ThQbfwPX'}
-                                        target={'_blank'}
-                                    >
-                                        QQ 群
-                                    </Button>
-                                    <Button
-                                        variant={'contained'}
-                                        color={'inherit'}
-                                        target={'_blank'}
-                                        href={'https://discord.gg/HZD7uw5Hp9'}
-                                    >
-                                        Discord 群
-                                    </Button>
-                                </Stack>
                             </Stack>
                         </Grid>
 
-                        <Grid item xs={12} md={6}>
-                            <Box height={'300px'}>
-                                <MarketOverview/>
-                            </Box>
-                        </Grid>
+                        {/*<Grid item xs={12} md={6}>*/}
+                        {/*    <Box>*/}
+                        {/*        <MarketOverview/>*/}
+                        {/*    </Box>*/}
+                        {/*</Grid>*/}
                     </Grid>
 
-                    <Box my={2} display={'flex'} justifyContent={'space-between'}>
-                        {desc.map((item, index) => (
-                            <Typography variant="h3" key={index}>
-                                {item.number}
-                                <Typography component={'span'} variant={'body1'}>
-                                    {item.desc}
-                                </Typography>
-                            </Typography>
-                        ))}
-                    </Box>
+                    {/*<Box sx={{my: 6}} display={'flex'} justifyContent={'space-between'}>*/}
+                    {/*    {desc.map((item, index) => (*/}
+                    {/*        <Typography variant="h3" key={index}>*/}
+                    {/*            {item.number}*/}
+                    {/*            <Typography component={'span'} variant={'body1'}>*/}
+                    {/*                {item.desc}*/}
+                    {/*            </Typography>*/}
+                    {/*        </Typography>*/}
+                    {/*    ))}*/}
+                    {/*</Box>*/}
 
-                    <Chart/>
+                    <Box mt={8}>
+                        <Chart/>
+                    </Box>
                 </Container>
             </Box>
 
@@ -84,9 +64,6 @@ function Welcome() {
                 <Stack
                     spacing={2}
                 >
-                    <Box textAlign={'center'} display={'flex'} alignItems={'center'} justifyContent={"center"}>
-                        <Asynchronous mode={"link"} label={'搜索币种'}/>
-                    </Box>
 
                     <Box>
                         <AllTabTable/>

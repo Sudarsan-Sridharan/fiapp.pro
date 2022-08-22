@@ -1,11 +1,26 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import Meta from '@/components/Meta';
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {ITrendingChange, trendingChangeAtom} from "@/components/Table/TrendingChange";
 import KlineChart from "@/components/Chart/Kline";
 import {riskWarningAtom} from "@/components/Table/RiskWarning";
 import {useRecoilState} from "recoil";
+import {
+    Divider,
+    Grid,
+    List as MList,
+    ListItem,
+    ListItemText,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from "@mui/material";
 
 interface IKline {
     open_bid: number;
@@ -36,6 +51,24 @@ export const messageType = {
     8030: "价格只突破 ema200 且徘徊一段时间，高风险快速趋势转换检测",
 }
 
+const coinList = [
+    {
+        name: 'BTCUSDT',
+        '30M': '空(5)',
+        '1H': '空(2)',
+    },
+    {
+        name: 'ETHUSDT',
+        '30M': '空(2)',
+        '1H': '空(3)',
+    },
+    {
+        name: 'BNBUSDT',
+        '30M': '空(3)',
+        '1H': '空(4)',
+    },
+]
+
 
 const Detail = () => {
     let {name} = useParams();
@@ -49,13 +82,66 @@ const Detail = () => {
         <>
             <Meta title={name}/>
 
-            {/*<Toolbar/>*/}
+            <Grid container>
+                <Grid item xs={12} md={8} xl={10}>
+                    <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}
+                                drawer={true}
+                                height={'calc(100vh - 160px)'}/>
+                </Grid>
 
-            <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning} drawer={true}
-                        height={'calc(100vh - 160px)'}/>
+                <Grid item xs={12} md={4} xl={2}>
+                    <Paper variant={"outlined"} sx={{height: 'calc(100vh - 160px)', overflow: 'auto'}}>
+                        <MList dense>
+                            <ListItem>
+                                <ListItemText>
+                                    市场一览
+                                </ListItemText>
+                            </ListItem>
+                            <Divider/>
+                            <TableContainer>
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>商品代码</TableCell>
+                                            <TableCell>30M</TableCell>
+                                            <TableCell>1H</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody sx={{
+                                        '& .MuiTableRow-root:hover': {
+                                            backgroundColor: '#f5f5f5',
+                                        },
+                                    }}>
+                                        {coinList.map((item, i) => (
+                                            <>
+                                                <TableRow key={i} sx={{
+                                                    borderLeft: item.name === name ? '1px solid blue' : 'none',
+                                                    backgroundColor: item.name === name ? '#f5f5f5' : 'none',
+                                                }}>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant={'body2'} component={Link}
+                                                                    to={`/d/${item.name}`}
+                                                                    sx={{textDecoration: 'none', color: 'inherit'}}>
+                                                            {item.name}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>{item['30M']}</TableCell>
+                                                    <TableCell>{item['1H']}</TableCell>
+                                                </TableRow>
+                                                <Divider/>
+                                            </>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </MList>
+                    </Paper>
+                </Grid>
+            </Grid>
         </>
     );
 };
+
 
 export default Detail;
 

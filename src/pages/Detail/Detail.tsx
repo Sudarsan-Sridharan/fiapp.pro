@@ -115,14 +115,14 @@ const Detail = () => {
                                                     <TableCell>
                                                         {
                                                             item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (
-                                                                trending.time_frame === '30M' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${trending.risk})`
+                                                                trending.time_frame === '30M' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${6 - trending.risk})`
                                                             ))
                                                         }
                                                     </TableCell>
                                                     <TableCell>
                                                         {
                                                             item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (
-                                                                trending.time_frame === '1H' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${trending.risk})`
+                                                                trending.time_frame === '1H' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${6 - trending.risk})`
                                                             ))
                                                         }
                                                     </TableCell>

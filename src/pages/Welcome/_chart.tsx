@@ -79,11 +79,11 @@ const Chart = () => {
                                                 {index === 0 && item.name}
                                             </Typography>
 
-                                            <Tooltip title={'可靠度'} arrow key={index}>
+                                            {item.time_frame !== '5M' && (<Tooltip title={'可靠度'} arrow key={index}>
                                                 <Typography variant={'subtitle1'}>
                                                     {item.time_frame} - {item.current_trending === 1 ? '多' : item.current_trending === -1 ? '空' : '中立'} ({item.risk})
                                                 </Typography>
-                                            </Tooltip>
+                                            </Tooltip>)}
                                         </>
                                     ))}
                                 </Box>

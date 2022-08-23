@@ -34,6 +34,10 @@ const linkButtonData = {
             link: '/RiskWarning',
         },
         {
+            text: '动量检测',
+            link: '/Volatility',
+        },
+        {
             text: '选币系统（即将上线）',
             link: '#',
         },

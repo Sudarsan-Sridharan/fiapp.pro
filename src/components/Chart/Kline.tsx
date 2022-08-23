@@ -8,7 +8,7 @@ import {messageType} from "@/pages/Detail/Detail";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
-import {Box, Button, Dialog, DialogContent, DialogTitle, Divider, Paper, Skeleton, Stack} from "@mui/material";
+import {Box, Button, Chip, Dialog, DialogContent, DialogTitle, Divider, Paper, Skeleton, Stack} from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
 import AllTabTable from "@/components/Table/AllTab";
 
@@ -93,6 +93,10 @@ const KlineChart: React.FC<IKline> = (props) => {
     const {data: klines} = useSWR(`${domain}/Coin?${sendUrl}`, fetcher, {
         refreshInterval: 1000 * 60 * 5,
     });
+
+    const {data: volatility} = useSWR(`${domain}/Volatility?${sendUrl}`, fetcher, {
+        refreshInterval: 1000 * 60,
+    })
 
     const chartTrendingChange = useCallback(() => {
         return new List<ITrendingChange>(trendingChangeData)
@@ -183,6 +187,13 @@ const KlineChart: React.FC<IKline> = (props) => {
             <Box sx={{pt: 1}}>
                 <Stack direction={'row'} spacing={1} alignItems={'center'}>
                     <Asynchronous label={name}/>
+                    {volatility ? (
+                        <Chip size={"small"}
+                              label={`波动率：${volatility.length > 0 ? (volatility[0].value * 100).toFixed(3) : null}%`}/>
+                    ) : <Skeleton>
+                        <Chip size={"small"} label={'波动率'}/>
+                    </Skeleton>
+                    }
                     <Box>
                         {timeframes.map((item, index) => {
                             return (
@@ -201,7 +212,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                         })}
                     </Box>
 
-                    <Stack spacing={1} direction={"row"} sx={{
+                    <Stack spacing={1} direction={"row"} alignItems={"center"} sx={{
                         '& .MuiButtonBase-root': {
                             color: 'inherit',
                         }

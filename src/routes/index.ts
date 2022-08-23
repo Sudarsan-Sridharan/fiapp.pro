@@ -30,6 +30,10 @@ const routes: Routes = {
         component: asyncComponentLoader(() => import('@/pages/TrendingChange')),
         path: '/TrendingChange',
     },
+    [Pages.Volatility]: {
+        component: asyncComponentLoader(() => import('@/pages/Volatility')),
+        path: '/Volatility',
+    },
     [Pages.NotFound]: {
         component: asyncComponentLoader(() => import('@/pages/NotFound')),
         path: '*',

@@ -8,6 +8,7 @@ import {domain, fetcher} from "@/ network/fether";
 import {useRecoilState} from "recoil";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {useMatch} from "react-router-dom";
+import VolatilityTable from "@/components/Table/Volatility";
 
 const AllTabTable = () => {
     const [value, setValue] = React.useState('1');
@@ -61,6 +62,7 @@ const AllTabTable = () => {
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <Tab label="趋势转换" value="1"/>
                         <Tab label="风险预警" value="2"/>
+                        <Tab label="动量检测" value="3"/>
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -68,6 +70,9 @@ const AllTabTable = () => {
                 </TabPanel>
                 <TabPanel value="2">
                     <RiskWarningTable/>
+                </TabPanel>
+                <TabPanel value="3">
+                    <VolatilityTable/>
                 </TabPanel>
             </TabContext>
         </Box>

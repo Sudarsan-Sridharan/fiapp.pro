@@ -54,7 +54,7 @@ const columns: GridColDef[] = [
     {
         field: 'open_time',
         headerName: '触发时间',
-        renderCell: (params) => timejs(new Date().toLocaleString()).toNow(),
+        renderCell: (params) => timejs(new Date(params.value).toLocaleString()).toNow(),
         width: 120,
     },
     {

@@ -8,7 +8,19 @@ import {messageType} from "@/pages/Detail/Detail";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
-import {Box, Button, Chip, Dialog, DialogContent, DialogTitle, Divider, Paper, Skeleton, Stack} from "@mui/material";
+import {
+    Box,
+    Button,
+    Chip,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Divider,
+    Paper,
+    Skeleton,
+    Stack,
+    useMediaQuery
+} from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
 import AllTabTable from "@/components/Table/AllTab";
 
@@ -182,6 +194,9 @@ const KlineChart: React.FC<IKline> = (props) => {
 
     const [tcDialogOpen, setTcDialogOpen] = useState(false)
     const [rwDialogOpen, setRwDialogOpen] = useState(false)
+
+    const mdBreakDown = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
+
     return (
         <Paper variant={"outlined"} sx={{px: 1}}>
             <Box sx={{pt: 1}}>
@@ -219,7 +234,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                     }}>
 
 
-                        {props.drawer && (
+                        {(props.drawer && !mdBreakDown) && (
                             <>
                                 <Box>
                                     <Button onClick={() => setTcDialogOpen(true)}>

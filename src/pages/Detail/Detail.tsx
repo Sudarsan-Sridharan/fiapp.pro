@@ -65,6 +65,7 @@ const Detail = () => {
         refreshInterval: 1000 * 60,
     })
 
+
     return (
         <>
             <Meta title={name}/>

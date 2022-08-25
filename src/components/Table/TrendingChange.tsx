@@ -1,5 +1,5 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
-import {Box, Skeleton, Stack, Tooltip} from "@mui/material";
+import {Box, Skeleton, Stack, Tooltip, useMediaQuery} from "@mui/material";
 import Button from "@mui/material/Button";
 import {Link, useMatch} from "react-router-dom";
 import BigNumber from "bignumber.js";
@@ -10,6 +10,7 @@ import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {atom, useRecoilState} from "recoil";
 import {RatingQuery, TimeframeQuery, TrendingQuery} from "@/components/Table/Query";
 import {timejs} from "@/utils/time";
+
 
 export interface ITrendingChange {
     name?: string,
@@ -52,7 +53,7 @@ export const trendingChangeColumns: GridColDef[] = [
     {
         field: 'open_time',
         headerName: '触发时间',
-        renderCell: (params) => timejs(new Date(params.value).toLocaleString()).toNow(),
+        renderCell: (params) => timejs(new Date().toLocaleString()).toNow(),
         width: 120,
     },
     {
@@ -89,12 +90,17 @@ const TrendingChangeTable = () => {
         setTrendingChangeData(trendingChange)
     }, [trendingChange])
 
+
+    const mdBreakDown = useMediaQuery((theme: any) => theme?.breakpoints.down('md'))
+    console.log(mdBreakDown)
+
     return (
         <>
             <Stack
                 spacing={1}
             >
-                <Stack spacing={1} direction={"row"} alignItems={'center'}>
+                <Stack spacing={1} direction={mdBreakDown ? 'column' : 'row'}
+                       alignItems={mdBreakDown ? 'start' : 'center'}>
                     <TrendingQuery/>
                     <TimeframeQuery/>
                     <RatingQuery/>

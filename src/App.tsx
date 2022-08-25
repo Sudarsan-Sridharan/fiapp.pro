@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {BrowserRouter, useMatch} from 'react-router-dom';
 
-import {Box, styled, Toolbar} from '@mui/material';
+import {Box, styled, Toolbar, useMediaQuery} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import {withErrorHandler} from '@/error-handling';
@@ -36,10 +36,12 @@ const MainContent = styled('main', {
 
 const RouterPage = () => {
     const detailMatch = useMatch('/d/:name');
+    const mdBreakDown = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
+
     return (
         <>
             <Header/>
-            <Toolbar sx={{height: '90px'}}/>
+            <Toolbar sx={{height: mdBreakDown ? 'auto' : '84px'}}/>
             <Box sx={{display: 'flex'}}>
                 <Box component="main" sx={{flexGrow: 1}}>
                     {/*<Toolbar />*/}

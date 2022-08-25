@@ -12,7 +12,8 @@ import {
     Stack,
     styled,
     Toolbar,
-    Typography
+    Typography,
+    useMediaQuery
 } from '@mui/material';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -44,6 +45,19 @@ const linkButtonData = {
     ],
 };
 
+const communityButtonData = {
+    data: [
+        {
+            text: 'Discord 群',
+            link: 'https://discord.gg/HZD7uw5Hp9',
+        },
+        {
+            text: ' QQ 群',
+            link: 'https://jq.qq.com/?_wv=1027&k=ThQbfwPX',
+        },
+    ],
+};
+
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
@@ -67,6 +81,7 @@ function Header() {
     const [isSidebarOpen] = useSidebar();
 
     const detail = useMatch('/d/:name');
+    const mdBreakDown = useMediaQuery((theme: any) => theme?.breakpoints.down('md'))
 
     return (
         <Box sx={{flexGrow: 1}}>
@@ -77,7 +92,6 @@ function Header() {
                 sx={{
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                     backdropFilter: 'blur(20px)',
-                    height: '84px',
                     boxShadow: 'none',
                 }}
             >
@@ -92,12 +106,14 @@ function Header() {
                             <PlainLink sx={{display: 'block'}}>
                                 <ListItemText>
                                     <Box sx={{display: 'flex', alignItems: 'center'}}>
-                                        <img src={'/black-48dp/1x/outline_currency_bitcoin_black_48dp.png'}/>
+                                        <img src={'/black-48dp/1x/outline_currency_bitcoin_black_48dp.png'} style={{
+                                            display: mdBreakDown ? 'none' : 'block',
+                                        }}/>
                                         <Badge badgeContent={'alpha'}>
                                             <Typography
                                                 component={Link}
                                                 to={'/'}
-                                                variant="h5"
+                                                variant={mdBreakDown ? 'subtitle2' : 'h5'}
                                                 noWrap
                                                 sx={{
                                                     letterSpacing: 0,
@@ -121,9 +137,11 @@ function Header() {
                     </List>
 
                     <Box display={'flex'} alignItems={'center'}>
-                        <Box sx={{mr: 1}}>
-                            <Asynchronous label={'搜索币种'} mode={"input"}/>
-                        </Box>
+                        {!mdBreakDown && (
+                            <Box sx={{mr: 1}}>
+                                <Asynchronous label={'搜索币种'} mode={"input"}/>
+                            </Box>
+                        )}
                         <PopupState variant="popover" popupId="productMenu">
                             {(popupState) => (
                                 <React.Fragment>
@@ -156,7 +174,7 @@ function Header() {
                     </Box>
 
                     <Box mr={1}>
-                        <Stack direction={'row'} spacing={1}>
+                        {!mdBreakDown ? (<Stack direction={'row'} spacing={1}>
                             <Button
                                 target={'_blank'}
                                 href={'https://jq.qq.com/?_wv=1027&k=ThQbfwPX'}
@@ -175,7 +193,41 @@ function Header() {
                             >
                                 Discord 群
                             </Button>
-                        </Stack>
+                        </Stack>) : (
+                            <PopupState variant="popover" popupId="communityMenu">
+                                {(popupState) => (
+                                    <React.Fragment>
+                                        <Button color={'inherit'}
+                                                variant={'contained'} size={"small"} {...bindHover(popupState)}
+                                                endIcon={<ArrowDropDown/>}>
+                                            加入社区
+                                        </Button>
+                                        <Menu {...bindMenu(popupState)}>
+                                            {communityButtonData.data.map((item, index) => (
+                                                <Box key={index} sx={{
+                                                    textDecoration: 'none',
+                                                    color: 'inherit'
+                                                }}>
+                                                    <Button href={`${item.link}`} target={'_blank'} size={"small"}
+                                                            color={"inherit"}>
+                                                        <MenuItem onClick={popupState.close} sx={{
+                                                            maxHeight: '30px'
+                                                        }}>
+                                                            <Typography variant={'body2'}>
+                                                                {
+                                                                    item.text
+                                                                }
+                                                            </Typography>
+                                                        </MenuItem>
+                                                    </Button>
+
+                                                </Box>
+                                            ))}
+                                        </Menu>
+                                    </React.Fragment>
+                                )}
+                            </PopupState>
+                        )}
                     </Box>
                 </Toolbar>
             </AppBar>

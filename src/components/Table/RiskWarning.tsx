@@ -12,6 +12,7 @@ import {Link, useMatch} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {atom, useRecoilState} from "recoil";
 import {messageType} from "@/pages/Detail/Detail";
+import {timejs} from "@/utils/time";
 
 export interface IRiskWarning {
     description_type: number,
@@ -49,6 +50,12 @@ const columns: GridColDef[] = [
                 </Tooltip>
             </Button>
         ),
+    },
+    {
+        field: 'open_time',
+        headerName: '触发时间',
+        renderCell: (params) => timejs(new Date().toLocaleString()).toNow(),
+        width: 120,
     },
     {
         field: 'open_price',

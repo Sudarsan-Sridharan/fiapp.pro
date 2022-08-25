@@ -61,10 +61,7 @@ export const getDesignTokens = (mode: string) =>
     ({
         palette: {
             primary: {
-                ...blue,
-                ...(mode === 'dark' && {
-                    main: blue[400],
-                }),
+                main: '#1e1e1e'
             },
             divider: mode === 'dark' ? blueDark[700] : grey[200],
             primaryDark: blueDark,

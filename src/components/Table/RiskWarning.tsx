@@ -1,20 +1,17 @@
 import React, {useEffect} from 'react';
 
-import {Badge, Box, Chip, Stack} from '@mui/material';
+import {Box, Skeleton, Stack, Tooltip} from '@mui/material';
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
 
 import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
-import TradeButton from "@/components/Market/TradeButton";
-import QueryTable from "@/components/Table/Query";
+import {TimeframeQuery} from "@/components/Table/Query";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {Link, useMatch} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {ArrowRightOutlined} from "@mui/icons-material";
 import {atom, useRecoilState} from "recoil";
 import {messageType} from "@/pages/Detail/Detail";
-import {blueGrey, grey} from "@mui/material/colors";
 
 export interface IRiskWarning {
     description_type: number,
@@ -34,56 +31,30 @@ const columns: GridColDef[] = [
     {
         field: 'name',
         headerName: '名称',
-        width: 150,
+        width: 120,
         renderCell: (params) => (
             <Button
                 component={Link}
                 to={`/d/${params.value}`}
                 sx={{paddingLeft: 0, minWidth: 0}}
-                endIcon={<ArrowRightOutlined/>}
+                size={"small"}
+                color={"inherit"}
             >
-                {params.value}
+                {params.value.substring(0, params.value.indexOf("USDT"))}
+
+                <Tooltip title={'反转度'} arrow placement={"right"}>
+                   <span>
+                        ({params.row.risk})
+                   </span>
+                </Tooltip>
             </Button>
         ),
-    },
-    {
-        field: 'time_frame',
-        headerName: '周期',
-        width: 80
-    },
-    {
-        field: 'open_time',
-        headerName: '触发时间',
-        renderCell: (params) => new Date(params.value).toLocaleString(),
-        width: 180,
-    },
-    {
-        field: 'risk',
-        headerName: '反转度',
-        renderCell: (params) => {
-            const value = params.value;
-            return (
-                <Badge badgeContent={value}>
-                    <Chip
-                        size={'small'}
-                        sx={{
-                            color: '#fff', bgcolor: value < 2
-                                ? grey[400]
-                                : value >= 2 && value <= 4
-                                    ? grey[600]
-                                    : blueGrey[800]
-                        }}
-                        label={value < 2 ? '低' : value >= 2 && value <= 4 ? '中' : '高'}
-                    />
-                </Badge>
-            );
-        },
     },
     {
         field: 'open_price',
         headerName: '触发价格',
         renderCell: (params) => `$${params.value}`,
-        width: 150,
+        width: 120,
     },
     {
         field: 'description_type',
@@ -92,20 +63,6 @@ const columns: GridColDef[] = [
             return messageType[params.value as keyof typeof messageType];
         },
         width: 200
-    },
-    {
-        field: 'actions',
-        headerName: '',
-        width: 200,
-        renderCell: (params) => {
-            const name = params.row.name;
-
-            return (
-                <>
-                    <TradeButton name={name}/>
-                </>
-            );
-        },
     },
 ];
 
@@ -134,14 +91,16 @@ const RiskWarningTable = () => {
 
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={1}>
             {/*<Typography variant={'h4'}>风险预警</Typography>*/}
 
-            <QueryTable/>
+            <TimeframeQuery/>
 
-            <Box height={'60vh'}>
-                {data && <DataGrid disableColumnFilter rows={data} columns={columns}/>}
-            </Box>
+            {data ? (
+                <Box height={'60vh'}>
+                    <DataGrid density={"compact"} disableColumnFilter rows={data} columns={columns}/>
+                </Box>
+            ) : <Skeleton height={'60vh'}/>}
         </Stack>
     );
 };

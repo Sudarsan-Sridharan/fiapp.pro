@@ -12,6 +12,7 @@ import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import {sideBarWidth} from '@/sections/Sidebar/Sidebar';
 import Header from "@/sections/Header";
+import "./App.css"
 
 const MainContent = styled('main', {
     shouldForwardProp: (prop) => prop !== 'open',

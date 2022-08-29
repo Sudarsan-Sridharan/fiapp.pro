@@ -2,7 +2,17 @@ import * as React from 'react';
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {useNavigate} from "react-router-dom";
-import {Autocomplete, Box, Button, CircularProgress, Dialog, OutlinedInput, Skeleton, TextField} from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Button,
+    Chip,
+    CircularProgress,
+    Dialog,
+    OutlinedInput,
+    Skeleton,
+    TextField
+} from "@mui/material";
 import {List} from "linqts";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import './raycast.scss'
@@ -109,18 +119,29 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
                                 return (
                                     <li {...props}
                                         onClick={() => handleChange(option)}>
-                                        <div>
-                                            {parts.map((part, index) => (
-                                                <span
-                                                    key={index}
-                                                    style={{
-                                                        fontWeight: part.highlight ? 700 : 400,
-                                                    }}
-                                                >
+                                        <Box justifyContent={'space-between'} display={'flex'} alignItems={'center'}
+                                             width={'100%'}>
+                                            <Box>
+                                                {parts.map((part, index) => (
+                                                    <span
+                                                        key={index}
+                                                        style={{
+                                                            fontWeight: part.highlight ? 700 : 400,
+                                                        }}
+                                                    >
                                                   {part.text}
                                                 </span>
-                                            ))}
-                                        </div>
+                                                ))}
+                                            </Box>
+
+                                            {(option.name === "BTCUSDSHORTS" || option.name === "BTCUSDLONGS") &&
+                                                (
+                                                    <>
+                                                        <Chip
+                                                            label={option.name === "BTCUSDSHORTS" ? '空头持仓' : '多头持仓'}/>
+                                                    </>
+                                                )}
+                                        </Box>
                                     </li>
                                 );
                             }}

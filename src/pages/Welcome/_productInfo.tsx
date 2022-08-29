@@ -44,8 +44,10 @@ const info = [
         link: '/Volatility',
     },
     {
-        title: '多空瞬时持仓（内测中）',
+        title: '多空瞬时持仓（已上线）',
         desc: 'fiapp.pro 交易大师实时毫秒级检测真实交易所的多空头持仓变化，出现大量波动时及时预警，为交易增加更多透明度。',
+        ready: true,
+        link: '/d/BTCUSDLONGS',
     },
 ];
 

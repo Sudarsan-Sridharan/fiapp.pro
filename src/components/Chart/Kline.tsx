@@ -196,6 +196,14 @@ const KlineChart: React.FC<IKline> = (props) => {
     const [rwDialogOpen, setRwDialogOpen] = useState(false)
 
     const mdBreakDown = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
+    const isWhale = props.name === "BTCUSDSHORTS" || props.name === "BTCUSDLONGS"
+
+    useEffect(() => {
+        APIQuery.setValue({
+            ...APIQuery.value,
+            timeframe: isWhale ? '5M' : '30M'
+        })
+    }, [isWhale])
 
     return (
         <Paper variant={"outlined"} sx={{px: 1}}>
@@ -210,6 +218,16 @@ const KlineChart: React.FC<IKline> = (props) => {
                     </Skeleton>
                     }
                     <Box>
+                        {isWhale && (<Button
+                            size={'small'}
+                            onClick={() => APIQuery.setValue({
+                                ...APIQuery.value,
+                                timeframe: '5M',
+                            })}
+                            variant={APIQuery.value.timeframe === '5M' ? 'contained' : 'text'}
+                        >
+                            5M
+                        </Button>)}
                         {timeframes.map((item, index) => {
                             return (
                                 <Button

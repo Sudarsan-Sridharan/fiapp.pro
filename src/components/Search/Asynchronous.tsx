@@ -33,7 +33,15 @@ interface IAsynchronous {
 
 const Asynchronous: React.FC<IAsynchronous> = (props) => {
     let {mode} = props
-    const {label} = props
+    let {label} = props
+    const isWhale = label === "BTCUSDSHORTS" || label === "BTCUSDLONGS"
+
+    console.log(isWhale)
+
+    if (isWhale) {
+        label = label === "BTCUSDSHORTS" ? `空头仓位` : `多头仓位`
+    }
+
     mode = mode || 'button'
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState<readonly ICoin[]>([]);
@@ -68,7 +76,7 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
     return (
         <>
             {mode === 'button' && (<Button variant={'outlined'} sx={{color: 'inherit'}} size={"small"}
-                                           onClick={() => setDialog(true)}>{props.label}</Button>)
+                                           onClick={() => setDialog(true)}>{label}</Button>)
             }
 
             {mode === 'input' && (

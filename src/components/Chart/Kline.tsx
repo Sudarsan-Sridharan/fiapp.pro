@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
 import AllTabTable from "@/components/Table/AllTab";
+import {useNavigate} from "react-router-dom";
 
 function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
     ctx.font = '12px Roboto'
@@ -198,6 +199,8 @@ const KlineChart: React.FC<IKline> = (props) => {
     const mdBreakDown = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
     const isWhale = props.name === "BTCUSDSHORTS" || props.name === "BTCUSDLONGS"
 
+    const switchWhaleName = props.name === "BTCUSDSHORTS" ? "BTCUSDLONGS" : "BTCUSDSHORTS"
+
     useEffect(() => {
         APIQuery.setValue({
             ...APIQuery.value,
@@ -205,11 +208,18 @@ const KlineChart: React.FC<IKline> = (props) => {
         })
     }, [isWhale])
 
+    const nav = useNavigate()
+
     return (
         <Paper variant={"outlined"} sx={{px: 1}}>
             <Box sx={{pt: 1}}>
                 <Stack direction={'row'} spacing={1} alignItems={'center'}>
                     <Asynchronous label={name}/>
+                    {isWhale && (
+                        <Button variant={'text'} onClick={() => nav(`/d/${switchWhaleName}`)}>
+                            {switchWhaleName === 'BTCUSDSHORTS' ? '空头仓位' : '多头仓位'}
+                        </Button>
+                    )}
                     {volatility ? (
                         <Chip size={"small"}
                               label={`波动率：${volatility.length > 0 ? (volatility[0].value * 100).toFixed(3) : null}%`}/>

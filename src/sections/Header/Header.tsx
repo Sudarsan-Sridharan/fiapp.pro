@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, useMatch} from 'react-router-dom';
+import {Link, useMatch, useNavigate} from 'react-router-dom';
 
 import {
     Badge,
@@ -82,6 +82,8 @@ const AppBar = styled(MuiAppBar, {
 const AlertBar = () => {
     const {whaleWarningData} = useWhaleWarningAPI(1)
 
+    const nav = useNavigate()
+
     return (
         <>
             {whaleWarningData && whaleWarningData.length > 0 && (
@@ -91,7 +93,8 @@ const AlertBar = () => {
                 //     )}
                 // </>
 
-                <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center'}}>
+                <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center', cursor: 'pointer'}}
+                     onClick={() => nav(`/d/${whaleWarningData[0].name}`)}>
                     <Typography variant={'body1'}>
                         {timejs(new Date(whaleWarningData[0].open_time).toLocaleString()).toNow()} - {whaleWarningData[0].name === 'BTCUSDSHORTS' ? '空头' : '多头'}
                         {" "}-

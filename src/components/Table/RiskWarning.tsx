@@ -58,18 +58,18 @@ const columns: GridColDef[] = [
         width: 120,
     },
     {
-        field: 'open_price',
-        headerName: '触发价格',
-        renderCell: (params) => `$${params.value}`,
-        width: 120,
-    },
-    {
         field: 'description_type',
         headerName: '描述',
         renderCell: (params) => {
             return messageType[params.value as keyof typeof messageType];
         },
         width: 200
+    },
+    {
+        field: 'open_price',
+        headerName: '触发价格',
+        renderCell: (params) => `$${params.value}`,
+        width: 120,
     },
 ];
 

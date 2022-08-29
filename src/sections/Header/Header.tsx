@@ -23,6 +23,8 @@ import {PlainLink} from "@/components/styled";
 import Asynchronous from "@/components/Search/Asynchronous";
 import PopupState, {bindHover, bindMenu} from "material-ui-popup-state";
 import {ArrowDropDown} from "@mui/icons-material";
+import {useWhaleWarningAPI} from "@/api/useWhaleWarningAPI";
+import {timejs} from "@/utils/time";
 
 const linkButtonData = {
     data: [
@@ -77,6 +79,30 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
+const AlertBar = () => {
+    const {whaleWarningData} = useWhaleWarningAPI(1)
+
+    return (
+        <>
+            {whaleWarningData && whaleWarningData.length > 0 && (
+                // <>
+                //     {timejs(whaleWarningData[0].open_time).isAfter(timejs().subtract(30, 'minutes')) && (
+                //
+                //     )}
+                // </>
+
+                <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center'}}>
+                    <Typography variant={'body1'}>
+                        {timejs(new Date(whaleWarningData[0].open_time).toLocaleString()).toNow()} - {whaleWarningData[0].name === 'BTCUSDSHORTS' ? '空头' : '多头'}
+                        {" "}-
+                        持仓量 {whaleWarningData[0].value > 0 ? '增加' : '减少'} {((whaleWarningData[0].value) * 100).toFixed(2)}%
+                    </Typography>
+                </Box>
+            )}
+        </>
+    )
+}
+
 function Header() {
     const [isSidebarOpen] = useSidebar();
 
@@ -95,9 +121,7 @@ function Header() {
                     boxShadow: 'none',
                 }}
             >
-                {/*<Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center'}}>*/}
-                {/*    <Typography variant={'body1'}>算法更新中，部分策略不可用</Typography>*/}
-                {/*</Box>*/}
+                <AlertBar/>
                 <Toolbar sx={{justifyContent: 'space-between'}} disableGutters>
                     <List>
                         <ListItem

@@ -228,31 +228,37 @@ const KlineChart: React.FC<IKline> = (props) => {
                     </Skeleton>
                     }
                     <Box>
-                        {isWhale && (<Button
-                            size={'small'}
-                            onClick={() => APIQuery.setValue({
-                                ...APIQuery.value,
-                                timeframe: '5M',
-                            })}
-                            variant={APIQuery.value.timeframe === '5M' ? 'contained' : 'text'}
-                        >
-                            5M
-                        </Button>)}
-                        {timeframes.map((item, index) => {
-                            return (
-                                <Button
-                                    size={'small'}
-                                    key={index}
-                                    onClick={() => APIQuery.setValue({
-                                        ...APIQuery.value,
-                                        timeframe: item,
-                                    })}
-                                    variant={item === APIQuery.value.timeframe ? 'contained' : 'text'}
-                                >
-                                    {item}
-                                </Button>
-                            )
-                        })}
+                        {isWhale ? (['5M', '30M', '1H'].map((item, index) => {
+                                return (
+                                    <Button
+                                        size={'small'}
+                                        key={index}
+                                        onClick={() => APIQuery.setValue({
+                                            ...APIQuery.value,
+                                            timeframe: item,
+                                        })}
+                                        variant={item === APIQuery.value.timeframe ? 'contained' : 'text'}
+                                    >
+                                        {item}
+                                    </Button>
+                                )
+                            })) :
+                            timeframes.map((item, index) => {
+                                return (
+                                    <Button
+                                        size={'small'}
+                                        key={index}
+                                        onClick={() => APIQuery.setValue({
+                                            ...APIQuery.value,
+                                            timeframe: item,
+                                        })}
+                                        variant={item === APIQuery.value.timeframe ? 'contained' : 'text'}
+                                    >
+                                        {item}
+                                    </Button>
+                                )
+                            })
+                        }
                     </Box>
 
                     <Stack spacing={1} direction={"row"} alignItems={"center"} sx={{

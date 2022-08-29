@@ -140,7 +140,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                 drawExtend: (params: any) => {
                     const {ctx, point, coordinate, viewport, isActive, styles} = params
                     annotationDrawExtend(ctx, coordinate,
-                        `${x.time_frame} - ${messageType[x.description_type as keyof typeof messageType]} \n 反转度${x.risk}`,
+                        `${messageType[x.description_type as keyof typeof messageType]} \n 反转度${x.risk}`,
                         red[500])
                 },
             }))

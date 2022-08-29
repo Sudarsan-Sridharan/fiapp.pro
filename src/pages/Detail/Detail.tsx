@@ -70,15 +70,15 @@ const Detail = () => {
         <>
             <Meta title={name}/>
 
-            <Grid container>
+            <Grid container sx={{pt: 2}}>
                 <Grid item xs={12} md={8} xl={9}>
                     <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}
                                 drawer={true}
-                                height={'calc(100vh - 160px)'}/>
+                                height={'calc(100vh - 180px)'}/>
                 </Grid>
 
                 <Grid item xs={12} md={4} xl={3}>
-                    <Paper variant={"outlined"} sx={{height: 'calc(100vh - 160px)', overflow: 'auto'}}>
+                    <Paper variant={"outlined"} sx={{height: 'calc(100vh - 180px)', overflow: 'auto'}}>
                         <MList dense>
                             <ListItem>
                                 <ListItemText>

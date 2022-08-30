@@ -6,6 +6,8 @@ import KlineChart from "@/components/Chart/Kline";
 import {Box, Grid, Paper, Stack, Tooltip, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {List} from "linqts";
+import {grey} from "@mui/material/colors";
+import {timejs} from "@/utils/time";
 
 const coins = [
     {name: 'BTCUSDT', displayName: 'BTC'},
@@ -47,6 +49,10 @@ const Chart = () => {
     });
 
     const {data: coinsTC} = useSWR(`${domain}/TrendingChange?names=BTCUSDT,ETHUSDT,BNBUSDT`, fetcher, {
+        refreshInterval: 1000 * 60 * 1,
+    });
+
+    const {data: alt} = useSWR(`${domain}/TrendingChange?name=ALT-PERP&timeframe=4H&risk=1`, fetcher, {
         refreshInterval: 1000 * 60 * 1,
     });
 
@@ -92,6 +98,11 @@ const Chart = () => {
                     ))}
                 </Grid>
 
+                {alt && (<Box sx={{bgcolor: grey[100], textAlign: 'left', p: 1}}>
+                    <Typography variant={'body1'}>
+                        山寨季：{alt[0].current_trending === 1 ? '开始' : alt[0].current_trending === -1 ? '结束' : '中立'} - {timejs(alt[0].open_time).toNow()}
+                    </Typography>
+                </Box>)}
                 <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}/>
             </Stack>
         </>

@@ -36,8 +36,6 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
     let {label} = props
     const isWhale = label === "BTCUSDSHORTS" || label === "BTCUSDLONGS"
 
-    console.log(isWhale)
-
     if (isWhale) {
         label = label === "BTCUSDSHORTS" ? `空头仓位` : `多头仓位`
     }

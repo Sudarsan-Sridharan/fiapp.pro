@@ -25,6 +25,7 @@ interface ITrendingChange {
     current_trending: number,
     risk: number,
     time_frame: string,
+    open_time: Date
 }
 
 const Chart = () => {
@@ -57,7 +58,8 @@ const Chart = () => {
     });
 
     const BTC: List<ITrendingChange> = new List<ITrendingChange>(coinsTC)
-        .Where(x => x?.name === 'BTCUSDT').ToList();
+        .Where(x => x?.name === 'BTCUSDT')
+        .Where(x => x?.time_frame !== "5M").ToList();
 
     const ETH: List<ITrendingChange> = new List<ITrendingChange>(coinsTC)
         .Where(x => x?.name === 'ETHUSDT').ToList();
@@ -65,9 +67,9 @@ const Chart = () => {
     const BNB: List<ITrendingChange> = new List<ITrendingChange>(coinsTC)
         .Where(x => x?.name === 'BNBUSDT').ToList();
 
-    const btc = BTC.Concat(BTC).Union(BTC).ToArray();
-    const eth = ETH.Concat(ETH).Union(ETH).ToArray();
-    const bnb = BNB.Concat(BNB).Union(BNB).ToArray();
+    const btc = BTC.Concat(BTC).Union(BTC).Take(2).ToArray();
+    const eth = ETH.Concat(ETH).Union(ETH).Take(2).ToArray();
+    const bnb = BNB.Concat(BNB).Union(BNB).Take(2).ToArray();
 
     const coinsTCData = [btc, eth, bnb]
     return (
@@ -87,7 +89,10 @@ const Chart = () => {
 
                                             {item.time_frame !== '5M' && (<Tooltip title={'可靠度'} arrow key={index}>
                                                 <Typography variant={'subtitle1'}>
-                                                    {item.time_frame} - {item.current_trending === 1 ? '多' : item.current_trending === -1 ? '空' : '中立'} ({6 - item.risk})
+                                                    <>
+                                                        {item.time_frame} - {item.current_trending === 1 ? '多' : item.current_trending === -1 ? '空' : '中立'} ({6 - item.risk})
+                                                        - {timejs(new Date(item.open_time).toLocaleString()).fromNow()}
+                                                    </>
                                                 </Typography>
                                             </Tooltip>)}
                                         </>

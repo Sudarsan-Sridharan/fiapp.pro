@@ -29,7 +29,7 @@ export const volatilityColumns: GridColDef[] = [
     {
         field: 'open_time',
         headerName: '触发时间',
-        renderCell: (params) => timejs(new Date(params.value).toLocaleString()).toNow(),
+        renderCell: (params) => timejs(new Date(params.value).toLocaleString()).fromNow(),
         width: 120,
     },
 ];

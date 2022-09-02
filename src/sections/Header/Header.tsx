@@ -96,7 +96,7 @@ const AlertBar = () => {
                 <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center', cursor: 'pointer'}}
                      onClick={() => nav(`/d/${whaleWarningData[0].name}`)}>
                     <Typography variant={'body1'}>
-                        {timejs(new Date(whaleWarningData[0].open_time).toLocaleString()).toNow()} - {whaleWarningData[0].name === 'BTCUSDSHORTS' ? '空头' : '多头'}
+                        {timejs(new Date(whaleWarningData[0].open_time).toLocaleString()).fromNow()} - {whaleWarningData[0].name === 'BTCUSDSHORTS' ? '空头' : '多头'}
                         {" "}-
                         持仓量 {whaleWarningData[0].value > 0 ? '增加' : '减少'} {((whaleWarningData[0].value) * 100).toFixed(2)}%
                     </Typography>

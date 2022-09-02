@@ -105,7 +105,7 @@ const Chart = () => {
 
                 {alt && (<Box sx={{bgcolor: grey[100], textAlign: 'left', p: 1}}>
                     <Typography variant={'body1'}>
-                        山寨季：{alt[0].current_trending === 1 ? '开始' : alt[0].current_trending === -1 ? '结束' : '中立'} - {timejs(alt[0].open_time).toNow()}
+                        山寨季：{alt[0].current_trending === 1 ? '开始' : alt[0].current_trending === -1 ? '结束' : '中立'} - {timejs(alt[0].open_time).fromNow()}
                     </Typography>
                 </Box>)}
                 <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}/>

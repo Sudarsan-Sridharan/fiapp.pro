@@ -134,13 +134,13 @@ const KlineChart: React.FC<IKline> = (props) => {
             .Select((x, index) => ({
                 point: {timestamp: new Date(x.open_time).getTime(), value: x.open_price},
                 styles: {
-                    offset: [index % 2 === 0 ? -50 : -80, 0],
+                    offset: [index % 2 === 0 ? -40 : -70, 0],
                     position: 'bottom',
                 },
                 drawExtend: (params: any) => {
                     const {ctx, point, coordinate, viewport, isActive, styles} = params
                     annotationDrawExtend(ctx, coordinate,
-                        `${messageType[x.description_type as keyof typeof messageType]} \n 反转度${x.risk}`,
+                        `${messageType[x.description_type as keyof typeof messageType]} \n(${x.risk})`,
                         red[500])
                 },
             }))

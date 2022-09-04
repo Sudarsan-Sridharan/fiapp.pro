@@ -115,7 +115,7 @@ const KlineChart: React.FC<IKline> = (props) => {
 
     const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
         .Select(x => ({
-            name: `${x.current_trending === 1 ? '趋势转多' : x.current_trending === 0 ? '趋势中立' : '趋势转空'} \n 可靠度${x.risk}`,
+            name: `${x.current_trending === 1 ? '趋势转多' : x.current_trending === 0 ? '趋势中立' : '趋势转空'} \n 可靠度${6 - x.risk}`,
             coord: [x.open_time?.toLocaleString(), x.open_price],
             value: x.open_price,
             itemStyle: {

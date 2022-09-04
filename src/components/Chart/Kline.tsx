@@ -153,7 +153,7 @@ const KlineChart: React.FC<IKline> = (props) => {
         .ToArray()
 
     const options = klines ? {
-        grid: {top: 8, right: 8, bottom: 24, left: 45},
+        grid: {top: 8, right: 24, bottom: 24, left: 45},
         xAxis: {
             data: klines?.data?.coinKlines?.klines?.map((item: { open_at: { toLocaleString: () => any; }; }) => [item.open_at.toLocaleString()]),
         },

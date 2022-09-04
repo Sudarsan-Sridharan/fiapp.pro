@@ -2,7 +2,7 @@ import {Coordinate} from "klinecharts";
 import React, {useEffect, useState} from "react";
 import TrendingChangeTable, {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
 import {List} from "linqts";
-import {blue, green, grey, red} from "@mui/material/colors";
+import {blue, green, grey, orange, red} from "@mui/material/colors";
 import RiskWarningTable, {IRiskWarning} from "@/components/Table/RiskWarning";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
@@ -113,6 +113,23 @@ const KlineChart: React.FC<IKline> = (props) => {
         refreshInterval: 1000 * 60,
     })
 
+    function EMACalc(mRange: number) {
+        const k = 2 / (mRange + 1);
+        const mArray = klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
+            item.close_bid
+        ])
+        // first item is just the same as the first item in the input
+        const emaArray = [...mArray[0]];
+
+        // for the rest of the items, they are computed with the previous one
+        for (let i = 1; i < mArray.length; i++) {
+            emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
+        }
+
+        console.log(emaArray)
+        return emaArray
+    }
+
     const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
         .Select(x => ({
             name: `${x.current_trending === 1 ? '趋势转多' : x.current_trending === 0 ? '趋势中立' : '趋势转空'} \n 可靠度${6 - x.risk}`,
@@ -147,12 +164,9 @@ const KlineChart: React.FC<IKline> = (props) => {
         tooltip: {
             show: false
         },
-        // tooltip: {
-        //     trigger: 'axis',
-        //     axisPointer: {
-        //         type: 'cross'
-        //     }
-        // },
+        legend: {
+            data: ['EMA20', 'EMA50', 'EMA100', 'EMA200']
+        },
         series: [
             {
                 name: `${name} - ${APIQuery.value.timeframe}`,
@@ -216,6 +230,50 @@ const KlineChart: React.FC<IKline> = (props) => {
                         ...chartRiskWarning,
                     ],
                 },
+            },
+            {
+                name: 'EMA20',
+                type: 'line',
+                data: EMACalc(20),
+                smooth: true,
+                lineStyle: {
+                    opacity: 0.5
+                },
+                symbolSize: 0.5,
+                color: orange[500],
+            },
+            {
+                name: 'EMA50',
+                type: 'line',
+                data: EMACalc(50),
+                smooth: true,
+                lineStyle: {
+                    opacity: 0.5
+                },
+                symbolSize: 0.5,
+                color: grey[500]
+            },
+            {
+                name: 'EMA100',
+                type: 'line',
+                data: EMACalc(100),
+                smooth: true,
+                lineStyle: {
+                    opacity: 0.5
+                },
+                symbolSize: 0.5,
+                color: grey[700]
+            },
+            {
+                name: 'EMA200',
+                type: 'line',
+                data: EMACalc(200),
+                smooth: true,
+                lineStyle: {
+                    opacity: 0.5
+                },
+                symbolSize: 0.5,
+                color: grey[900]
             },
         ],
         dataZoom: [

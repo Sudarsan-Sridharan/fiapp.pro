@@ -165,11 +165,11 @@ const KlineChart: React.FC<IKline> = (props) => {
             show: false
         },
         legend: {
-            data: ['EMA20', 'EMA50', 'EMA100', 'EMA200']
+            data: ['趋势转换', '风险预警', 'EMA20', 'EMA50', 'EMA100', 'EMA200']
         },
         series: [
             {
-                name: `${name} - ${APIQuery.value.timeframe}`,
+                name: `趋势转换`,
                 data: klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
                     item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid
                 ]),
@@ -201,7 +201,7 @@ const KlineChart: React.FC<IKline> = (props) => {
                 },
             },
             {
-                name: `${name} - ${APIQuery.value.timeframe}`,
+                name: `风险预警`,
                 data: klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
                     item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid
                 ]),

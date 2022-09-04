@@ -92,7 +92,6 @@ const TrendingChangeTable = () => {
 
 
     const mdBreakDown = useMediaQuery((theme: any) => theme?.breakpoints.down('md'))
-    console.log(mdBreakDown)
 
     return (
         <>

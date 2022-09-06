@@ -1,26 +1,28 @@
-import React from "react";
 import {FullSizeCenteredFlexBox} from "@/components/styled";
 import {Box, Button, Card, CardActions, CardContent, Stack, TextField, Typography} from "@mui/material";
-import {LoginOutlined} from "@mui/icons-material";
 import {Link, useNavigate} from "react-router-dom";
+import {SignpostOutlined} from "@mui/icons-material";
+import React from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
-import axios from "axios";
 import {domain} from "@/ network/fether";
+import axios from "axios";
 import {useUser} from "@/hooks/useUser";
 
-interface ILoginFormInput {
+interface ISignFormInput {
     email: string;
     password: string;
+    username: string;
 }
 
-const Login = () => {
+const Signup = () => {
     const nav = useNavigate()
     const user = useUser()
-    const {register, handleSubmit, watch, formState: {errors}} = useForm<ILoginFormInput>();
-    const onSubmit: SubmitHandler<ILoginFormInput> = data => axios.post(`${domain}/Authenticate/login`, data).then(res => {
+    const {register, handleSubmit, watch, formState: {errors}} = useForm<ISignFormInput>();
+    const onSubmit: SubmitHandler<ISignFormInput> = data => axios.post(`${domain}/Authenticate/register`, data).then(res => {
         const token = res.data.token
         user.login(token, {email: data.email})
     }).catch(err => console.log(err))
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -29,6 +31,16 @@ const Login = () => {
                     <Card sx={{width: '100%', maxWidth: '600px', p: 2}} elevation={0}>
                         <CardContent>
                             <Stack spacing={1}>
+                                <TextField
+                                    variant={'outlined'}
+                                    helperText={errors.username?.message}
+                                    placeholder="用户名"
+                                    error={!!errors.username}
+                                    {...register("username", {
+                                        required: '用户名不能为空',
+                                        maxLength: 20
+                                    })}
+                                    fullWidth/>
                                 <TextField variant={'outlined'}
                                            placeholder="邮箱" {...register("email", {
                                     required: '邮箱不能为空',
@@ -54,11 +66,12 @@ const Login = () => {
                         <CardActions sx={{width: '100%'}}>
                             <Stack spacing={1} direction={'row'}
                                    sx={{justifyContent: 'end', width: '100%', alignItems: 'center'}}>
-                                <Typography component={Link} to={'/signup'}
+                                <Typography component={Link} to={'/login'}
                                             sx={{textDecoration: 'none', color: 'inherit'}}>
-                                    没有账户？立即注册
+                                    已有账户？立即登录
                                 </Typography>
-                                <Button variant={'contained'} endIcon={<LoginOutlined/>} type={"submit"}>登录</Button>
+                                <Button variant={'contained'} endIcon={<SignpostOutlined/>}
+                                        type={'submit'}>注册</Button>
                             </Stack>
                         </CardActions>
                     </Card>
@@ -68,4 +81,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Signup

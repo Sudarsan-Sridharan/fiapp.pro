@@ -18,6 +18,10 @@ const routes: Routes = {
         title: 'Login',
         icon: LoginOutlined,
     },
+    [Pages.Signup]: {
+        component: asyncComponentLoader(() => import('@/pages/Signup')),
+        path: '/signup',
+    },
     [Pages.Detail]: {
         component: asyncComponentLoader(() => import('@/pages/Detail')),
         path: '/d/:name',

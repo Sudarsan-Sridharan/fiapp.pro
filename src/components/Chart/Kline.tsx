@@ -2,7 +2,7 @@ import {Coordinate} from "klinecharts";
 import React, {useEffect, useState} from "react";
 import TrendingChangeTable, {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
 import {List} from "linqts";
-import {blue, green, grey, orange, red} from "@mui/material/colors";
+import {blue, green, grey, red} from "@mui/material/colors";
 import RiskWarningTable, {IRiskWarning} from "@/components/Table/RiskWarning";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
@@ -113,8 +113,9 @@ const KlineChart: React.FC<IKline> = (props) => {
         refreshInterval: 1000 * 60,
     })
 
-    function EMACalc(mRange: number) {
+    const EMACalc = (mRange: number) => {
         const k = 2 / (mRange + 1);
+
         const mArray = klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
             item.close_bid
         ])
@@ -126,7 +127,6 @@ const KlineChart: React.FC<IKline> = (props) => {
             emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
         }
 
-        console.log(emaArray)
         return emaArray
     }
 
@@ -165,7 +165,7 @@ const KlineChart: React.FC<IKline> = (props) => {
             show: false
         },
         legend: {
-            data: ['趋势转换', '风险预警', 'EMA20', 'EMA50', 'EMA100', 'EMA200']
+            data: ['趋势转换', '风险预警']
         },
         series: [
             {
@@ -231,64 +231,57 @@ const KlineChart: React.FC<IKline> = (props) => {
                     ],
                 },
             },
-            {
-                name: 'EMA20',
-                type: 'line',
-                data: EMACalc(20),
-                smooth: true,
-                lineStyle: {
-                    opacity: 0.5
-                },
-                symbolSize: 0.5,
-                color: orange[500],
-            },
-            {
-                name: 'EMA50',
-                type: 'line',
-                data: EMACalc(50),
-                smooth: true,
-                lineStyle: {
-                    opacity: 0.5
-                },
-                symbolSize: 0.5,
-                color: grey[500]
-            },
-            {
-                name: 'EMA100',
-                type: 'line',
-                data: EMACalc(100),
-                smooth: true,
-                lineStyle: {
-                    opacity: 0.5
-                },
-                symbolSize: 0.5,
-                color: grey[700]
-            },
-            {
-                name: 'EMA200',
-                type: 'line',
-                data: EMACalc(200),
-                smooth: true,
-                lineStyle: {
-                    opacity: 0.5
-                },
-                symbolSize: 0.5,
-                color: grey[900]
-            },
+            // {
+            //     name: 'EMA20',
+            //     type: 'line',
+            //     data: EMACalc(20),
+            //     smooth: true,
+            //     lineStyle: {
+            //         opacity: 0.5
+            //     },
+            //     symbolSize: 0.5,
+            //     color: orange[500],
+            // },
+            // {
+            //     name: 'EMA50',
+            //     type: 'line',
+            //     data: EMACalc(50),
+            //     smooth: true,
+            //     lineStyle: {
+            //         opacity: 0.5
+            //     },
+            //     symbolSize: 0.5,
+            //     color: grey[500]
+            // },
+            // {
+            //     name: 'EMA100',
+            //     type: 'line',
+            //     data: EMACalc(100),
+            //     smooth: true,
+            //     lineStyle: {
+            //         opacity: 0.5
+            //     },
+            //     symbolSize: 0.5,
+            //     color: grey[700]
+            // },
+            // {
+            //     name: 'EMA200',
+            //     type: 'line',
+            //     data: EMACalc(200),
+            //     smooth: true,
+            //     lineStyle: {
+            //         opacity: 0.5
+            //     },
+            //     symbolSize: 0.5,
+            //     color: grey[900]
+            // },
         ],
         dataZoom: [
             {
                 type: 'inside',
-                start: 90,
+                start: 96,
                 end: 100
             },
-            {
-                show: true,
-                type: 'slider',
-                top: '90%',
-                start: 80,
-                end: 100
-            }
         ],
     } : {};
 

@@ -10,7 +10,8 @@ enum Pages {
     Detail,
     RiskWarning,
     TrendingChange,
-    Volatility
+    Volatility,
+    Signup
 }
 
 type PathRouteCustomProps = {

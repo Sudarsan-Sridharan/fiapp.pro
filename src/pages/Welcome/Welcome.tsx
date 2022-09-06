@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Container, Divider, Grid, Stack, Typography,} from '@mui/material';
+import {Box, Button, Container, Divider, Grid, Stack, Typography,} from '@mui/material';
 import {red} from '@mui/material/colors';
 import Meta from '@/components/Meta';
 import InventStart from '@/pages/Welcome/_inventStart';
@@ -7,6 +7,8 @@ import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
 import AllTabTable from "@/components/Table/AllTab";
 import Chart from "@/pages/Welcome/_chart";
+import {Link} from "react-router-dom";
+import {useUser} from "@/hooks/useUser";
 
 const desc = [
     {number: '8+', desc: '个交易策略'},
@@ -16,6 +18,7 @@ const desc = [
 ];
 
 function Welcome() {
+    const user = useUser()
     return (
         <>
             <Meta title="量化交易系统"/>
@@ -33,6 +36,18 @@ function Welcome() {
                                     </Typography>
                                     交易机会
                                 </Typography>
+
+                                {!user.value.token && (<Box>
+                                    <Button
+                                        component={Link}
+                                        to={'/login'}
+                                        size={'small'}
+                                        color={'inherit'}
+                                        variant={'contained'}
+                                    >
+                                        登录
+                                    </Button>
+                                </Box>)}
                             </Stack>
                         </Grid>
 

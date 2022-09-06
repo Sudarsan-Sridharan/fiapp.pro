@@ -25,6 +25,7 @@ import PopupState, {bindHover, bindMenu} from "material-ui-popup-state";
 import {ArrowDropDown} from "@mui/icons-material";
 import {useWhaleWarningAPI} from "@/api/useWhaleWarningAPI";
 import {timejs} from "@/utils/time";
+import {useUser} from "@/hooks/useUser";
 
 const linkButtonData = {
     data: [
@@ -111,6 +112,7 @@ function Header() {
 
     const detail = useMatch('/d/:name');
     const mdBreakDown = useMediaQuery((theme: any) => theme?.breakpoints.down('md'))
+    const user = useUser()
 
     return (
         <Box sx={{flexGrow: 1}}>
@@ -220,6 +222,24 @@ function Header() {
                             >
                                 Discord 群
                             </Button>
+
+                            {user.value.token ? (
+                                <Button size={'small'}
+                                        color={'inherit'}
+                                        variant={'contained'}>
+                                    {user.value.info?.email}
+                                </Button>
+                            ) : (
+                                <Button
+                                    component={Link}
+                                    to={'/login'}
+                                    size={'small'}
+                                    color={'inherit'}
+                                    variant={'contained'}
+                                >
+                                    登录
+                                </Button>
+                            )}
                         </Stack>) : (
                             <PopupState variant="popover" popupId="communityMenu">
                                 {(popupState) => (

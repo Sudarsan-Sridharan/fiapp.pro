@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {BrowserRouter, useMatch} from 'react-router-dom';
 
 import {Box, styled, Toolbar, useMediaQuery} from '@mui/material';
@@ -13,6 +13,7 @@ import SW from '@/sections/SW';
 import {sideBarWidth} from '@/sections/Sidebar/Sidebar';
 import Header from "@/sections/Header";
 import "./App.css"
+import {useUser} from "@/hooks/useUser";
 
 const MainContent = styled('main', {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -37,6 +38,11 @@ const MainContent = styled('main', {
 const RouterPage = () => {
     const detailMatch = useMatch('/d/:name');
     const mdBreakDown = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
+    const user = useUser()
+
+    useEffect(() => {
+        user.me()
+    }, [])
 
     return (
         <>

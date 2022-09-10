@@ -53,7 +53,7 @@ const VolatilityTable = () => {
 
             {volatility ? (
                 <Box height={'60vh'}>
-                    <DataGrid density={'compact'} columns={volatilityColumns} rows={volatility}/>
+                    <DataGrid density={'compact'} columns={volatilityColumns} rows={volatility?.data}/>
                 </Box>
             ) : (<Skeleton height={'60vh'}/>)}
         </Stack>

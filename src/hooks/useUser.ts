@@ -1,7 +1,6 @@
 import {atom, useRecoilState} from "recoil";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
-import {domain} from "@/ network/fether";
+import {domain, http} from "@/ network/fether";
 
 interface IUserInfo {
     email: string;
@@ -43,11 +42,7 @@ export const useUser = () => {
             return
         }
 
-        axios.post(`${domain}/Authenticate/me`, {}, {
-            headers: {
-                'Authorization': `Basic ${token}`
-            }
-        }).then(res => setValue({
+        http.post(`${domain}/Authenticate/me`, {}).then(res => setValue({
             token,
             info: {
                 email: res.data.email

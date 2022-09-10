@@ -105,7 +105,7 @@ const RiskWarningTable = () => {
 
             {data ? (
                 <Box height={'60vh'}>
-                    <DataGrid density={"compact"} disableColumnFilter rows={data} columns={columns}/>
+                    <DataGrid density={"compact"} disableColumnFilter rows={data.data} columns={columns}/>
                 </Box>
             ) : <Skeleton height={'60vh'}/>}
         </Stack>

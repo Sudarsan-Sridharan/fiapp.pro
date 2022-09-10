@@ -47,7 +47,7 @@ const Price = () => {
 
                                     <List dense>
                                         {item.items.map((t, k) => (
-                                            <ListItem>
+                                            <ListItem key={k}>
                                                 <ListItemIcon><CheckOutlined fontSize={"small"}/></ListItemIcon>
                                                 <ListItemText key={k} sx={{ml: -3}}>{t}</ListItemText>
                                             </ListItem>

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import {Card, Grid, Stack, Typography} from '@mui/material';
-import {lightBlue} from "@mui/material/colors";
 import {Link} from "react-router-dom";
+import {indigo} from "@mui/material/colors";
 
 const info = [
     {
@@ -61,7 +61,12 @@ const ProductInfo = () => {
                 {info.map((item, index) => (
                     <Grid item xs={12} md={6} lg={4} key={index}
                           sx={{textDecoration: 'none'}}>
-                        <Card sx={{p: 2, height: '100%', bgcolor: item.ready ? lightBlue[50] : 'white'}}
+                        <Card sx={{
+                            p: 2,
+                            height: '100%',
+                            bgcolor: item.ready ? indigo[500] : 'white',
+                            color: item.ready ? 'white' : 'black'
+                        }}
                               component={item.ready ? Link : "div"} to={item.link ?? ''}
                               variant={'outlined'}>
                             <Stack spacing={1}>

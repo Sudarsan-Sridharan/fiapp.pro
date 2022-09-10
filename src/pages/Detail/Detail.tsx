@@ -2,10 +2,7 @@ import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import Meta from '@/components/Meta';
 import {useAPIQuery} from "@/hooks/useAPIQuery";
-import {ITrendingChange, trendingChangeAtom} from "@/components/Table/TrendingChange";
 import KlineChart from "@/components/Chart/Kline";
-import {riskWarningAtom} from "@/components/Table/RiskWarning";
-import {useRecoilState} from "recoil";
 import {
     Divider,
     Grid,
@@ -23,6 +20,7 @@ import {
 } from "@mui/material";
 import {domain, fetcher} from "@/ network/fether";
 import useSWR from "swr";
+import {useWatchCoin} from "@/hooks/useWatchCoin";
 
 interface IKline {
     open_bid: number;
@@ -59,11 +57,29 @@ const Detail = () => {
     const APIQuery = useAPIQuery()
     name = name as string
 
-    const [trendingChange, setTrendingChange] = useRecoilState<ITrendingChange[]>(trendingChangeAtom);
-    const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
+    const conditions = {
+        risk: APIQuery.value.risk !== 0 ? (APIQuery.value.risk?.toString() ?? '') : '',
+        timeframe: APIQuery.value.timeframe ?? '',
+        currentTrending: APIQuery.value.currentTrending ?? '',
+        name: name ?? ''
+    };
+
+    const sendUrl = new URLSearchParams(conditions).toString();
+
+    const {data: trendingChange} = useSWR(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
+        refreshInterval: 1000 * 60 * 1,
+    });
+
+    const {data: riskWarning} = useSWR(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
+        refreshInterval: 1000 * 60 * 1,
+    });
+
     const {data: coinList} = useSWR(`${domain}/Coin`, fetcher, {
         refreshInterval: 1000 * 60,
     })
+
+
+    const watchCoin = useWatchCoin()
 
 
     return (
@@ -71,15 +87,23 @@ const Detail = () => {
             <Meta title={name}/>
 
             <Grid container sx={{pt: 2}}>
-                <Grid item xs={12} md={8} xl={9}>
-                    <KlineChart name={name} trendingChangeData={trendingChange} riskWarningData={riskWarning}
+                <Grid item xs={12} md={8} xl={10}>
+                    <KlineChart name={name} trendingChangeData={trendingChange?.data}
+                                riskWarningData={riskWarning?.data}
                                 drawer={true}
                                 height={'calc(100vh - 180px)'}/>
                 </Grid>
 
-                <Grid item xs={12} md={4} xl={3}>
+                <Grid item xs={12} md={4} xl={2}>
                     <Paper variant={"outlined"} sx={{height: 'calc(100vh - 180px)', overflow: 'auto'}}>
                         <MList dense>
+                            <ListItem>
+                                <ListItemText>
+                                    自选
+                                </ListItemText>
+                            </ListItem>
+                            <Divider/>
+
                             <ListItem>
                                 <ListItemText>
                                     市场一览
@@ -91,8 +115,8 @@ const Detail = () => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell>商品代码</TableCell>
-                                            <TableCell>30M</TableCell>
-                                            <TableCell>1H</TableCell>
+                                            {/*<TableCell>30M</TableCell>*/}
+                                            {/*<TableCell>1H</TableCell>*/}
                                         </TableRow>
                                     </TableHead>
                                     <TableBody sx={{
@@ -100,7 +124,7 @@ const Detail = () => {
                                             backgroundColor: '#f5f5f5',
                                         },
                                     }}>
-                                        {coinList && coinList.data.map((item: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; trending_change: any[]; }, i: React.Key | null | undefined) => (
+                                        {coinList && coinList?.data.data.map((item: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; trending_change: any[]; }, i: React.Key | null | undefined) => (
                                             <>
                                                 <TableRow key={i} sx={{
                                                     borderLeft: item.name === name ? '1px solid blue' : 'none',
@@ -113,20 +137,20 @@ const Detail = () => {
                                                             {item.name}
                                                         </Typography>
                                                     </TableCell>
-                                                    <TableCell>
-                                                        {
-                                                            item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (
-                                                                trending.time_frame === '30M' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${6 - trending.risk})`
-                                                            ))
-                                                        }
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {
-                                                            item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (
-                                                                trending.time_frame === '1H' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${6 - trending.risk})`
-                                                            ))
-                                                        }
-                                                    </TableCell>
+                                                    {/*<TableCell>*/}
+                                                    {/*    {*/}
+                                                    {/*        item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (*/}
+                                                    {/*            trending.time_frame === '30M' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${6 - trending.risk})`*/}
+                                                    {/*        ))*/}
+                                                    {/*    }*/}
+                                                    {/*</TableCell>*/}
+                                                    {/*<TableCell>*/}
+                                                    {/*    {*/}
+                                                    {/*        item.trending_change.sort((item) => item.open_time).map((trending: { time_frame: string; current_trending: number; risk: any; }, i: any) => (*/}
+                                                    {/*            trending.time_frame === '1H' && `${trending.current_trending === 1 ? '多' : trending.current_trending === -1 ? '空' : '中立'}(${6 - trending.risk})`*/}
+                                                    {/*        ))*/}
+                                                    {/*    }*/}
+                                                    {/*</TableCell>*/}
                                                 </TableRow>
                                                 <Divider/>
                                             </>

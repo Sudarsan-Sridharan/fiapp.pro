@@ -55,8 +55,8 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
             setOptions([]);
         }
 
-        if (data) {
-            const coins = new List<ICoin>(data.data)
+        if (data?.data) {
+            const coins = new List<ICoin>(data.data.data)
                 .OrderBy(x => x.name)
                 .ToArray()
 

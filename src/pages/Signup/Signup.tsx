@@ -1,6 +1,6 @@
 import {FullSizeCenteredFlexBox} from "@/components/styled";
 import {Box, Button, Card, CardActions, CardContent, Stack, TextField, Typography} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {SignpostOutlined} from "@mui/icons-material";
 import React from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -23,6 +23,9 @@ const Signup = () => {
         user.login(token, {email: data.email})
     }).catch(err => console.log(err))
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const email = searchParams.get("email")
+    register("email", {value: email ?? ''})
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -2,7 +2,7 @@ import {Coordinate} from "klinecharts";
 import React, {useEffect, useState} from "react";
 import TrendingChangeTable, {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
 import {List} from "linqts";
-import {blue, green, grey, red} from "@mui/material/colors";
+import {green, grey, lightBlue, red} from "@mui/material/colors";
 import RiskWarningTable, {IRiskWarning} from "@/components/Table/RiskWarning";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
@@ -15,16 +15,19 @@ import {
     DialogContent,
     DialogTitle,
     Divider,
+    IconButton,
     Paper,
     Skeleton,
     Stack,
+    Tooltip,
     useMediaQuery
 } from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
-import AllTabTable from "@/components/Table/AllTab";
 import {useNavigate} from "react-router-dom";
 import EChartsReact from "echarts-for-react";
 import {messageType} from "@/pages/Detail/Detail";
+import {BookmarkBorderOutlined} from "@mui/icons-material";
+import {timejs} from "@/utils/time";
 
 function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
     ctx.font = '12px Roboto'
@@ -116,7 +119,7 @@ const KlineChart: React.FC<IKline> = (props) => {
     const EMACalc = (mRange: number) => {
         const k = 2 / (mRange + 1);
 
-        const mArray = klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
+        const mArray = klines?.data?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
             item.close_bid
         ])
         // first item is just the same as the first item in the input
@@ -133,7 +136,7 @@ const KlineChart: React.FC<IKline> = (props) => {
     const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
         .Select(x => ({
             name: `${x.current_trending === 1 ? '趋势转多' : x.current_trending === 0 ? '趋势中立' : '趋势转空'} \n 可靠度${6 - x.risk}`,
-            coord: [x.open_time?.toLocaleString(), x.open_price],
+            coord: [timejs(new Date(x.open_time).toLocaleString()).format('MM/DD HH:mm'), x.open_price],
             value: x.open_price,
             itemStyle: {
                 color: x.current_trending === 1 ? green[500] : x.current_trending === 0 ? '#fff' : red[500],
@@ -144,7 +147,7 @@ const KlineChart: React.FC<IKline> = (props) => {
     const chartRiskWarning = new List<IRiskWarning>(riskWarningData)
         .Select((x, index) => ({
             name: `${messageType[x.description_type as keyof typeof messageType]} \n 反转度${x.risk}`,
-            coord: [x.open_time?.toLocaleString(), x.open_price],
+            coord: [timejs(new Date(x.open_time).toLocaleString()).format('MM/DD HH:mm'), x.open_price],
             value: x.open_price,
             itemStyle: {
                 color: red[500],
@@ -155,7 +158,7 @@ const KlineChart: React.FC<IKline> = (props) => {
     const options = klines ? {
         grid: {top: 8, right: 24, bottom: 24, left: 45},
         xAxis: {
-            data: klines?.data?.coinKlines?.klines?.map((item: { open_at: { toLocaleString: () => any; }; }) => [item.open_at.toLocaleString()]),
+            data: klines?.data.data.coinKlines.klines.map((item: { open_at: Date }) => [timejs(new Date(item.open_at).toLocaleString()).format('MM/DD HH:mm')]),
         },
         yAxis: {
             type: 'value',
@@ -170,7 +173,7 @@ const KlineChart: React.FC<IKline> = (props) => {
         series: [
             {
                 name: `趋势转换`,
-                data: klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
+                data: klines?.data.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
                     item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid
                 ]),
                 type: 'candlestick',
@@ -189,11 +192,11 @@ const KlineChart: React.FC<IKline> = (props) => {
                             return param.name;
                         },
                         position: 'top',
-                        fontSize: 14,
-                        color: '#fff',
+                        fontSize: 16,
+                        color: '#000',
                         borderWidth: 0,
-                        backgroundColor: blue[500],
-                        padding: 2
+                        backgroundColor: lightBlue[50],
+                        padding: 10
                     },
                     data: [
                         ...chartTrendingChange,
@@ -202,7 +205,7 @@ const KlineChart: React.FC<IKline> = (props) => {
             },
             {
                 name: `风险预警`,
-                data: klines?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
+                data: klines?.data?.data.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
                     item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid
                 ]),
                 type: 'candlestick',
@@ -312,9 +315,16 @@ const KlineChart: React.FC<IKline> = (props) => {
                             {switchWhaleName === 'BTCUSDSHORTS' ? '空头仓位' : '多头仓位'}
                         </Button>
                     )}
+
+                    <Tooltip arrow title={'收藏'}>
+                        <IconButton>
+                            <BookmarkBorderOutlined/>
+                        </IconButton>
+                    </Tooltip>
+
                     {volatility ? (
                         <Chip size={"small"}
-                              label={`波动率：${volatility.length > 0 ? (volatility[0].value * 100).toFixed(3) : null}%`}/>
+                              label={`波动率：${volatility.data.length > 0 ? (volatility.data[0].value * 100).toFixed(3) : null}%`}/>
                     ) : <Skeleton>
                         <Chip size={"small"} label={'波动率'}/>
                     </Skeleton>
@@ -389,10 +399,6 @@ const KlineChart: React.FC<IKline> = (props) => {
                             </>
                         )}
                     </Stack>
-
-                    <Box display={'none'}>
-                        <AllTabTable/>
-                    </Box>
                 </Stack>
             </Box>
             <Divider sx={{my: 1}}/>

@@ -87,7 +87,7 @@ const TrendingChangeTable = () => {
     const [trendingChangeData, setTrendingChangeData] = useRecoilState(trendingChangeAtom);
 
     useEffect(() => {
-        setTrendingChangeData(trendingChange)
+        setTrendingChangeData(trendingChange?.data)
     }, [trendingChange])
 
 
@@ -110,7 +110,7 @@ const TrendingChangeTable = () => {
                     <Box>
                         <Box height={'60vh'}>
                             <DataGrid
-                                rows={trendingChange}
+                                rows={trendingChange?.data}
                                 density={"compact"}
                                 columns={trendingChangeColumns}
                                 getRowClassName={(params) => {

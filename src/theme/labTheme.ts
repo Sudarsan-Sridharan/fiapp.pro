@@ -2,6 +2,7 @@ import ArrowDropDownRounded from '@mui/icons-material/ArrowDropDownRounded';
 import {createTheme, Theme, ThemeOptions} from '@mui/material/styles';
 
 import deepmerge from '../utils/deepmerge';
+import {indigo} from "@mui/material/colors";
 
 const defaultTheme = createTheme();
 
@@ -62,6 +63,9 @@ export const getDesignTokens = (mode: string) =>
         palette: {
             primary: {
                 main: '#1e1e1e'
+            },
+            secondary: {
+                main: indigo[800]
             },
             divider: mode === 'dark' ? blueDark[700] : grey[200],
             primaryDark: blueDark,

@@ -42,7 +42,11 @@ export const useUser = () => {
             return
         }
 
-        http.post(`${domain}/Authenticate/me`, {}).then(res => setValue({
+        http.post(`${domain}/Authenticate/me`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => setValue({
             token,
             info: {
                 email: res.data.email

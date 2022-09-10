@@ -43,7 +43,7 @@ function Welcome() {
                                     交易机会的 <br/> 量化交易系统
                                 </Typography>
 
-                                {!user.value.token && (<Stack spacing={1}>
+                                {!user.value.token ? (<Stack spacing={1}>
                                     <Typography variant={'body1'} color={'secondary'} mt={2} alignItems={'center'}
                                                 display={'flex'}>
                                         立即免费使用量化交易 <KeyboardArrowRightOutlined/>
@@ -64,7 +64,17 @@ function Welcome() {
                                             开始使用
                                         </Button>
                                     </Stack>
-                                </Stack>)}
+                                </Stack>) : (
+                                    <>
+                                        <Button fullWidth size={'large'}
+                                                component={Link}
+                                                to={`/d/BTCUSDT`}
+                                                color={'secondary'} variant={'contained'}
+                                                sx={{maxWidth: 'calc(100% - 164px)'}}>
+                                            开启专业版量化图表
+                                        </Button>
+                                    </>
+                                )}
                             </Stack>
                         </Grid>
 

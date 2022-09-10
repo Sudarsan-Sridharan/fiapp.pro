@@ -9,6 +9,7 @@ const MarketOverview = () => {
         refreshInterval: 1000 * 60 * 1,
     })
 
+
     return (
         <Stack spacing={2}>
             <Box>
@@ -20,15 +21,15 @@ const MarketOverview = () => {
                     <Stack spacing={2}>
                         <Stack spacing={1} direction={'row'}>
                             <Typography variant={"subtitle1"} sx={{color: green[500]}}>
-                                {btcOverview.detail.coinLong[0] ?? 0} 多头
+                                {btcOverview?.data.detail.coinLong[0] ?? 0} 多头
                             </Typography>
                             <Typography variant={"subtitle1"} sx={{color: red[500]}}>
-                                {btcOverview.detail.coinShort[0] ?? 0} 空头
+                                {btcOverview?.data.detail.coinShort[0] ?? 0} 空头
                             </Typography>
                         </Stack>
 
                         <Stack spacing={2} direction={"row"}>
-                            {btcOverview.detail?.coin?.map((item: { time_frame: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; risk: number; current_trending: number; }, index: React.Key | null | undefined) => (
+                            {btcOverview?.data.detail?.coin?.map((item: { time_frame: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; risk: number; current_trending: number; }, index: React.Key | null | undefined) => (
                                 <Box key={index}>
                                     <Typography variant={"subtitle1"}>
                                         {item.time_frame} - 可靠度 {6 - item.risk}
@@ -52,10 +53,10 @@ const MarketOverview = () => {
                 {btcOverview && (
                     <Stack spacing={1} direction={'row'}>
                         <Typography variant={"subtitle1"} sx={{color: green[500]}}>
-                            {btcOverview.analysis.allLong} 多头
+                            {btcOverview?.data.analysis.allLong} 多头
                         </Typography>
                         <Typography variant={"subtitle1"} sx={{color: red[500]}}>
-                            {btcOverview.analysis.allShort} 空头
+                            {btcOverview?.data.analysis.allShort} 空头
                         </Typography>
                     </Stack>
                 )}

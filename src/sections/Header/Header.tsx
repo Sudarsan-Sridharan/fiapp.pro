@@ -224,11 +224,30 @@ function Header() {
                             </Button>
 
                             {user.value.token ? (
-                                <Button size={'small'}
-                                        color={'inherit'}
-                                        variant={'contained'}>
-                                    {user.value.info?.email}
-                                </Button>
+                                <PopupState variant={'popover'} popupId={'userMenu'}>
+                                    {(popupState) => (
+                                        <>
+                                            <Button size={'small'}
+                                                    color={'inherit'}
+                                                    endIcon={<ArrowDropDown/>}
+                                                    {...bindHover(popupState)}
+                                                    variant={'contained'}>
+                                                {user.value.info?.email}
+                                            </Button>
+                                            <Menu {...bindMenu(popupState)}>
+                                                <MenuItem onClick={() => {
+                                                    user.logout()
+                                                    popupState.close()
+                                                }} sx={{maxHeight: '30px'}}>
+                                                    <Typography variant={'body2'}>
+                                                        退出
+                                                    </Typography>
+                                                </MenuItem>
+                                            </Menu>
+                                        </>
+                                    )}
+                                </PopupState>
+
                             ) : (
                                 <Button
                                     component={Link}

@@ -67,6 +67,7 @@ export const useUser = () => {
         value,
         setValue,
         login,
+        logout,
         me
     }
 }

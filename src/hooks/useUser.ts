@@ -60,6 +60,8 @@ export const useUser = () => {
             info: null
         })
 
+        localStorage.removeItem('token')
+
         nav('/')
     }
 

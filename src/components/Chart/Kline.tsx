@@ -29,6 +29,7 @@ import {messageType} from "@/pages/Detail/Detail";
 import {BookmarkBorderOutlined, BookmarkOutlined} from "@mui/icons-material";
 import {timejs} from "@/utils/time";
 import {useWatchCoin} from "@/hooks/useWatchCoin";
+import {useUser} from "@/hooks/useUser";
 
 function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
     ctx.font = '12px Roboto'
@@ -325,6 +326,7 @@ const KlineChart: React.FC<IKline> = (props) => {
         }
     }, [watchCoinData])
 
+    const user = useUser()
     return (
         <Paper variant={"outlined"} sx={{px: 1}}>
             <Box sx={{pt: 1}}>
@@ -336,11 +338,15 @@ const KlineChart: React.FC<IKline> = (props) => {
                         </Button>
                     )}
 
-                    <Tooltip arrow title={isWatchCoin ? '取消收藏' : '收藏'}>
+                    <Tooltip arrow title={user.value.token ? (isWatchCoin ? '取消自选' : '自选') : '登录后添加自选'}>
                         <IconButton onClick={() => {
-                            isWatchCoin ? watchCoin.remove(name) : watchCoin.add(name)
+                            user.value.token ?
+                                (isWatchCoin ? watchCoin.remove(name) : watchCoin.add(name))
+                                : nav('/login')
                         }}>
-                            {isWatchCoin ? <BookmarkOutlined color={'secondary'}/> : <BookmarkBorderOutlined/>}
+                            {user.value.token ?
+                                (isWatchCoin ? <BookmarkOutlined color={'secondary'}/> : <BookmarkBorderOutlined/>)
+                                : <BookmarkBorderOutlined/>}
                         </IconButton>
                     </Tooltip>
 

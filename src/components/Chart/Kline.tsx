@@ -26,8 +26,9 @@ import Asynchronous from "@/components/Search/Asynchronous";
 import {useNavigate} from "react-router-dom";
 import EChartsReact from "echarts-for-react";
 import {messageType} from "@/pages/Detail/Detail";
-import {BookmarkBorderOutlined} from "@mui/icons-material";
+import {BookmarkBorderOutlined, BookmarkOutlined} from "@mui/icons-material";
 import {timejs} from "@/utils/time";
+import {useWatchCoin} from "@/hooks/useWatchCoin";
 
 function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
     ctx.font = '12px Roboto'
@@ -74,6 +75,9 @@ interface IKline {
     height?: string;
 }
 
+interface IWatchCoin {
+    coin_name: string
+}
 
 const countDecimals = function (value: number) {
     const text = value.toString()
@@ -305,6 +309,22 @@ const KlineChart: React.FC<IKline> = (props) => {
 
     const nav = useNavigate()
 
+    const watchCoin = useWatchCoin()
+    const [isWatchCoin, setIsWatchCoin] = useState(false)
+
+    const watchCoinData = new List<IWatchCoin>(watchCoin.data?.data)
+        .Select(x => x.coin_name)
+        .ToArray()
+
+
+    useEffect(() => {
+        if (watchCoinData?.indexOf(name) > -1) {
+            setIsWatchCoin(true)
+        } else {
+            setIsWatchCoin(false)
+        }
+    }, [watchCoinData])
+
     return (
         <Paper variant={"outlined"} sx={{px: 1}}>
             <Box sx={{pt: 1}}>
@@ -316,9 +336,11 @@ const KlineChart: React.FC<IKline> = (props) => {
                         </Button>
                     )}
 
-                    <Tooltip arrow title={'收藏'}>
-                        <IconButton>
-                            <BookmarkBorderOutlined/>
+                    <Tooltip arrow title={isWatchCoin ? '取消收藏' : '收藏'}>
+                        <IconButton onClick={() => {
+                            isWatchCoin ? watchCoin.remove(name) : watchCoin.add(name)
+                        }}>
+                            {isWatchCoin ? <BookmarkOutlined color={'secondary'}/> : <BookmarkBorderOutlined/>}
                         </IconButton>
                     </Tooltip>
 

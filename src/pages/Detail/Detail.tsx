@@ -103,6 +103,41 @@ const Detail = () => {
                                 </ListItemText>
                             </ListItem>
                             <Divider/>
+                            <TableContainer>
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>商品代码</TableCell>
+                                            {/*<TableCell>30M</TableCell>*/}
+                                            {/*<TableCell>1H</TableCell>*/}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody sx={{
+                                        '& .MuiTableRow-root:hover': {
+                                            backgroundColor: '#f5f5f5',
+                                        },
+                                    }}>
+                                        {watchCoin && watchCoin?.data?.data.map((item: { coin_name: string }, i: number) => (
+                                            <>
+                                                <TableRow key={i} sx={{
+                                                    borderLeft: item.coin_name === name ? '1px solid blue' : 'none',
+                                                    backgroundColor: item.coin_name === name ? '#f5f5f5' : 'none',
+                                                }}>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant={'body2'} component={Link}
+                                                                    to={`/d/${item.coin_name}`}
+                                                                    sx={{textDecoration: 'none', color: 'inherit'}}>
+                                                            {item.coin_name}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <Divider/>
+                                            </>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <Divider/>
 
                             <ListItem>
                                 <ListItemText>

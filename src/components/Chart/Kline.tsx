@@ -212,9 +212,9 @@ const KlineChart: React.FC<IKline> = (props) => {
             {klines ? (
                 <Box>
                     <NewKline name={name}
-                              height={'calc(100vh - 180px)'}/>
+                              height={props.height ?? `500px`}/>
                 </Box>
-            ) : <Skeleton sx={{height: `${props.height ?? `600px`}`}}></Skeleton>}
+            ) : <Skeleton sx={{height: `${props.height ?? `500px`}`}}></Skeleton>}
         </Paper>
     );
 }

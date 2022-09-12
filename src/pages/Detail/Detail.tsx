@@ -2,7 +2,6 @@ import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import Meta from '@/components/Meta';
 import {useAPIQuery} from "@/hooks/useAPIQuery";
-import KlineChart from "@/components/Chart/Kline";
 import {
     Divider,
     Grid,
@@ -20,7 +19,7 @@ import {
 } from "@mui/material";
 import {domain, fetcher} from "@/ network/fether";
 import useSWR from "swr";
-import {useWatchCoin} from "@/hooks/useWatchCoin";
+import Kline from "@/components/Chart/Kline";
 
 interface IKline {
     open_bid: number;
@@ -78,8 +77,8 @@ const Detail = () => {
         refreshInterval: 1000 * 60,
     })
 
-
-    const watchCoin = useWatchCoin()
+    //
+    // const watchCoin = useWatchCoin()
 
 
     return (
@@ -88,56 +87,54 @@ const Detail = () => {
 
             <Grid container sx={{pt: 2}}>
                 <Grid item xs={12} md={8} xl={10}>
-                    <KlineChart name={name} trendingChangeData={trendingChange?.data}
-                                riskWarningData={riskWarning?.data}
-                                drawer={true}
-                                height={'calc(100vh - 180px)'}/>
+                    <Kline name={name}
+                           height={'calc(100vh - 180px)'}/>
                 </Grid>
 
                 <Grid item xs={12} md={4} xl={2}>
                     <Paper variant={"outlined"} sx={{height: 'calc(100vh - 180px)', overflow: 'auto'}}>
                         <MList dense>
-                            <ListItem>
-                                <ListItemText>
-                                    自选
-                                </ListItemText>
-                            </ListItem>
-                            <Divider/>
-                            <TableContainer>
-                                <Table size="small">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>商品代码</TableCell>
-                                            {/*<TableCell>30M</TableCell>*/}
-                                            {/*<TableCell>1H</TableCell>*/}
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody sx={{
-                                        '& .MuiTableRow-root:hover': {
-                                            backgroundColor: '#f5f5f5',
-                                        },
-                                    }}>
-                                        {watchCoin && watchCoin?.data?.data.map((item: { coin_name: string }, i: number) => (
-                                            <>
-                                                <TableRow key={i} sx={{
-                                                    borderLeft: item.coin_name === name ? '1px solid blue' : 'none',
-                                                    backgroundColor: item.coin_name === name ? '#f5f5f5' : 'none',
-                                                }}>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant={'body2'} component={Link}
-                                                                    to={`/d/${item.coin_name}`}
-                                                                    sx={{textDecoration: 'none', color: 'inherit'}}>
-                                                            {item.coin_name}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <Divider/>
-                                            </>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <Divider/>
+                            {/*<ListItem>*/}
+                            {/*    <ListItemText>*/}
+                            {/*        自选*/}
+                            {/*    </ListItemText>*/}
+                            {/*</ListItem>*/}
+                            {/*<Divider/>*/}
+                            {/*<TableContainer>*/}
+                            {/*    <Table size="small">*/}
+                            {/*        <TableHead>*/}
+                            {/*            <TableRow>*/}
+                            {/*                <TableCell>商品代码</TableCell>*/}
+                            {/*                /!*<TableCell>30M</TableCell>*!/*/}
+                            {/*                /!*<TableCell>1H</TableCell>*!/*/}
+                            {/*            </TableRow>*/}
+                            {/*        </TableHead>*/}
+                            {/*        <TableBody sx={{*/}
+                            {/*            '& .MuiTableRow-root:hover': {*/}
+                            {/*                backgroundColor: '#f5f5f5',*/}
+                            {/*            },*/}
+                            {/*        }}>*/}
+                            {/*            {watchCoin && watchCoin?.data?.data.map((item: { coin_name: string }, i: number) => (*/}
+                            {/*                <>*/}
+                            {/*                    <TableRow key={i} sx={{*/}
+                            {/*                        borderLeft: item.coin_name === name ? '1px solid blue' : 'none',*/}
+                            {/*                        backgroundColor: item.coin_name === name ? '#f5f5f5' : 'none',*/}
+                            {/*                    }}>*/}
+                            {/*                        <TableCell component="th" scope="row">*/}
+                            {/*                            <Typography variant={'body2'} component={Link}*/}
+                            {/*                                        to={`/d/${item.coin_name}`}*/}
+                            {/*                                        sx={{textDecoration: 'none', color: 'inherit'}}>*/}
+                            {/*                                {item.coin_name}*/}
+                            {/*                            </Typography>*/}
+                            {/*                        </TableCell>*/}
+                            {/*                    </TableRow>*/}
+                            {/*                    <Divider/>*/}
+                            {/*                </>*/}
+                            {/*            ))}*/}
+                            {/*        </TableBody>*/}
+                            {/*    </Table>*/}
+                            {/*</TableContainer>*/}
+                            {/*<Divider/>*/}
 
                             <ListItem>
                                 <ListItemText>

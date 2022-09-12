@@ -1,8 +1,5 @@
-import {Coordinate} from "klinecharts";
 import React, {useEffect, useState} from "react";
 import TrendingChangeTable, {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
-import {List} from "linqts";
-import {green, grey, lightBlue, red} from "@mui/material/colors";
 import RiskWarningTable, {IRiskWarning} from "@/components/Table/RiskWarning";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
@@ -15,57 +12,15 @@ import {
     DialogContent,
     DialogTitle,
     Divider,
-    IconButton,
     Paper,
     Skeleton,
     Stack,
-    Tooltip,
     useMediaQuery
 } from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
 import {useNavigate} from "react-router-dom";
-import EChartsReact from "echarts-for-react";
-import {messageType} from "@/pages/Detail/Detail";
-import {BookmarkBorderOutlined, BookmarkOutlined} from "@mui/icons-material";
-import {timejs} from "@/utils/time";
-import {useWatchCoin} from "@/hooks/useWatchCoin";
 import {useUser} from "@/hooks/useUser";
-
-function annotationDrawExtend(ctx: CanvasRenderingContext2D, coordinate: Coordinate | any, text: string, color = '#2d6187') {
-    ctx.font = '12px Roboto'
-    ctx.fillStyle = color
-    ctx.strokeStyle = '#2d6187'
-
-    const textWidth = ctx.measureText(text).width
-    const startX = coordinate.x
-    let startY = coordinate.y + 6
-    ctx.beginPath()
-    ctx.moveTo(startX, startY + 48)
-    startY += 5
-    ctx.lineTo(startX - 4, startY)
-    ctx.lineTo(startX + 4, startY)
-    ctx.closePath()
-    ctx.fill()
-
-    const rectX = startX - textWidth / 2 - 6
-    const rectY = startY
-    const rectWidth = textWidth + 12
-    const rectHeight = 28
-    const r = 2
-    ctx.beginPath()
-    ctx.moveTo(rectX + r, rectY)
-    ctx.arcTo(rectX + rectWidth, rectY, rectX + rectWidth, rectY + rectHeight, r)
-    ctx.arcTo(rectX + rectWidth, rectY + rectHeight, rectX, rectY + rectHeight, r)
-    ctx.arcTo(rectX, rectY + rectHeight, rectX, rectY, r)
-    ctx.arcTo(rectX, rectY, rectX + rectWidth, rectY, r)
-    ctx.closePath()
-    ctx.fill()
-
-    ctx.fillStyle = '#fff'
-    ctx.textBaseline = 'middle'
-    ctx.textAlign = 'center'
-    ctx.fillText(text, startX, startY + 14)
-}
+import NewKline from "@/components/Chart/NewKline";
 
 interface IKline {
     name?: string;
@@ -79,20 +34,6 @@ interface IKline {
 interface IWatchCoin {
     coin_name: string
 }
-
-const countDecimals = function (value: number) {
-    const text = value.toString()
-    // verify if number 0.000005 is represented as "5e-6"
-    if (text.indexOf('e-') > -1) {
-        const [base, trail] = text.split('e-');
-        return parseInt(trail, 10);
-    }
-    // count decimals for number in representation like "0.123456"
-    if (Math.floor(value) !== value) {
-        return value.toString().split(".")[1].length || 0;
-    }
-    return 0;
-};
 
 const KlineChart: React.FC<IKline> = (props) => {
     const {trendingChangeData, riskWarningData} = props
@@ -138,160 +79,6 @@ const KlineChart: React.FC<IKline> = (props) => {
         return emaArray
     }
 
-    const chartTrendingChange = new List<ITrendingChange>(trendingChangeData)
-        .Select(x => ({
-            name: `${x.current_trending === 1 ? '趋势转多' : x.current_trending === 0 ? '趋势中立' : '趋势转空'} \n 可靠度${6 - x.risk}`,
-            coord: [timejs(new Date(x.open_time).toLocaleString()).format('MM/DD HH:mm'), x.open_price],
-            value: x.open_price,
-            itemStyle: {
-                color: x.current_trending === 1 ? green[500] : x.current_trending === 0 ? '#fff' : red[500],
-            }
-        }))
-        .ToArray()
-
-    const chartRiskWarning = new List<IRiskWarning>(riskWarningData)
-        .Select((x, index) => ({
-            name: `${messageType[x.description_type as keyof typeof messageType]} \n 反转度${x.risk}`,
-            coord: [timejs(new Date(x.open_time).toLocaleString()).format('MM/DD HH:mm'), x.open_price],
-            value: x.open_price,
-            itemStyle: {
-                color: red[500],
-            }
-        }))
-        .ToArray()
-
-    const options = klines ? {
-        grid: {top: 8, right: 24, bottom: 24, left: 45},
-        xAxis: {
-            data: klines?.data.data.coinKlines.klines.map((item: { open_at: Date }) => [timejs(new Date(item.open_at).toLocaleString()).format('MM/DD HH:mm')]),
-        },
-        yAxis: {
-            type: 'value',
-            scale: true,
-        },
-        tooltip: {
-            show: false
-        },
-        legend: {
-            data: ['趋势转换', '风险预警']
-        },
-        series: [
-            {
-                name: `趋势转换`,
-                data: klines?.data.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
-                    item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid
-                ]),
-                type: 'candlestick',
-                itemStyle: {
-                    color: grey[200],
-                    color0: grey[800],
-                    borderWidth: 1,
-                    borderColor: grey[800],
-                    borderColor0: grey[800],
-                },
-                markPoint: {
-                    symbolSize: 10,
-                    symbolOffset: [0, '-100%'],
-                    label: {
-                        formatter: function (param: any) {
-                            return param.name;
-                        },
-                        position: 'top',
-                        fontSize: 16,
-                        color: '#000',
-                        borderWidth: 0,
-                        backgroundColor: lightBlue[50],
-                        padding: 10
-                    },
-                    data: [
-                        ...chartTrendingChange,
-                    ],
-                },
-            },
-            {
-                name: `风险预警`,
-                data: klines?.data?.data.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
-                    item.open_bid, item.close_bid, item.lowest_bid, item.highest_bid
-                ]),
-                type: 'candlestick',
-                itemStyle: {
-                    color: grey[200],
-                    color0: grey[800],
-                    borderWidth: 1,
-                    borderColor: grey[800],
-                    borderColor0: grey[800],
-                },
-                markPoint: {
-                    symbolSize: 10,
-                    symbolOffset: [0, '100%'],
-                    label: {
-                        formatter: function (param: any) {
-                            return param.name;
-                        },
-                        position: 'bottom',
-                        fontSize: 14,
-                        borderWidth: 1,
-                        borderColor: '#000',
-                        padding: 2
-                    },
-                    data: [
-                        ...chartRiskWarning,
-                    ],
-                },
-            },
-            // {
-            //     name: 'EMA20',
-            //     type: 'line',
-            //     data: EMACalc(20),
-            //     smooth: true,
-            //     lineStyle: {
-            //         opacity: 0.5
-            //     },
-            //     symbolSize: 0.5,
-            //     color: orange[500],
-            // },
-            // {
-            //     name: 'EMA50',
-            //     type: 'line',
-            //     data: EMACalc(50),
-            //     smooth: true,
-            //     lineStyle: {
-            //         opacity: 0.5
-            //     },
-            //     symbolSize: 0.5,
-            //     color: grey[500]
-            // },
-            // {
-            //     name: 'EMA100',
-            //     type: 'line',
-            //     data: EMACalc(100),
-            //     smooth: true,
-            //     lineStyle: {
-            //         opacity: 0.5
-            //     },
-            //     symbolSize: 0.5,
-            //     color: grey[700]
-            // },
-            // {
-            //     name: 'EMA200',
-            //     type: 'line',
-            //     data: EMACalc(200),
-            //     smooth: true,
-            //     lineStyle: {
-            //         opacity: 0.5
-            //     },
-            //     symbolSize: 0.5,
-            //     color: grey[900]
-            // },
-        ],
-        dataZoom: [
-            {
-                type: 'inside',
-                start: 96,
-                end: 100
-            },
-        ],
-    } : {};
 
     const [tcDialogOpen, setTcDialogOpen] = useState(false)
     const [rwDialogOpen, setRwDialogOpen] = useState(false)
@@ -310,21 +97,13 @@ const KlineChart: React.FC<IKline> = (props) => {
 
     const nav = useNavigate()
 
-    const watchCoin = useWatchCoin()
-    const [isWatchCoin, setIsWatchCoin] = useState(false)
+    // const watchCoin = useWatchCoin()
+    // const [isWatchCoin, setIsWatchCoin] = useState(false)
+    //
+    // const watchCoinData = new List<IWatchCoin>(watchCoin.data?.data)
+    //     .Select(x => x.coin_name)
+    //     .ToArray()
 
-    const watchCoinData = new List<IWatchCoin>(watchCoin.data?.data)
-        .Select(x => x.coin_name)
-        .ToArray()
-
-
-    useEffect(() => {
-        if (watchCoinData?.indexOf(name) > -1) {
-            setIsWatchCoin(true)
-        } else {
-            setIsWatchCoin(false)
-        }
-    }, [watchCoinData])
 
     const user = useUser()
     return (
@@ -338,17 +117,17 @@ const KlineChart: React.FC<IKline> = (props) => {
                         </Button>
                     )}
 
-                    <Tooltip arrow title={user.value.token ? (isWatchCoin ? '取消自选' : '自选') : '登录后添加自选'}>
-                        <IconButton onClick={() => {
-                            user.value.token ?
-                                (isWatchCoin ? watchCoin.remove(name) : watchCoin.add(name))
-                                : nav('/login')
-                        }}>
-                            {user.value.token ?
-                                (isWatchCoin ? <BookmarkOutlined color={'secondary'}/> : <BookmarkBorderOutlined/>)
-                                : <BookmarkBorderOutlined/>}
-                        </IconButton>
-                    </Tooltip>
+                    {/*<Tooltip arrow title={user.value.token ? (isWatchCoin ? '取消自选' : '自选') : '登录后添加自选'}>*/}
+                    {/*    <IconButton onClick={() => {*/}
+                    {/*        user.value.token ?*/}
+                    {/*            (isWatchCoin ? watchCoin.remove(name) : watchCoin.add(name))*/}
+                    {/*            : nav('/login')*/}
+                    {/*    }}>*/}
+                    {/*        {user.value.token ?*/}
+                    {/*            (isWatchCoin ? <BookmarkOutlined color={'secondary'}/> : <BookmarkBorderOutlined/>)*/}
+                    {/*            : <BookmarkBorderOutlined/>}*/}
+                    {/*    </IconButton>*/}
+                    {/*</Tooltip>*/}
 
                     {volatility ? (
                         <Chip size={"small"}
@@ -432,7 +211,8 @@ const KlineChart: React.FC<IKline> = (props) => {
             <Divider sx={{my: 1}}/>
             {klines ? (
                 <Box>
-                    <EChartsReact option={options} style={{height: props.height ?? 600}}/>
+                    <NewKline name={name}
+                              height={'calc(100vh - 180px)'}/>
                 </Box>
             ) : <Skeleton sx={{height: `${props.height ?? `600px`}`}}></Skeleton>}
         </Paper>

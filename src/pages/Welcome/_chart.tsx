@@ -8,6 +8,7 @@ import {List} from "linqts";
 import {timejs} from "@/utils/time";
 import KlineChart from "@/components/Chart/Kline";
 import {green, grey} from "@mui/material/colors";
+import useAltCoin from "@/hooks/useAltCoin";
 
 const coins = [
     {name: 'BTCUSDT', displayName: 'BTC'},
@@ -53,9 +54,7 @@ const Chart = () => {
         refreshInterval: 1000 * 60 * 1,
     });
 
-    const {data: alt} = useSWR(`${domain}/TrendingChange?name=ALT-PERP&timeframe=4H&risk=1`, fetcher, {
-        refreshInterval: 1000 * 60 * 1,
-    });
+    const alt = useAltCoin()
 
     const BTC: List<ITrendingChange> = new List<ITrendingChange>(coinsTC?.data)
         .Where(x => x?.name === 'BTCUSDT')
@@ -154,12 +153,12 @@ const Chart = () => {
             <Container maxWidth={'xl'} sx={{mt: 2}}>
                 {alt && (<Paper sx={{
                     bgcolor: grey[100],
-                    color: alt.data[0].current_trending === 1 ? green[800] : 'inherit',
+                    color: alt.currentTrending === 1 ? green[800] : 'inherit',
                     textAlign: 'left',
                     p: 1,
-                }} elevation={alt.data[0].current_trending === 1 ? 1 : 0}>
+                }} elevation={alt.currentTrending === 1 ? 1 : 0}>
                     <Typography variant={'body1'}>
-                        山寨季：{alt.data[0].current_trending === 1 ? '开始' : alt.data[0].current_trending === -1 ? '结束' : '中立'} - {timejs(alt.data[0].open_time).fromNow()}
+                        山寨季：{alt.currentTrending === 1 ? '开始' : alt.currentTrending === -1 ? '结束' : '中立'} - {timejs(alt.data.open_time).fromNow()}
                     </Typography>
                 </Paper>)}
                 <KlineChart name={name}/>

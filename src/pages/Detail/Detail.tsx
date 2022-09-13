@@ -65,14 +65,6 @@ const Detail = () => {
 
     const sendUrl = new URLSearchParams(conditions).toString();
 
-    const {data: trendingChange} = useSWR(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
-        refreshInterval: 1000 * 60 * 1,
-    });
-
-    const {data: riskWarning} = useSWR(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
-        refreshInterval: 1000 * 60 * 1,
-    });
-
     const {data: coinList} = useSWR(`${domain}/Coin`, fetcher, {
         refreshInterval: 1000 * 60,
     })

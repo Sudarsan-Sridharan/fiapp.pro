@@ -1,22 +1,9 @@
-import React, {useEffect, useState} from "react";
-import TrendingChangeTable, {ITrendingChange, timeframes} from "@/components/Table/TrendingChange";
-import RiskWarningTable, {IRiskWarning} from "@/components/Table/RiskWarning";
+import React, {useEffect} from "react";
+import {timeframes} from "@/components/Table/TrendingChange";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
-import {
-    Box,
-    Button,
-    Chip,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    Divider,
-    Paper,
-    Skeleton,
-    Stack,
-    useMediaQuery
-} from "@mui/material";
+import {Box, Button, Chip, Divider, Paper, Skeleton, Stack, useMediaQuery} from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
 import {useNavigate} from "react-router-dom";
 import {useUser} from "@/hooks/useUser";
@@ -24,8 +11,6 @@ import NewKline from "@/components/Chart/NewKline";
 
 interface IKline {
     name?: string;
-    trendingChangeData?: ITrendingChange[];
-    riskWarningData?: IRiskWarning[];
     mode?: 'link' | 'switch';
     drawer?: boolean;
     height?: string;
@@ -36,7 +21,6 @@ interface IWatchCoin {
 }
 
 const KlineChart: React.FC<IKline> = (props) => {
-    const {trendingChangeData, riskWarningData} = props
     const APIQuery = useAPIQuery()
 
     const name = props.name ?? 'BTCUSDT'
@@ -62,26 +46,23 @@ const KlineChart: React.FC<IKline> = (props) => {
         refreshInterval: 1000 * 60,
     })
 
-    const EMACalc = (mRange: number) => {
-        const k = 2 / (mRange + 1);
+    // const EMACalc = (mRange: number) => {
+    //     const k = 2 / (mRange + 1);
+    //
+    //     const mArray = klines?.data?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
+    //         item.close_bid
+    //     ])
+    //     // first item is just the same as the first item in the input
+    //     const emaArray = [...mArray[0]];
+    //
+    //     // for the rest of the items, they are computed with the previous one
+    //     for (let i = 1; i < mArray.length; i++) {
+    //         emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
+    //     }
+    //
+    //     return emaArray
+    // }
 
-        const mArray = klines?.data?.data?.coinKlines?.klines.map((item: { open_at: Date, open_bid: number; close_bid: number; highest_bid: number; lowest_bid: number; }) => [
-            item.close_bid
-        ])
-        // first item is just the same as the first item in the input
-        const emaArray = [...mArray[0]];
-
-        // for the rest of the items, they are computed with the previous one
-        for (let i = 1; i < mArray.length; i++) {
-            emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
-        }
-
-        return emaArray
-    }
-
-
-    const [tcDialogOpen, setTcDialogOpen] = useState(false)
-    const [rwDialogOpen, setRwDialogOpen] = useState(false)
 
     const mdBreakDown = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
     const isWhale = props.name === "BTCUSDSHORTS" || props.name === "BTCUSDLONGS"
@@ -169,43 +150,6 @@ const KlineChart: React.FC<IKline> = (props) => {
                             })
                         }
                     </Box>
-
-                    <Stack spacing={1} direction={"row"} alignItems={"center"} sx={{
-                        '& .MuiButtonBase-root': {
-                            color: 'inherit',
-                        }
-                    }}>
-
-
-                        {(props.drawer && !mdBreakDown) && (
-                            <>
-                                <Box>
-                                    <Button onClick={() => setTcDialogOpen(true)}>
-                                        趋势转换
-                                    </Button>
-                                    <Dialog open={tcDialogOpen} onClose={() => setTcDialogOpen(false)} maxWidth={"xl"}
-                                            fullWidth>
-                                        <DialogTitle>{name} 趋势转换 - {APIQuery.value.timeframe}</DialogTitle>
-                                        <DialogContent>
-                                            <TrendingChangeTable/>
-                                        </DialogContent>
-                                    </Dialog>
-                                </Box>
-                                <Box>
-                                    <Button onClick={() => setRwDialogOpen(true)}>
-                                        风险预警
-                                    </Button>
-                                    <Dialog open={rwDialogOpen} onClose={() => setRwDialogOpen(false)} maxWidth={"xl"}
-                                            fullWidth>
-                                        <DialogTitle>{name} 风险预警 - {APIQuery.value.timeframe}</DialogTitle>
-                                        <DialogContent>
-                                            <RiskWarningTable/>
-                                        </DialogContent>
-                                    </Dialog>
-                                </Box>
-                            </>
-                        )}
-                    </Stack>
                 </Stack>
             </Box>
             <Divider sx={{my: 1}}/>

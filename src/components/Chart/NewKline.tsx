@@ -134,7 +134,7 @@ export const ChartComponent = (props: any) => {
     );
 };
 
-function NewKline(props: any) {
+const NewKline = (props: any) => {
     return (
         <ChartComponent {...props}/>
     );

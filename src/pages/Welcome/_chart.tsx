@@ -2,12 +2,12 @@ import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import React from "react";
 import {useAPIQuery} from "@/hooks/useAPIQuery";
-import {Box, Button, Container, Grid, Stack, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Container, Grid, Paper, Stack, Tooltip, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {List} from "linqts";
 import {timejs} from "@/utils/time";
 import KlineChart from "@/components/Chart/Kline";
-import {grey} from "@mui/material/colors";
+import {green, grey} from "@mui/material/colors";
 
 const coins = [
     {name: 'BTCUSDT', displayName: 'BTC'},
@@ -152,13 +152,17 @@ const Chart = () => {
             </Box>
 
             <Container maxWidth={'xl'} sx={{mt: 2}}>
-                {alt && (<Box sx={{bgcolor: grey[100], textAlign: 'left', p: 1}}>
+                {alt && (<Paper sx={{
+                    bgcolor: grey[100],
+                    color: alt.data[0].current_trending === 1 ? green[800] : 'inherit',
+                    textAlign: 'left',
+                    p: 1,
+                }} elevation={alt.data[0].current_trending === 1 ? 1 : 0}>
                     <Typography variant={'body1'}>
                         山寨季：{alt.data[0].current_trending === 1 ? '开始' : alt.data[0].current_trending === -1 ? '结束' : '中立'} - {timejs(alt.data[0].open_time).fromNow()}
                     </Typography>
-                </Box>)}
-                <KlineChart name={name} trendingChangeData={trendingChange?.data}
-                            riskWarningData={riskWarning?.data}/>
+                </Paper>)}
+                <KlineChart name={name}/>
             </Container>
         </>
     )

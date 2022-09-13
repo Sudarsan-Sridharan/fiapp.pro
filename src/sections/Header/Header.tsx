@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, useMatch, useNavigate} from 'react-router-dom';
 
 import {
@@ -26,6 +26,8 @@ import {ArrowDropDown} from "@mui/icons-material";
 import {useWhaleWarningAPI} from "@/api/useWhaleWarningAPI";
 import {timejs} from "@/utils/time";
 import {useUser} from "@/hooks/useUser";
+import useAltCoin from "@/hooks/useAltCoin";
+import {green} from "@mui/material/colors";
 
 const linkButtonData = {
     data: [
@@ -82,18 +84,32 @@ const AppBar = styled(MuiAppBar, {
 
 const AlertBar = () => {
     const {whaleWarningData} = useWhaleWarningAPI(1)
-
+    const alt = useAltCoin()
     const nav = useNavigate()
+    const [swiper, setSwiper] = useState(0)
+
+    setTimeout(() => {
+        setSwiper(swiper ? 0 : 1)
+    }, 5000)
 
     return (
         <>
-            {whaleWarningData && whaleWarningData.data.length > 0 && (
-                // <>
-                //     {timejs(whaleWarningData[0].open_time).isAfter(timejs().subtract(30, 'minutes')) && (
-                //
-                //     )}
-                // </>
-
+            {alt && swiper === 0 && (
+                <Box sx={{
+                    bgcolor: alt.currentTrending === 1 ? green[200] : 'inherit',
+                    textAlign: 'center',
+                    cursor: 'pointer'
+                }}
+                     onClick={() => nav(`/d/ALT-PERP`)}>
+                    <Typography variant={'body1'}
+                                sx={{color: alt.currentTrending === 1 ? '#000' : '#fff'}}
+                    >
+                        {alt.fromNow} - 山寨季
+                        - {alt.currentTrending === 1 ? '开始' : alt.currentTrending === 0 ? '中立' : '结束'}
+                    </Typography>
+                </Box>
+            )}
+            {whaleWarningData && swiper == 1 && whaleWarningData.data.length > 0 && (
                 <Box sx={{bgcolor: '#000', color: '#fff', textAlign: 'center', cursor: 'pointer'}}
                      onClick={() => nav(`/d/${whaleWarningData.data[0].name}`)}>
                     <Typography variant={'body1'}>

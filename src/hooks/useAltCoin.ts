@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {useEffect, useState} from "react";
+import {timejs} from "@/utils/time";
 
 interface IAltCoin {
     current_trending: number,
@@ -11,7 +12,7 @@ const useAltCoin = () => {
     const [data, setData] = useState<IAltCoin>()
 
     const {data: altCoinData} = useSWR(`${domain}/TrendingChange?name=ALT-PERP&timeframe=4H&risk=1`, fetcher, {
-        refreshInterval: 1000 * 60 * 1,
+        refreshInterval: 1000 * 60,
     });
 
     useEffect(() => {
@@ -22,7 +23,8 @@ const useAltCoin = () => {
 
     return {
         data,
-        currentTrending: data?.current_trending
+        currentTrending: data?.current_trending,
+        fromNow: timejs(new Date(data?.open_time ?? '').toLocaleString()).fromNow()
     }
 }
 

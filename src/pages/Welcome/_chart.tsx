@@ -129,7 +129,7 @@ const Chart = () => {
                     p: 1,
                 }} elevation={alt.currentTrending === 1 ? 1 : 0}>
                     <Typography variant={'body1'}>
-                        山寨季：{alt.currentTrending === 1 ? '开始' : alt.currentTrending === -1 ? '结束' : '中立'} - {timejs(alt.data?.open_time).fromNow()}
+                        山寨季：{alt.currentTrending === 1 ? '开始' : alt.currentTrending === -1 ? '结束' : '中立'} - {alt.fromNow}
                     </Typography>
                 </Paper>)}
                 <KlineChart name={name}/>

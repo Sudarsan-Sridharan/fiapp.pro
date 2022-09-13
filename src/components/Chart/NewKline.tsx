@@ -1,4 +1,4 @@
-import {createChart} from 'lightweight-charts';
+import {createChart, PriceScaleMode} from 'lightweight-charts';
 import React, {useEffect, useRef} from 'react';
 import {Box} from "@mui/material";
 import useSWR from "swr";
@@ -71,6 +71,9 @@ export const ChartComponent = (props: any) => {
             const chart = createChart(chartContainerRef.current, {
                 width: chartContainerRef.current.clientWidth,
                 height: chartContainerRef.current.clientHeight,
+                rightPriceScale: {
+                    mode: PriceScaleMode.Logarithmic
+                }
             });
             chart.timeScale().applyOptions({
                 barSpacing: 1,

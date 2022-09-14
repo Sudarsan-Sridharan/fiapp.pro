@@ -89,7 +89,7 @@ export const ChartComponent = (props: any) => {
                     horzAlign: 'center',
                     vertAlign: 'center',
                     color: 'rgba(0, 0, 0, 0.3)',
-                    text: 'Fiapp.pro',
+                    text: `Fiapp.pro - ${props.name}`,
                 },
                 grid: {
                     vertLines: {color: grey[100]},

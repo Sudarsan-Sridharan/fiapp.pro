@@ -72,7 +72,7 @@ const KlineChart: React.FC<IKline> = (props) => {
     useEffect(() => {
         APIQuery.setValue({
             ...APIQuery.value,
-            timeframe: isWhale ? '5M' : '30M'
+            timeframe: isWhale ? '5M' : APIQuery.value.timeframe
         })
     }, [isWhale])
 

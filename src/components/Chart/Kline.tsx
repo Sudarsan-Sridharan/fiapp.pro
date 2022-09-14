@@ -5,11 +5,11 @@ import useSWR from "swr";
 import {domain, fetcher} from "@/ network/fether";
 import {Box, Button, Chip, Divider, IconButton, Paper, Skeleton, Stack, Tooltip, useMediaQuery} from "@mui/material";
 import Asynchronous from "@/components/Search/Asynchronous";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useUser} from "@/hooks/useUser";
 import NewKline from "@/components/Chart/NewKline";
 import {ShareOutlined} from "@mui/icons-material";
-import {useCopyToClipboard, useSearchParam} from "react-use";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 interface IKline {
     name?: string;
@@ -78,15 +78,14 @@ const KlineChart: React.FC<IKline> = (props) => {
         })
     }, [isWhale])
 
-    const timeframeParams = useSearchParam('timeframe')
+    const [searchParams] = useSearchParams()
 
     useEffect(() => {
         APIQuery.setValue({
             ...APIQuery.value,
-            timeframe: timeframeParams ?? '30M'
+            timeframe: searchParams.get('timeframe') ?? '30M'
         })
-    }, [timeframeParams])
-    const [state, copyToClipboard] = useCopyToClipboard();
+    }, [searchParams])
     const [copied, setCopied] = useState(false);
     useEffect(() => {
         if (copied) {
@@ -168,15 +167,15 @@ const KlineChart: React.FC<IKline> = (props) => {
                     </Box>
 
                     <Box>
-                        <Tooltip title={copied ? '链接已复制' : '分享链接'}>
-                            <IconButton size={"small"}
-                                        onClick={() => {
-                                            copyToClipboard(`${window.location.href.split('?')[0]}?timeframe=${APIQuery.value.timeframe}`)
-                                            setCopied(true)
-                                        }}>
-                                <ShareOutlined fontSize={"small"}/>
-                            </IconButton>
-                        </Tooltip>
+                        <CopyToClipboard
+                            onCopy={() => setCopied(true)}
+                            text={`${window.location.href.split('?')[0]}?timeframe=${APIQuery.value.timeframe}`}>
+                            <Tooltip title={copied ? '链接已复制' : '分享链接'}>
+                                <IconButton size={"small"}>
+                                    <ShareOutlined fontSize={"small"}/>
+                                </IconButton>
+                            </Tooltip>
+                        </CopyToClipboard>
                     </Box>
                 </Stack>
             </Box>

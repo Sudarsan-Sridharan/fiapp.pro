@@ -1,5 +1,5 @@
-import React from 'react';
-import {Link, useParams} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import Meta from '@/components/Meta';
 import {useAPIQuery} from "@/hooks/useAPIQuery";
 import {
@@ -71,7 +71,13 @@ const Detail = () => {
 
     //
     // const watchCoin = useWatchCoin()
+    const nav = useNavigate()
 
+    useEffect(() => {
+        nav({
+            search: `?timeframe=${APIQuery.value.timeframe}`
+        })
+    }, [APIQuery.value.timeframe, name])
 
     return (
         <>

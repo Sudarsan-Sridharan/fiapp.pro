@@ -7,6 +7,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {domain} from "@/ network/fether";
 import axios from "axios";
 import {useUser} from "@/hooks/useUser";
+import Meta from "@/components/Meta";
 
 interface ISignFormInput {
     email: string;
@@ -29,6 +30,7 @@ const Signup = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <Meta title={'注册'}/>
             <Box height={'60vh'}>
                 <FullSizeCenteredFlexBox>
                     <Card sx={{width: '100%', maxWidth: '600px', p: 2}} elevation={0}>

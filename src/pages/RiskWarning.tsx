@@ -6,6 +6,7 @@ import useSWR from 'swr';
 
 import {domain, fetcher} from '@/ network/fether';
 import RiskWarningTable from "@/components/Table/RiskWarning";
+import Meta from "@/components/Meta";
 
 const RiskWarning = () => {
     const {data} = useSWR(`${domain}/RiskWarning`, fetcher, {
@@ -14,6 +15,7 @@ const RiskWarning = () => {
 
     return (
         <Container maxWidth={'xl'}>
+            <Meta title={'风险预警'}/>
             <Toolbar/>
 
             <RiskWarningTable/>

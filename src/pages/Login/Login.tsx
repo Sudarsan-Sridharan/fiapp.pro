@@ -7,6 +7,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {domain} from "@/ network/fether";
 import {useUser} from "@/hooks/useUser";
+import Meta from "@/components/Meta";
 
 interface ILoginFormInput {
     email: string;
@@ -24,6 +25,8 @@ const Login = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <Meta title={'登录'}/>
+
             <Box height={'60vh'}>
                 <FullSizeCenteredFlexBox>
                     <Card sx={{width: '100%', maxWidth: '600px', p: 2}} elevation={0}>

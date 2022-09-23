@@ -81,7 +81,7 @@ const Detail = () => {
 
     return (
         <>
-            <Meta title={name}/>
+            <Meta title={name} description={`${name} 的最新量化数据`}/>
 
             <Grid container sx={{pt: 2}}>
                 <Grid item xs={12} md={8} xl={10}>

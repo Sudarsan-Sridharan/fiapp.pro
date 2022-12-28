@@ -33,12 +33,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          corepack enable
-          yarn set version stable
-          yarn install --immutable
+          pnpm install
 
       - name: Build
-        run: yarn build
+        run: pnpm build
         env:
           CI: true
 

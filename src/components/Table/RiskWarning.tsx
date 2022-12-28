@@ -1,115 +1,115 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
+import { Link, useMatch } from 'react-router-dom';
+import { atom, useRecoilState } from 'recoil';
 
-import {Box, Skeleton, Stack, Tooltip} from '@mui/material';
-import {DataGrid, GridColDef} from '@mui/x-data-grid';
+import { Box, Skeleton, Stack, Tooltip } from '@mui/material';
+import Button from '@mui/material/Button';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import useSWR from 'swr';
 
-import {domain, fetcher} from '@/ network/fether';
-import {TimeframeQuery} from "@/components/Table/Query";
-import {useAPIQuery} from "@/hooks/useAPIQuery";
-import {Link, useMatch} from "react-router-dom";
-import Button from "@mui/material/Button";
-import {atom, useRecoilState} from "recoil";
-import {messageType} from "@/pages/Detail/Detail";
-import {timejs} from "@/utils/time";
+import { domain, fetcher } from '@/ network/fether';
+import { TimeframeQuery } from '@/components/Table/Query';
+import { useAPIQuery } from '@/hooks/useAPIQuery';
+import { messageType } from '@/pages/Detail/Detail';
+import { timejs } from '@/utils/time';
+
 
 export interface IRiskWarning {
-    description_type: number,
-    name?: string,
-    open_price?: number,
-    open_time: Date,
-    time_frame?: string,
-    risk?: number
+  description_type: number;
+  name?: string;
+  open_price?: number;
+  open_time: Date;
+  time_frame?: string;
+  risk?: number;
 }
 
 export const riskWarningAtom = atom<IRiskWarning[]>({
-    key: "riskWarningAtom",
-    default: []
-})
+  key: 'riskWarningAtom',
+  default: [],
+});
 
 const columns: GridColDef[] = [
-    {
-        field: 'name',
-        headerName: '名称',
-        width: 120,
-        renderCell: (params) => (
-            <Button
-                component={Link}
-                to={`/d/${params.value}`}
-                sx={{paddingLeft: 0, minWidth: 0}}
-                size={"small"}
-                color={"inherit"}
-            >
-                {params.value.substring(0, params.value.indexOf("USDT"))}
+  {
+    field: 'name',
+    headerName: '名称',
+    width: 120,
+    renderCell: (params) => (
+      <Button
+        component={Link}
+        to={`/d/${params.value}`}
+        sx={{ paddingLeft: 0, minWidth: 0 }}
+        size={'small'}
+        color={'inherit'}
+      >
+        {params.value.substring(0, params.value.indexOf('USDT'))}
 
-                <Tooltip title={'反转度'} arrow placement={"right"}>
-                   <span>
-                        ({params.row.risk})
-                   </span>
-                </Tooltip>
-            </Button>
-        ),
+        <Tooltip title={'反转度'} arrow placement={'right'}>
+          <span>({params.row.risk})</span>
+        </Tooltip>
+      </Button>
+    ),
+  },
+  {
+    field: 'open_time',
+    headerName: '触发时间',
+    renderCell: (params) => timejs(new Date(params.value).toLocaleString()).fromNow(),
+    width: 120,
+  },
+  {
+    field: 'description_type',
+    headerName: '描述',
+    renderCell: (params) => {
+      return messageType[params.value as keyof typeof messageType];
     },
-    {
-        field: 'open_time',
-        headerName: '触发时间',
-        renderCell: (params) => timejs(new Date(params.value).toLocaleString()).fromNow(),
-        width: 120,
-    },
-    {
-        field: 'description_type',
-        headerName: '描述',
-        renderCell: (params) => {
-            return messageType[params.value as keyof typeof messageType];
-        },
-        width: 200
-    },
-    {
-        field: 'open_price',
-        headerName: '触发价格',
-        renderCell: (params) => `$${params.value}`,
-        width: 120,
-    },
+    width: 200,
+  },
+  {
+    field: 'open_price',
+    headerName: '触发价格',
+    renderCell: (params) => `$${params.value}`,
+    width: 120,
+  },
 ];
 
 const RiskWarningTable = () => {
-    const APIQuery = useAPIQuery()
-    const detail = useMatch('/d/:name');
+  const APIQuery = useAPIQuery();
+  const detail = useMatch('/d/:name');
 
-    const conditions = {
-        risk: APIQuery.value.risk !== 0 ? (APIQuery.value.risk?.toString() ?? '') : '',
-        timeframe: APIQuery.value.timeframe ?? '',
-        currentTrending: APIQuery.value.currentTrending ?? '',
-        name: detail?.params?.name ?? ''
-    };
+  const conditions = {
+    risk: APIQuery.value.risk !== 0 ? APIQuery.value.risk?.toString() ?? '' : '',
+    timeframe: APIQuery.value.timeframe ?? '',
+    currentTrending: APIQuery.value.currentTrending ?? '',
+    name: detail?.params?.name ?? '',
+  };
 
-    const sendUrl = new URLSearchParams(conditions).toString();
+  const sendUrl = new URLSearchParams(conditions).toString();
 
-    const {data} = useSWR(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
-        refreshInterval: 1000 * 60 * 1,
-    });
+  const { data } = useSWR<any>(`${domain}/RiskWarning?${sendUrl}`, fetcher, {
+    refreshInterval: 1000 * 60 * 1,
+  });
 
-    const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
+  const [riskWarning, setRiskWarning] = useRecoilState(riskWarningAtom);
 
-    useEffect(() => {
-        setRiskWarning(riskWarning)
-    }, [riskWarning])
+  useEffect(() => {
+    setRiskWarning(riskWarning);
+  }, [riskWarning]);
 
+  return (
+    <Stack spacing={1}>
+      {/*<Typography variant={'h4'}>风险预警</Typography>*/}
 
-    return (
-        <Stack spacing={1}>
-            {/*<Typography variant={'h4'}>风险预警</Typography>*/}
+      <TimeframeQuery />
 
-            <TimeframeQuery/>
-
-            {data ? (
-                <Box height={'60vh'}>
-                    <DataGrid density={"compact"} disableColumnFilter rows={data.data} columns={columns}/>
-                </Box>
-            ) : <Skeleton height={'60vh'}/>}
-        </Stack>
-    );
+      {data ? (
+        <Box height={'60vh'}>
+          <DataGrid density={'compact'} disableColumnFilter rows={data.data} columns={columns} />
+        </Box>
+      ) : (
+        <Skeleton height={'60vh'} />
+      )}
+    </Stack>
+  );
 };
 
 export default RiskWarningTable;

@@ -32,9 +32,9 @@ jobs:
       #          ${{ runner.os }}-yarn-
       #
       - name: Install Dependencies
-        run: |
-          yarn set version latest
-          yarn install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
 
       - name: Build
         run: yarn build

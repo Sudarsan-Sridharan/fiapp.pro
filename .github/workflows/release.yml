@@ -33,6 +33,7 @@ jobs:
       #
       - name: Install Dependencies
         run: |
+          yarn set version latest
           yarn install
 
       - name: Build

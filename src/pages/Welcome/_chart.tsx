@@ -165,8 +165,11 @@ const Chart = () => {
           >
             <Typography variant={'body1'}>
               山寨季：
-              {alt.currentTrending === 1 ? '开始' : alt.currentTrending === -1 ? '结束' : '中立'} -{' '}
-              {alt.fromNow}
+              {alt.currentTrending === 1
+                ? '开始'
+                : alt.currentTrending === -1
+                ? '结束'
+                : '中立'} - {alt.fromNow}
             </Typography>
           </Paper>
         )}

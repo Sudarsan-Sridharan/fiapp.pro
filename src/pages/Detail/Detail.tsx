@@ -140,7 +140,7 @@ const Detail = () => {
                                 <Typography
                                   variant={'body2'}
                                   component={Link}
-                                  to={`/d/${item.name}`}
+                                  to={`/d/${item.name}?timeframe=${APIQuery.value.timeframe}`}
                                   sx={{ textDecoration: 'none', color: 'inherit' }}
                                 >
                                   {item.name}

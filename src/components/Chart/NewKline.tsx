@@ -134,6 +134,13 @@ export const ChartComponent = (props: any) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
 
+    newSeries.applyOptions({
+      priceFormat: {
+        type: 'price',
+        precision: 6,
+        minMove: 0.000001,
+      },
+    });
     newSeries.setData(price);
     newSeries.setMarkers(trending ? [...trending.sort((a: any, b: any) => (a.time - b.time))] : []);
     window.addEventListener('resize', handleResize);

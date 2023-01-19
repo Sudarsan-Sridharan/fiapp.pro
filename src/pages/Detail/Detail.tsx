@@ -72,7 +72,7 @@ const Detail = () => {
   });
 
   const viewportHeight = window.innerHeight;
-  console.log(viewportHeight);
+
   // const watchCoin = useWatchCoin()
   const nav = useNavigate();
 

@@ -2,38 +2,67 @@ import React from 'react';
 import { Divider, Paper, Stack, Typography, TypographyProps } from '@mui/material';
 import Asynchronous from '@/components/Search/Asynchronous';
 import { styled } from '@mui/system';
-import { Apps, MultilineChart } from '@mui/icons-material';
+import { Apps, FavoriteBorderOutlined, MultilineChart } from '@mui/icons-material';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
-import { grey } from '@mui/material/colors';
+import { grey, indigo } from '@mui/material/colors';
+import { UserAtom } from '@/hooks/useUser';
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 
 const PointerText = styled(Typography)<TypographyProps>((theme) => ({
   cursor: 'pointer',
-  fontSize: '0.875rem',
   '&:hover': {
     backgroundColor: grey[200],
   },
   padding: 4,
 }));
 
+interface IPointerButton {
+  cursor?: string,
+  opacity?: string,
+  icon?: React.ReactNode,
+  children: React.ReactNode,
+  color?: string
+}
+
+const PointerButton: React.FC<IPointerButton> = (props) => (
+  <PointerText color={props.color} variant={'body2'} sx={{ cursor: props.cursor, opacity: props.opacity }}>
+    <Stack alignItems={'center'} direction={'row'}>
+      {props.icon}
+      {props.children}
+    </Stack>
+  </PointerText>
+);
+
 const Indicate = () => {
   return (<>
-    <PointerText sx={{ cursor: 'not-allowed', opacity: '.1' }}><Stack alignItems={'center'} direction={'row'}>
-      <MultilineChart />
-      指标
-    </Stack> </PointerText>
+    <PointerButton icon={<MultilineChart />} cursor={'not-allowed'} opacity={'.1'}>指标</PointerButton>
   </>);
 };
 
 const Strategy = () => {
   return (<>
-    <PointerText sx={{ cursor: 'not-allowed', opacity: '.1' }}><Stack alignItems={'center'} direction={'row'}>
-      <Apps />
-      量化
-    </Stack> </PointerText>
+    <PointerButton icon={<Apps />} cursor={'not-allowed'} opacity={'.1'}>量化</PointerButton>
   </>);
 };
 
+
+const WatchCoin: React.FC<IKlineChartHeader> = (props) => {
+  const { token } = useRecoilValue(UserAtom);
+  const nav = useNavigate();
+  const currentPath = window.location.pathname;
+
+  const watch = () => {
+    console.log(props.coin);
+  };
+
+  return (
+    <PointerButton icon={<FavoriteBorderOutlined />} cursor={'not-allowed'} opacity={'.1'}>
+      关注
+    </PointerButton>
+  );
+};
 const TimeFrame = () => {
   const APIQuery = useAPIQuery();
   const I18Ntime: any = {
@@ -49,6 +78,7 @@ const TimeFrame = () => {
         sx={{
           bgcolor: item === APIQuery.value.timeframe ? grey[200] : '',
         }}
+        color={item === APIQuery.value.timeframe ? indigo[600] : ''}
         onClick={() =>
           APIQuery.setValue({
             ...APIQuery.value,
@@ -77,6 +107,8 @@ const KlineChartHeader: React.FC<IKlineChartHeader> = (props) => {
           <Indicate />
           <VerticalDivider />
           <Strategy />
+          <VerticalDivider />
+          <WatchCoin coin={props.coin} />
         </Stack>
       </Paper>
     </>

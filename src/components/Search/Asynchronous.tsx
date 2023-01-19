@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   Autocomplete,
+  Avatar,
   Box,
-  Button,
   Chip,
   CircularProgress,
   Dialog,
@@ -74,14 +74,8 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
   return (
     <>
       {mode === 'button' && (
-        <Button
-          variant={'outlined'}
-          sx={{ color: 'inherit' }}
-          size={'small'}
-          onClick={() => setDialog(true)}
-        >
-          {label}
-        </Button>
+        <Chip label={label} avatar={<Avatar>{label?.slice(0, 1)}</Avatar>} variant={'outlined'}
+              onClick={() => setDialog(true)} />
       )}
 
       {mode === 'input' && (

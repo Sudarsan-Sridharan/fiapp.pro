@@ -11,9 +11,9 @@ import {
   Menu,
   MenuItem,
   Stack,
+  styled,
   Toolbar,
   Typography,
-  styled,
   useMediaQuery,
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -105,10 +105,6 @@ const AlertBar = () => {
           }}
           onClick={() => nav(`/d/ALT-PERP`)}
         >
-          <Typography variant={'body1'} sx={{ color: alt.currentTrending === 1 ? '#000' : '#fff' }}>
-            {alt.fromNow} - 山寨季 -{' '}
-            {alt.currentTrending === 1 ? '开始' : alt.currentTrending === 0 ? '中立' : '结束'}
-          </Typography>
         </Box>
       )}
       {whaleWarningData && swiper == 1 && whaleWarningData.data.length > 0 && (
@@ -128,19 +124,19 @@ const AlertBar = () => {
   );
 };
 
+
 function Header() {
   const [isSidebarOpen] = useSidebar();
 
   const detail = useMatch('/d/:name');
   const mdBreakDown = useMediaQuery((theme: any) => theme?.breakpoints.down('md'));
   const user = useUser();
-
-  return (
+  const MainComponent = () => (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         open={isSidebarOpen}
-        position="fixed"
-        color="inherit"
+        position='fixed'
+        color='inherit'
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           backdropFilter: 'blur(20px)',
@@ -343,7 +339,8 @@ function Header() {
         </Toolbar>
       </AppBar>
     </Box>
-  );
+  )
+  return <MainComponent />;
 }
 
 export default Header;

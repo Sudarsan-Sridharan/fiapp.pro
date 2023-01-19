@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Box, Button, Container, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
-import { green, grey } from '@mui/material/colors';
+import { Box, Button, Container, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 import { List } from 'linqts';
 import useSWR from 'swr';
@@ -153,26 +153,6 @@ const Chart = () => {
       </Box>
 
       <Container maxWidth={'xl'} sx={{ mt: 2 }}>
-        {alt && (
-          <Paper
-            sx={{
-              bgcolor: grey[100],
-              color: alt.currentTrending === 1 ? green[800] : 'inherit',
-              textAlign: 'left',
-              p: 1,
-            }}
-            elevation={alt.currentTrending === 1 ? 1 : 0}
-          >
-            <Typography variant={'body1'}>
-              山寨季：
-              {alt.currentTrending === 1
-                ? '开始'
-                : alt.currentTrending === -1
-                ? '结束'
-                : '中立'} - {alt.fromNow}
-            </Typography>
-          </Paper>
-        )}
         <KlineChart name={name} />
       </Container>
     </>

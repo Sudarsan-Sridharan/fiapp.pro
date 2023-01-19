@@ -1,9 +1,9 @@
-import {LoginOutlined} from '@mui/icons-material';
+import { LoginOutlined } from '@mui/icons-material';
 import HomeIcon from '@mui/icons-material/Home';
 
 import asyncComponentLoader from '@/utils/loader';
 
-import {Pages, Routes} from './types';
+import { Pages, Routes } from './types';
 
 const routes: Routes = {
     [Pages.Welcome]: {
@@ -28,20 +28,24 @@ const routes: Routes = {
     },
     [Pages.RiskWarning]: {
         component: asyncComponentLoader(() => import('@/pages/RiskWarning')),
-        path: '/RiskWarning',
+      path: '/RiskWarning',
     },
-    [Pages.TrendingChange]: {
-        component: asyncComponentLoader(() => import('@/pages/TrendingChange')),
-        path: '/TrendingChange',
-    },
-    [Pages.Volatility]: {
-        component: asyncComponentLoader(() => import('@/pages/Volatility')),
-        path: '/Volatility',
-    },
-    [Pages.NotFound]: {
-        component: asyncComponentLoader(() => import('@/pages/NotFound')),
-        path: '*',
-    },
+  [Pages.TrendingChange]: {
+    component: asyncComponentLoader(() => import('@/pages/TrendingChange')),
+    path: '/TrendingChange',
+  },
+  [Pages.Volatility]: {
+    component: asyncComponentLoader(() => import('@/pages/Volatility')),
+    path: '/Volatility',
+  },
+  [Pages.Chart]: {
+    component: asyncComponentLoader(() => import('@/pages/Chart')),
+    path: '/chart/:coinName',
+  },
+  [Pages.NotFound]: {
+    component: asyncComponentLoader(() => import('@/pages/NotFound')),
+    path: '*',
+  },
 };
 
 export default routes;

@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import { ShareOutlined } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  IconButton,
-  Paper,
-  Skeleton,
-  Stack,
-  Tooltip,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Skeleton, useMediaQuery } from '@mui/material';
 
 import useSWR from 'swr';
 
 import { domain, fetcher } from '@/ network/fether';
 import NewKline from '@/components/Chart/NewKline';
-import Asynchronous from '@/components/Search/Asynchronous';
-import { timeframes } from '@/components/Table/TrendingChange';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
 import { useUser } from '@/hooks/useUser';
+import KlineChartHeader from '@/components/Chart/KlineChartHeader';
 
 interface IKline {
   name?: string;
@@ -117,93 +102,10 @@ const KlineChart: React.FC<IKline> = (props) => {
   const user = useUser();
 
   return (
-    <Paper variant={'outlined'} sx={{ px: 1 }}>
-      <Box sx={{ pt: 1 }}>
-        <Stack direction={'row'} spacing={1} alignItems={'center'}>
-          <Asynchronous label={name} />
-          {isWhale && (
-            <Button variant={'text'} onClick={() => nav(`/d/${switchWhaleName}`)}>
-              {switchWhaleName === 'BTCUSDSHORTS' ? '空头仓位' : '多头仓位'}
-            </Button>
-          )}
-
-          {/*<Tooltip arrow title={user.value.token ? (isWatchCoin ? '取消自选' : '自选') : '登录后添加自选'}>*/}
-          {/*    <IconButton onClick={() => {*/}
-          {/*        user.value.token ?*/}
-          {/*            (isWatchCoin ? watchCoin.remove(name) : watchCoin.add(name))*/}
-          {/*            : nav('/login')*/}
-          {/*    }}>*/}
-          {/*        {user.value.token ?*/}
-          {/*            (isWatchCoin ? <BookmarkOutlined color={'secondary'}/> : <BookmarkBorderOutlined/>)*/}
-          {/*            : <BookmarkBorderOutlined/>}*/}
-          {/*    </IconButton>*/}
-          {/*</Tooltip>*/}
-
-          {volatility ? (
-            <Chip
-              size={'small'}
-              label={`波动率：${
-                volatility.data.length > 0 ? (volatility.data[0].value * 100).toFixed(3) : null
-              }%`}
-            />
-          ) : (
-            <Skeleton>
-              <Chip size={'small'} label={'波动率'} />
-            </Skeleton>
-          )}
-          <Box>
-            {isWhale
-              ? ['5M', '30M', '1H'].map((item, index) => {
-                  return (
-                    <Button
-                      size={'small'}
-                      key={index}
-                      onClick={() =>
-                        APIQuery.setValue({
-                          ...APIQuery.value,
-                          timeframe: item,
-                        })
-                      }
-                      variant={item === APIQuery.value.timeframe ? 'contained' : 'text'}
-                    >
-                      {item}
-                    </Button>
-                  );
-                })
-              : timeframes.map((item, index) => {
-                  return (
-                    <Button
-                      size={'small'}
-                      key={index}
-                      onClick={() =>
-                        APIQuery.setValue({
-                          ...APIQuery.value,
-                          timeframe: item,
-                        })
-                      }
-                      variant={item === APIQuery.value.timeframe ? 'contained' : 'text'}
-                    >
-                      {item}
-                    </Button>
-                  );
-                })}
-          </Box>
-
-          <Box>
-            <CopyToClipboard
-              onCopy={() => setCopied(true)}
-              text={`${window.location.href.split('?')[0]}?timeframe=${APIQuery.value.timeframe}`}
-            >
-              <Tooltip title={copied ? '链接已复制' : '分享链接'}>
-                <IconButton size={'small'}>
-                  <ShareOutlined fontSize={'small'} />
-                </IconButton>
-              </Tooltip>
-            </CopyToClipboard>
-          </Box>
-        </Stack>
+    <>
+      <Box>
+        <KlineChartHeader coin={props.name ?? ''} />
       </Box>
-      <Divider sx={{ my: 1 }} />
       {klines ? (
         <Box>
           <NewKline name={name} height={props.height ?? `500px`} />
@@ -211,7 +113,7 @@ const KlineChart: React.FC<IKline> = (props) => {
       ) : (
         <Skeleton sx={{ height: `${props.height ?? `500px`}` }}></Skeleton>
       )}
-    </Paper>
+    </>
   );
 };
 

@@ -1,2 +1,20 @@
-# front-end
-a front end made from react-ts with vite.
+# Fiapp.pro website
+
+## Development Environment Requirement
+
+* nodejs
+* yarn
+
+## Install
+
+```bash
+yarn
+
+yarn dev
+```
+
+## Build
+
+```bash
+yarn build
+```

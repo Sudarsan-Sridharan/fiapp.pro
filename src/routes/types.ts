@@ -1,7 +1,7 @@
-import {FC} from 'react';
-import {PathRouteProps} from 'react-router-dom';
+import { FC } from 'react';
+import { PathRouteProps } from 'react-router-dom';
 
-import type {SvgIconProps} from '@mui/material/SvgIcon';
+import type { SvgIconProps } from '@mui/material/SvgIcon';
 
 enum Pages {
     Welcome,
@@ -11,7 +11,8 @@ enum Pages {
     RiskWarning,
     TrendingChange,
     Volatility,
-    Signup
+    Signup,
+    Chart
 }
 
 type PathRouteCustomProps = {

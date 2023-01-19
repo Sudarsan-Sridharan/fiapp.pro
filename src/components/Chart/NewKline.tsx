@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { green, grey, red } from '@mui/material/colors';
 
-import { PriceScaleMode, createChart } from 'lightweight-charts';
+import { createChart, PriceScaleMode } from 'lightweight-charts';
 import useSWR from 'swr';
 
 import { domain, fetcher } from '@/ network/fether';
@@ -135,19 +135,21 @@ export const ChartComponent = (props: any) => {
 
       chart.remove();
     };
-  }, [price, trending]);
+  }, [price, props.name, trending]);
 
   return (
-    <Box height={props.height} width={'100%'}>
-      {price && (
-        <div
-          ref={chartContainerRef}
-          style={{
-            height: '100%',
-          }}
-        />
-      )}
-    </Box>
+    <>
+      <Box height={props.height} width={'100%'}>
+        {price && (
+          <div
+            ref={chartContainerRef}
+            style={{
+              height: '100%',
+            }}
+          />
+        )}
+      </Box>
+    </>
   );
 };
 

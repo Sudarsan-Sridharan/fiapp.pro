@@ -1,14 +1,14 @@
-import React, {useCallback, useState} from 'react';
-import {Box, Button, Container, Divider, Grid, OutlinedInput, Stack, Typography, useMediaQuery,} from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import { Box, Button, Container, Divider, Grid, OutlinedInput, Stack, Typography, useMediaQuery } from '@mui/material';
 import Meta from '@/components/Meta';
 import InventStart from '@/pages/Welcome/_inventStart';
 import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
-import {Link} from "react-router-dom";
-import {useUser} from "@/hooks/useUser";
-import {KeyboardArrowRightOutlined} from "@mui/icons-material";
-import Chart from "@/pages/Welcome/_chart";
-import AllTabTable from "@/components/Table/AllTab";
+import { Link } from 'react-router-dom';
+import { useUser } from '@/hooks/useUser';
+import { KeyboardArrowRightOutlined } from '@mui/icons-material';
+import Chart from '@/pages/Welcome/_chart';
+import AllTabTable from '@/components/Table/AllTab';
 
 const desc = [
     {number: '8+', desc: '个交易策略'},
@@ -86,8 +86,8 @@ function Welcome() {
                     </Grid>
 
                     {/*<Box mt={8}>*/}
-                    {/*    <Chart/>*/}
-                    {/*</Box>*/}
+                  {/*    <KlineChartHeader/>*/}
+                  {/*</Box>*/}
                 </Container>
             </Box>
 

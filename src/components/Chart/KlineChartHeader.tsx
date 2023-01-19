@@ -4,7 +4,7 @@ import Asynchronous from '@/components/Search/Asynchronous';
 import { styled } from '@mui/system';
 import { Apps, AttachMoney, FavoriteBorderOutlined, MultilineChart } from '@mui/icons-material';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
-import { grey, indigo } from '@mui/material/colors';
+import { green, grey, indigo, red } from '@mui/material/colors';
 import { UserAtom } from '@/hooks/useUser';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
@@ -99,15 +99,23 @@ const TimeFrame = () => {
 
 interface IKlineChartHeader {
   coin: string;
+  trending?: number;
 }
 
 const VerticalDivider = () => <Divider orientation={'vertical'} variant={'middle'} flexItem />;
 const KlineChartHeader: React.FC<IKlineChartHeader> = (props) => {
+  let trendingColor;
+  if (props.trending === 1) {
+    trendingColor = green[400];
+  } else if (props.trending === -1) {
+    trendingColor = red[400];
+  }
+
   return (
     <>
       <Paper variant={'outlined'} sx={{ borderRadius: 0, borderRight: 0 }}>
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          <Asynchronous label={props.coin} />
+          <Asynchronous label={props.coin} color={trendingColor} />
           <VerticalDivider />
           <TimeFrame />
           <VerticalDivider />

@@ -32,6 +32,7 @@ interface IAsynchronous {
   height?: number;
   mode?: 'input' | 'button';
   label?: string;
+  color?: string;
 }
 
 const Asynchronous: React.FC<IAsynchronous> = (props) => {
@@ -74,7 +75,9 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
   return (
     <>
       {mode === 'button' && (
-        <Chip label={label} avatar={<Avatar>{label?.slice(0, 1)}</Avatar>} variant={'outlined'}
+        <Chip label={label} avatar={<Avatar sx={{
+          bgcolor: props.color,
+        }}>{label?.slice(0, 1)}</Avatar>} variant={'outlined'}
               onClick={() => setDialog(true)} />
       )}
 

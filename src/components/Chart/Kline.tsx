@@ -92,19 +92,13 @@ const KlineChart: React.FC<IKline> = (props) => {
     }
   }, [copied]);
 
-  // const watchCoin = useWatchCoin()
-  // const [isWatchCoin, setIsWatchCoin] = useState(false)
-  //
-  // const watchCoinData = new List<IWatchCoin>(watchCoin.data?.data)
-  //     .Select(x => x.coin_name)
-  //     .ToArray()
 
   const user = useUser();
-
   return (
     <>
       <Box>
-        <KlineChartHeader coin={props.name ?? ''} />
+        <KlineChartHeader coin={props.name ?? ''}
+                          trending={klines?.data?.data?.meta?.trending_change[0]?.current_trending} />
       </Box>
       {klines ? (
         <Box>

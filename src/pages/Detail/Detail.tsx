@@ -23,6 +23,7 @@ import { domain, fetcher } from '@/ network/fether';
 import Kline from '@/components/Chart/Kline';
 import Meta from '@/components/Meta';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
+import { green, lightGreen } from '@mui/material/colors';
 
 interface IKline {
   open_bid: number;
@@ -67,7 +68,7 @@ const Detail = () => {
 
   const sendUrl = new URLSearchParams(conditions).toString();
 
-  const { data: coinList } = useSWR<any>(`${domain}/Coin`, fetcher, {
+  const { data: coinList } = useSWR<any>(`${domain}/Coin?timeframe=${APIQuery.value.timeframe}`, fetcher, {
     refreshInterval: 1000 * 60,
   });
 
@@ -103,12 +104,13 @@ const Detail = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell>商品代码</TableCell>
+                      <TableCell>方向</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody
                     sx={{
                       '& .MuiTableRow-root:hover': {
-                        backgroundColor: '#f5f5f5',
+                        backgroundColor: lightGreen[100],
                       },
                     }}
                   >
@@ -134,16 +136,33 @@ const Detail = () => {
                               sx={{
                                 borderLeft: item.name === name ? '1px solid blue' : 'none',
                                 backgroundColor: item.name === name ? '#f5f5f5' : 'none',
+                                bgcolor: item?.trending_change[0]?.current_trending == 1 ? green[500] : '',
                               }}
                             >
-                              <TableCell component="th" scope="row">
+                              <TableCell component='th' scope='row'>
                                 <Typography
                                   variant={'body2'}
                                   component={Link}
                                   to={`/d/${item.name}?timeframe=${APIQuery.value.timeframe}`}
-                                  sx={{ textDecoration: 'none', color: 'inherit' }}
+                                  sx={{
+                                    textDecoration: 'none',
+                                    color: item?.trending_change[0]?.current_trending == 1 ? 'white' : 'inherit',
+                                  }}
                                 >
                                   {item.name}
+                                </Typography>
+                              </TableCell>
+                              <TableCell component='th' scope='row'>
+                                <Typography
+                                  variant={'body2'}
+                                  sx={{
+                                    textDecoration: 'none',
+                                    color: item?.trending_change[0]?.current_trending == 1 ? 'white' : 'inherit',
+                                  }}
+                                >
+                                  {
+                                    item?.trending_change[0]?.current_trending === -1 ? '空' : '多'
+                                  }
                                 </Typography>
                               </TableCell>
                             </TableRow>

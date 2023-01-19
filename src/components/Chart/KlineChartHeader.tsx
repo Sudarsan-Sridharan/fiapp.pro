@@ -1,8 +1,8 @@
 import React from 'react';
-import { Divider, Paper, Stack, Typography, TypographyProps } from '@mui/material';
+import { Box, Divider, Paper, Stack, Typography, TypographyProps } from '@mui/material';
 import Asynchronous from '@/components/Search/Asynchronous';
 import { styled } from '@mui/system';
-import { Apps, FavoriteBorderOutlined, MultilineChart } from '@mui/icons-material';
+import { Apps, AttachMoney, FavoriteBorderOutlined, MultilineChart } from '@mui/icons-material';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
 import { grey, indigo } from '@mui/material/colors';
 import { UserAtom } from '@/hooks/useUser';
@@ -47,7 +47,14 @@ const Strategy = () => {
   </>);
 };
 
-
+const TradingButton: React.FC<IKlineChartHeader> = (props) => {
+  const link = `https://www.binance.com/zh-CN/trade/${props.coin.split('USDT')[0]}_USDT?ref=167714863`;
+  return (
+    <Box onClick={() => window.open(link, '_black')}>
+      <PointerButton icon={<AttachMoney />}>交易</PointerButton>
+    </Box>
+  );
+};
 const WatchCoin: React.FC<IKlineChartHeader> = (props) => {
   const { token } = useRecoilValue(UserAtom);
   const nav = useNavigate();
@@ -109,6 +116,8 @@ const KlineChartHeader: React.FC<IKlineChartHeader> = (props) => {
           <Strategy />
           <VerticalDivider />
           <WatchCoin coin={props.coin} />
+          <VerticalDivider />
+          <TradingButton coin={props.coin} />
         </Stack>
       </Paper>
     </>

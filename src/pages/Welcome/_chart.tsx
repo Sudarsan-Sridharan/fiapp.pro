@@ -109,7 +109,7 @@ const Chart = () => {
                                 target={'_blank'}
                                 href={`https://www.binance.com/zh-CN/trade/${
                                   item.name.split('USDT')[0]
-                                }_USDT`}
+                                }_USDT?ref=167714863`}
                               >
                                 交易
                               </Button>

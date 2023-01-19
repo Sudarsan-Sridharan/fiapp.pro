@@ -94,10 +94,16 @@ export const ChartComponent = (props: any) => {
         mode: PriceScaleMode.Logarithmic,
       },
     });
-    chart.timeScale().applyOptions({
-      barSpacing: 1,
-      timeVisible: true,
+
+    chart.priceScale().applyOptions({
+      mode: PriceScaleMode.Logarithmic,
     });
+    chart.timeScale().applyOptions({
+      timeVisible: true,
+      rightOffset: 100,
+
+    });
+    chart.timeScale().fitContent();
 
     const timer = new Date().getTime();
 
@@ -123,11 +129,14 @@ export const ChartComponent = (props: any) => {
       borderUpColor: grey[800],
       wickDownColor: grey[800],
       wickUpColor: grey[800],
+      title: props.name,
     });
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    newSeries.setMarkers(trending ? [...trending] : []);
+
     newSeries.setData(price);
+    newSeries.setMarkers(trending ? [...trending] : []);
     window.addEventListener('resize', handleResize);
 
     return () => {

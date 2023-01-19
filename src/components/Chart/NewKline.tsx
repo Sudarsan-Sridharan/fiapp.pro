@@ -101,9 +101,8 @@ export const ChartComponent = (props: any) => {
     chart.timeScale().applyOptions({
       timeVisible: true,
       rightOffset: 100,
-
+      barSpacing: 4,
     });
-    chart.timeScale().fitContent();
 
     const timer = new Date().getTime();
 
@@ -136,7 +135,7 @@ export const ChartComponent = (props: any) => {
     // @ts-ignore
 
     newSeries.setData(price);
-    newSeries.setMarkers(trending ? [...trending] : []);
+    newSeries.setMarkers(trending ? [...trending.sort((a: any, b: any) => (a.time - b.time))] : []);
     window.addEventListener('resize', handleResize);
 
     return () => {

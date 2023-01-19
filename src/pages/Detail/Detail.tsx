@@ -110,7 +110,7 @@ const Detail = () => {
                   <TableBody
                     sx={{
                       '& .MuiTableRow-root:hover': {
-                        backgroundColor: lightGreen[100],
+                        backgroundColor: lightGreen[300],
                       },
                     }}
                   >
@@ -136,7 +136,7 @@ const Detail = () => {
                               sx={{
                                 borderLeft: item.name === name ? '1px solid blue' : 'none',
                                 backgroundColor: item.name === name ? '#f5f5f5' : 'none',
-                                bgcolor: item?.trending_change[0]?.current_trending == 1 ? green[500] : '',
+                                bgcolor: item?.trending_change[0]?.current_trending === 1 ? green[500] : '',
                               }}
                             >
                               <TableCell component='th' scope='row'>
@@ -146,7 +146,7 @@ const Detail = () => {
                                   to={`/d/${item.name}?timeframe=${APIQuery.value.timeframe}`}
                                   sx={{
                                     textDecoration: 'none',
-                                    color: item?.trending_change[0]?.current_trending == 1 ? 'white' : 'inherit',
+                                    color: item?.trending_change[0]?.current_trending === 1 ? 'white' : 'inherit',
                                   }}
                                 >
                                   {item.name}
@@ -157,11 +157,11 @@ const Detail = () => {
                                   variant={'body2'}
                                   sx={{
                                     textDecoration: 'none',
-                                    color: item?.trending_change[0]?.current_trending == 1 ? 'white' : 'inherit',
+                                    color: item?.trending_change[0]?.current_trending === 1 ? 'white' : 'inherit',
                                   }}
                                 >
                                   {
-                                    item?.trending_change[0]?.current_trending === -1 ? '空' : '多'
+                                    item?.trending_change.length > 0 && (item?.trending_change[0]?.current_trending === -1 ? '空' : '多')
                                   }
                                 </Typography>
                               </TableCell>

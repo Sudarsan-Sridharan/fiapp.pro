@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { messageType } from '@/pages/Detail/Detail';
-import { lightGreen, red } from '@mui/material/colors';
+import { green, red } from '@mui/material/colors';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
 import { timejs } from '@/utils/time';
 import { TimeframeQuery } from '@/components/Table/Query';
@@ -60,8 +60,8 @@ const Monitor = () => {
                   <TableCell align='left' sx={{
                     zIndex: 2,
                     color: 'white',
-                    bgcolor: row.trending_change[0]?.current_trending === 1 ? lightGreen[300] : red[300],
-                  }}>{row.trending_change[0]?.current_trending === -1 ? '空' : '多'}
+                    bgcolor: row.trending_change[0]?.current_trending.current_trending === 1 ? green[500] : row.trending_change[0]?.current_trending.current_trending === 0 ? '' : red[500],
+                  }}>{row.trending_change[0]?.current_trending.current_trending === 1 ? '多' : row.trending_change[0]?.current_trending.current_trending === 0 ? '' : '空'}
                     - {timejs(row.trending_change[0]?.open_time).fromNow()}
                   </TableCell>
                   <TableCell

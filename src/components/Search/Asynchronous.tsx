@@ -1,20 +1,19 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Autocomplete,
   Avatar,
   Box,
+  Card,
   Chip,
-  CircularProgress,
   Dialog,
+  InputAdornment,
   OutlinedInput,
-  Skeleton,
+  Stack,
   TextField,
+  Typography,
 } from '@mui/material';
-
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
 import { List } from 'linqts';
 import useSWR from 'swr';
 
@@ -22,6 +21,7 @@ import { domain, fetcher } from '@/ network/fether';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
 
 import './raycast.scss';
+import { CurrencyBitcoin } from '@mui/icons-material';
 
 interface ICoin {
   name: string;
@@ -50,7 +50,40 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
   const APIQuery = useAPIQuery();
   const { data } = useSWR<any>(`${domain}/Coin`, fetcher);
 
+  const [timer, setTimer] = useState<any>(null);
+
+  function changeDelay(change: any) {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    setTimer(
+      setTimeout(() => {
+        searchItem(change);
+      }, 500),
+    );
+  }
+
   const loading = open && options.length === 0;
+  const [searchData, setSearchData] = useState<any>();
+  const searchItem = (query: string) => {
+    if (!query) {
+      setSearchData(data?.data.data);
+      return;
+    }
+    query = query.toLowerCase();
+
+    const finalResult: any[] | React.SetStateAction<undefined> = [];
+    data?.data.data.forEach((item: { name: string; exchange: string | string[]; }) => {
+      if (
+        item.name.toLowerCase().indexOf(query) !== -1 ||
+        item.exchange.includes(query)
+      ) {
+        finalResult.push(item);
+      }
+    });
+    setSearchData(finalResult);
+  };
 
   const nav = useNavigate();
 
@@ -63,6 +96,7 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
       const coins = new List<ICoin>(data.data.data).OrderBy((x) => x.name).ToArray();
 
       setOptions(coins);
+      setSearchData(coins);
     }
   }, [data, open]);
 
@@ -91,83 +125,67 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
         />
       )}
       <Dialog open={dialog} onClose={() => setDialog(false)} fullWidth>
-        <Box sx={{ p: 1 }}>
-          {data ? (
-            <Autocomplete
-              id="asynchronous-demo"
+        <Card variant={'outlined'} sx={{ py: 2 }}>
+          <Stack spacing={1}>
+            <Typography variant={'h5'} sx={{ px: 2 }}>商品代码搜索</Typography>
+            <TextField
+              onChange={(e) => changeDelay(e.target.value)}
+              margin={'none'}
               sx={{
-                width: '100%',
+                '& fieldset': {
+                  border: 0,
+                  borderTop: 'solid 1px #e0e0e0',
+                  borderRadius: 0,
+                  borderBottom: 'solid 1px #e0e0e0',
+                },
               }}
+              label=''
+              id='outlined-start-adornment'
+              fullWidth
               size={'small'}
-              open={open}
-              onOpen={() => {
-                setOpen(true);
-              }}
-              onClose={() => {
-                setOpen(false);
-              }}
-              isOptionEqualToValue={(option, value) => option.name === value.name}
-              getOptionLabel={(option) => option.name}
-              options={options}
-              loading={loading}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size={'small'}
-                  autoFocus
-                  label={label ?? APIQuery.value.name ?? '搜索币种'}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <React.Fragment>
-                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={(props, option, { inputValue }) => {
-                const matches = match(option.name, inputValue);
-                const parts = parse(option.name, matches);
-
-                return (
-                  <li {...props} onClick={() => handleChange(option)}>
-                    <Box
-                      justifyContent={'space-between'}
-                      display={'flex'}
-                      alignItems={'center'}
-                      width={'100%'}
-                    >
-                      <Box>
-                        {parts.map((part, index) => (
-                          <span
-                            key={index}
-                            style={{
-                              fontWeight: part.highlight ? 700 : 400,
-                            }}
-                          >
-                            {part.text}
-                          </span>
-                        ))}
-                      </Box>
-
-                      {(option.name === 'BTCUSDSHORTS' || option.name === 'BTCUSDLONGS') && (
-                        <>
-                          <Chip label={option.name === 'BTCUSDSHORTS' ? '空头持仓' : '多头持仓'} />
-                        </>
-                      )}
-                    </Box>
-                  </li>
-                );
+              InputProps={{
+                startAdornment: <InputAdornment position='start'>
+                  <CurrencyBitcoin />
+                </InputAdornment>,
               }}
             />
-          ) : (
-            <Skeleton sx={{ width: '250px' }}>
-              <OutlinedInput />
-            </Skeleton>
-          )}
-        </Box>
+
+            <Box px={2}>
+              <Chip label={'全部'} color={'primary'} size={'small'} />
+            </Box>
+
+            <Box sx={{ overflowY: 'scroll', maxHeight: '500px' }}>
+              {
+                searchData ? searchData.map((item: any, i: number) => {
+                  return (
+                    <Box py={1} key={i} display={'flex'} justifyContent={'space-between'} alignItems={'center'}
+                         onClick={() => nav(`/d/${item.name}`)}
+                         sx={{
+                           cursor: 'pointer',
+                           px: 2,
+                           '&:hover': {
+                             backgroundColor: '#f5f5f5',
+                           },
+                           borderBottom: 'solid 1px #e0e0e0',
+                         }}>
+                      <Typography variant={'body2'}>
+                        {item.name}
+                      </Typography>
+
+                      <Chip
+                        size={'small'}
+                        avatar={<Avatar alt='Natacha'
+                                        src={item.exchange === 'binance' ? 'https://s3-symbol-logo.tradingview.com/provider/binance.svg' : 'https://s3-symbol-logo.tradingview.com/provider/bitfinex.svg'} />}
+                        label={item.exchange.toUpperCase()}
+                        variant='outlined'
+                      />
+                    </Box>
+                  );
+                }) : <></>
+              }
+            </Box>
+          </Stack>
+        </Card>
       </Dialog>
       {/*{data ? (*/}
       {/*    <Autocomplete*/}

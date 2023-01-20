@@ -106,6 +106,10 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
 
   const [dialog, setDialog] = React.useState(false);
 
+  const navLink = (link: string) => {
+    nav(link);
+    setDialog(false);
+  };
   return (
     <>
       {mode === 'button' && (
@@ -159,7 +163,7 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
                 searchData ? searchData.map((item: any, i: number) => {
                   return (
                     <Box py={1} key={i} display={'flex'} justifyContent={'space-between'} alignItems={'center'}
-                         onClick={() => nav(`/d/${item.name}`)}
+                         onClick={() => navLink(`/d/${item.name}`)}
                          sx={{
                            cursor: 'pointer',
                            px: 2,

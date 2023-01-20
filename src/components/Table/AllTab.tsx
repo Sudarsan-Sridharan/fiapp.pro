@@ -7,6 +7,7 @@ import SelectCoin from '@/components/SelectCoin/SelectCoin';
 import RiskWarningTable from '@/components/Table/RiskWarning';
 import TrendingChangeTable from '@/components/Table/TrendingChange';
 import VolatilityTable from '@/components/Table/Volatility';
+import Monitor from '@/components/Monitor/Monitor';
 
 interface ITabList {
   label: string;
@@ -15,13 +16,14 @@ interface ITabList {
 }
 
 const AllTabTable = () => {
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = React.useState('0');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
   const tabList: ITabList[] = [
+    { label: '全局监控（实时）', value: '0', element: <Monitor /> },
     { label: '趋势转换', value: '1', element: <TrendingChangeTable /> },
     { label: '风险预警', value: '2', element: <RiskWarningTable /> },
     { label: '动量检测', value: '3', element: <VolatilityTable /> },

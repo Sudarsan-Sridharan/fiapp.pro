@@ -59,9 +59,9 @@ const Monitor = () => {
                   </TableCell>
                   <TableCell align='left' sx={{
                     zIndex: 2,
-                    color: row.trending_change[0]?.current_trending.current_trending === 1 ? 'white' : 'initial',
-                    bgcolor: row.trending_change[0]?.current_trending.current_trending === 1 ? green[500] : 'initial',
-                  }}>{row.trending_change[0]?.current_trending.current_trending === 1 ? '多' : row.trending_change[0]?.current_trending.current_trending === 0 ? '' : '空'}
+                    color: row.trending_change[0]?.current_trending === 1 ? 'white' : 'initial',
+                    bgcolor: row.trending_change[0]?.current_trending === 1 ? green[500] : 'initial',
+                  }}>{row.trending_change[0]?.current_trending === 1 ? '多' : row.trending_change[0]?.current_trending === 0 ? '' : '空'}
                     - {timejs(row.trending_change[0]?.open_time).fromNow()}
                   </TableCell>
                   <TableCell

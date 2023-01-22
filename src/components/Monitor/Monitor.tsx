@@ -25,7 +25,7 @@ const Monitor = () => {
   const APIQuery = useAPIQuery();
 
   const { data: coin } = useSWR<any>(`${domain}/Coin?timeframe=${APIQuery.value.timeframe}`, fetcher, {
-    refreshInterval: 1000 * 60,
+    refreshInterval: 1000 * 10,
   });
   const coinData = coin?.data.data;
   const nav = useNavigate();
@@ -55,7 +55,7 @@ const Monitor = () => {
                   key={row.name}
                 >
                   <TableCell component='th' scope='row'>
-                    {row.name}
+                    {row.name} - ${row.coin_realtime_price}
                   </TableCell>
                   <TableCell align='left' sx={{
                     zIndex: 2,

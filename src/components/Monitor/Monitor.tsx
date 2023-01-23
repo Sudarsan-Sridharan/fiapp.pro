@@ -53,7 +53,7 @@ const Monitor = () => {
                   <TableCell component='th' scope='row'>
                     {row.name} - ${parseFloat(row.coin_realtime_price)}
                   </TableCell>
-                  {row.trending_change.length > 0 && (
+                  {row.trending_change.length > 0 ? (
                     <>
                       <TableCell align='left' sx={{
                         zIndex: 2,
@@ -65,7 +65,11 @@ const Monitor = () => {
                       <TableCell
                         align='left'>{messageType[row.risk_warning[0]?.description_type as keyof typeof messageType]}</TableCell>
                     </>
-                  )}
+                  ) : <>
+                    <TableCell align='left' />
+                    <TableCell align='left' />
+                  </>
+                  }
                   <TableCell align='left'>
                     <Chip
                       size={'small'}

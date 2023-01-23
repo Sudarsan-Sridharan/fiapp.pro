@@ -20,14 +20,21 @@ import { green } from '@mui/material/colors';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
 import { timejs } from '@/utils/time';
 import { TimeframeQuery } from '@/components/Table/Query';
+import { useCoinList } from '@/hooks/useCoinList';
 
 const Monitor = () => {
   const APIQuery = useAPIQuery();
+  const CoinList = useCoinList();
 
   const { data: coin } = useSWR<any>(`${domain}/Coin?timeframe=${APIQuery.value.timeframe}`, fetcher, {
     refreshInterval: 1000 * 10,
   });
-  const coinData = coin?.data.data;
+  const coinData = coin?.data.data ?? [];
+
+  if (coinData.length > 0) {
+    CoinList.setValue(coinData);
+  }
+
   const nav = useNavigate();
 
   return (
@@ -55,7 +62,7 @@ const Monitor = () => {
                   key={row.name}
                 >
                   <TableCell component='th' scope='row'>
-                    {row.name} - ${row.coin_realtime_price}
+                    {row.name} - ${parseFloat(row.coin_realtime_price)}
                   </TableCell>
                   <TableCell align='left' sx={{
                     zIndex: 2,

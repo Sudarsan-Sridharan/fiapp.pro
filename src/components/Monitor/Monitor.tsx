@@ -1,6 +1,4 @@
 import React from 'react';
-import useSWR from 'swr';
-import { domain, fetcher } from '@/ network/fether';
 import {
   Avatar,
   Box,
@@ -26,15 +24,6 @@ const Monitor = () => {
   const APIQuery = useAPIQuery();
   const CoinList = useCoinList();
 
-  const { data: coin } = useSWR<any>(`${domain}/Coin?timeframe=${APIQuery.value.timeframe}`, fetcher, {
-    refreshInterval: 1000 * 10,
-  });
-  const coinData = coin?.data.data ?? [];
-
-  if (coinData.length > 0) {
-    CoinList.setValue(coinData);
-  }
-
   const nav = useNavigate();
 
   return (
@@ -57,22 +46,26 @@ const Monitor = () => {
                 backgroundColor: '#f5f5f5',
               },
             }}>
-              {coinData ? coinData.map((row: any) => (
+              {CoinList.value ? CoinList.value.map((row: any) => (
                 <TableRow
                   key={row.name}
                 >
                   <TableCell component='th' scope='row'>
                     {row.name} - ${parseFloat(row.coin_realtime_price)}
                   </TableCell>
-                  <TableCell align='left' sx={{
-                    zIndex: 2,
-                    color: row.trending_change[0]?.current_trending === 1 ? 'white' : 'initial',
-                    bgcolor: row.trending_change[0]?.current_trending === 1 ? green[500] : 'initial',
-                  }}>{row.trending_change[0]?.current_trending === 1 ? '多' : row.trending_change[0]?.current_trending === 0 ? '' : '空'}
-                    - {timejs(row.trending_change[0]?.open_time).fromNow()}
-                  </TableCell>
-                  <TableCell
-                    align='left'>{messageType[row.risk_warning[0]?.description_type as keyof typeof messageType]}</TableCell>
+                  {row.trending_change.length > 0 && (
+                    <>
+                      <TableCell align='left' sx={{
+                        zIndex: 2,
+                        color: row.trending_change[0]?.current_trending === 1 ? 'white' : 'initial',
+                        bgcolor: row.trending_change[0]?.current_trending === 1 ? green[500] : 'initial',
+                      }}>{row.trending_change[0]?.current_trending === 1 ? '多' : row.trending_change[0]?.current_trending === 0 ? '' : '空'}
+                        - {timejs(row.trending_change[0]?.open_time).fromNow()}
+                      </TableCell>
+                      <TableCell
+                        align='left'>{messageType[row.risk_warning[0]?.description_type as keyof typeof messageType]}</TableCell>
+                    </>
+                  )}
                   <TableCell align='left'>
                     <Chip
                       size={'small'}

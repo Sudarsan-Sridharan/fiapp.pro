@@ -1,10 +1,17 @@
 import React from 'react';
 
-import {Card, Grid, Stack, Typography} from '@mui/material';
-import {Link} from "react-router-dom";
-import {indigo} from "@mui/material/colors";
+import { Card, Grid, Stack, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { indigo } from '@mui/material/colors';
 
-const info = [
+interface IProductInfo {
+    title: string;
+    desc: string;
+    link?: string;
+    ready?: boolean;
+}
+
+const info: IProductInfo[] = [
     {
         title: '买卖信号（即将上线）',
         desc: 'fiapp.pro 交易大师提供全自动，高胜率，高盈亏比，高灵敏度的交易信号，覆盖短中长线，无论你是日内交易还是大趋势上班族，都可以轻松抓住专属你自己的交易机会。',
@@ -13,7 +20,7 @@ const info = [
         title: '风险预警（已上线）',
         desc: '全自动智能提示大周期的关口位，fiapp.pro 交易大师帮助你更快的判断当前局势，更好的找到止赢止损点位。',
         link: '/RiskWarning',
-        ready: true
+        ready: true,
     },
     {
         title: '趋势转换（已上线）',
@@ -52,32 +59,67 @@ const info = [
     },
 ];
 
+const agency: IProductInfo[] = [
+    {
+        title: 'OTC U商专属汇率对量化',
+        desc: 'fiapp.pro 交易大师为 OTC 提供 CNY-USD 汇率对量化，帮助 U商更好的进行资金管理。',
+    },
+    {
+        title: '机构定制量化算法',
+        desc: '超大规模资金管理，需要量化算法的支持，避免 LUNA，FTX 等暴雷事件影响， fiapp.pro 交易大师可以为机构提供量化算法的定制。',
+    },
+];
+
 const ProductInfo = () => {
     return (
-        <Stack spacing={2}>
-            <Typography variant={'h2'}>我们的产品生态</Typography>
+      <Stack spacing={2}>
+          <Typography variant={'h2'}>我们的产品生态</Typography>
 
-            <Grid container spacing={1}>
-                {info.map((item, index) => (
-                    <Grid item xs={12} md={6} lg={4} key={index}
-                          sx={{textDecoration: 'none'}}>
+          <Grid container spacing={1}>
+              {info.map((item, index) => (
+                <Grid item xs={12} md={6} lg={4} key={index}
+                      sx={{ textDecoration: 'none' }}>
                         <Card sx={{
                             p: 2,
                             height: '100%',
                             bgcolor: item.ready ? indigo[500] : 'white',
                             color: item.ready ? 'white' : 'black'
                         }}
-                              component={item.ready ? Link : "div"} to={item.link ?? ''}
+                              component={item.ready ? Link : 'div'} to={item.link ?? ''}
                               variant={'outlined'}>
                             <Stack spacing={1}>
                                 <Typography variant={'h6'}>{item.title}</Typography>
                                 <Typography variant={'body2'}>{item.desc}</Typography>
                             </Stack>
                         </Card>
-                    </Grid>
-                ))}
-            </Grid>
-        </Stack>
+                </Grid>
+              ))}
+          </Grid>
+
+          <Typography variant={'h2'}>机构服务</Typography>
+
+          <Grid container spacing={1}>
+              {agency.map((item, index) => (
+                <Grid item xs={12} md={6} lg={4} key={index}
+                      sx={{ textDecoration: 'none' }}>
+                    <Card sx={{
+                        p: 2,
+                        height: '100%',
+                        bgcolor: item.ready ? indigo[500] : 'white',
+                        color: item.ready ? 'white' : 'black',
+                    }}
+                          component={item.ready ? Link : 'div'} to={item.link ?? ''}
+                          variant={'outlined'}>
+                        <Stack spacing={1}>
+                            <Typography variant={'h6'}>{item.title}</Typography>
+                            <Typography variant={'body2'}>{item.desc}</Typography>
+                        </Stack>
+                    </Card>
+                </Grid>
+              ))}
+          </Grid>
+
+      </Stack>
     );
 };
 

@@ -54,9 +54,6 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
   const [timer, setTimer] = useState<any>(null);
 
   const CoinList = useCoinList();
-  const realtimePrice =
-    CoinList?.value?.find(item => item.name === label)?.coin_realtime_price
-    ?? '';
 
   function changeDelay(change: any) {
     if (timer) {
@@ -119,7 +116,7 @@ const Asynchronous: React.FC<IAsynchronous> = (props) => {
   return (
     <>
       {mode === 'button' && (
-        <Chip label={`${label} - ${parseFloat(realtimePrice)}`} avatar={<Avatar sx={{
+        <Chip label={`${label} - ${parseFloat(CoinList.realtimePrice(label ?? ''))}`} avatar={<Avatar sx={{
           bgcolor: props.color,
         }}>{label?.slice(0, 1)}</Avatar>} variant={'outlined'}
               onClick={() => setDialog(true)} />

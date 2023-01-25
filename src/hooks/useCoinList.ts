@@ -40,8 +40,14 @@ export const useCoinList = () => {
     setValue(coinData);
   }
 
+  const realtimePrice = (name: string) => {
+    const coin = value.find((coin) => coin.name === name);
+    return coin?.coin_realtime_price ?? '';
+  };
+
   return {
     value,
     setValue,
+    realtimePrice,
   };
 };

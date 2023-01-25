@@ -69,6 +69,15 @@ export const trendingChangeColumns: GridColDef[] = [
     renderCell: (params) => `$${new BigNumber(params.value).toFixed()}`,
     width: 120,
   },
+  {
+    field: 'TrendingView',
+    headerName: 'TrendingView',
+    renderCell: (params) => (
+      <Button
+        onClick={() => window.open(`https://cn.tradingview.com/chart/?symbol=BINANCE%3A${params.row.name}`, '_black')}>TV图表</Button>
+    ),
+    width: 120,
+  },
 ];
 
 export const timeframes = ['30M', '1H', '4H', '1D'];

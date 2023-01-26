@@ -12,6 +12,7 @@ import { ITrendingChange } from '@/components/Table/TrendingChange';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
 import { messageType } from '@/pages/Detail/Detail';
 import { timejs } from '@/utils/time';
+import { useMatch } from 'react-router-dom';
 
 
 export const ChartComponent = (props: any) => {
@@ -82,6 +83,8 @@ export const ChartComponent = (props: any) => {
     },
   );
 
+  const isChartPage = useMatch('/chart/:name');
+
   useEffect(() => {
     const handleResize = () => {
       chart.applyOptions({ width: chartContainerRef.current.clientWidth });
@@ -100,7 +103,7 @@ export const ChartComponent = (props: any) => {
     });
     chart.timeScale().applyOptions({
       timeVisible: true,
-      rightOffset: 100,
+      rightOffset: isChartPage ? 2 : 100,
       barSpacing: 4,
     });
 
@@ -137,7 +140,7 @@ export const ChartComponent = (props: any) => {
     newSeries.applyOptions({
       priceFormat: {
         type: 'price',
-        precision: 6,
+        precision: isChartPage ? 2 : 6,
         minMove: 0.000001,
       },
     });

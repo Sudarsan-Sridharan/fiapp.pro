@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 
 const Chart = () => {
   return <Box sx={{ height: 'calc(100vh - 45px)' }}>
-    <Kline height={'90vh'} />
+    <Kline height={'100vh'} />
   </Box>;
 };
 

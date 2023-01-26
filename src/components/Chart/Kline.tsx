@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Skeleton, useMediaQuery } from '@mui/material';
 
 import useSWR from 'swr';
@@ -92,14 +92,15 @@ const KlineChart: React.FC<IKline> = (props) => {
     }
   }, [copied]);
 
+  const isChartPage = useMatch('/chart/:name');
 
   const user = useUser();
   return (
     <>
-      <Box>
+      {!isChartPage ? <Box>
         <KlineChartHeader coin={props.name ?? ''}
                           trending={klines?.data?.data?.meta?.trending_change[0]?.current_trending} />
-      </Box>
+      </Box> : <></>}
       {klines ? (
         <Box>
           <NewKline name={name} height={props.height ?? `500px`} />

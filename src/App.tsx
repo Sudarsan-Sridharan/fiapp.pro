@@ -49,7 +49,7 @@ const RouterPage = () => {
 
   return (
     <>
-      {(!detailMatch) ? (
+      {(!detailMatch && !isChartPage) ? (
         <>
           <Header />
           <Toolbar sx={{ height: mdBreakDown ? 'auto' : '84px' }} />

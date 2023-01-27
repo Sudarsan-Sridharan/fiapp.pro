@@ -1,7 +1,7 @@
 import { useUser } from '@/hooks/useUser';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Card, Container, Divider, Icon, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Container, Dialog, Divider, Icon, Stack, TextField, Typography } from '@mui/material';
 import { CurrencyBitcoin } from '@mui/icons-material';
 import Meta from '@/components/Meta';
 import Grid2 from '@mui/material/Unstable_Grid2';
@@ -70,6 +70,16 @@ const Dashboard = () => {
   const token = user.value.token;
   const nav = useNavigate();
   const coinList = useCoinList();
+  const [bindBinanceDialog, setBindBinanceDialog] = useState(false);
+  const [apiKey, setApiKey] = useState({
+    key: '',
+    secret: '',
+  });
+
+  const bindBinance = () => {
+    localStorage.setItem('binance_api_key', apiKey.key);
+    localStorage.setItem('binance_api_secret', apiKey.secret);
+  };
 
   useEffect(() => {
     if (!token) {
@@ -101,8 +111,20 @@ const Dashboard = () => {
 
             <Grid2 xs={12}>
               <FCard title={`交易所绑定`}
-                     subtitle={`实时查看交易所账户余额和计算仓位，我们不会保存你的 API 密钥到服务器，Fiapp.pro 前端代码开源安全`}>
-                <Button variant={'outlined'} disabled>绑定币安</Button>
+                     subtitle={`实时查看交易所账户余额和计算仓位`}>
+                <Button variant={'outlined'} onClick={() => setBindBinanceDialog(true)}>绑定币安</Button>
+
+                <Dialog open={bindBinanceDialog}>
+                  <Box p={2}>
+                    <Stack spacing={2}>
+                      <TextField label={'API Key'} size={'small'}
+                                 onChange={(e) => setApiKey({ ...apiKey, key: e.target.value })} />
+                      <TextField label={'API Secret'} size={'small'}
+                                 onChange={(e) => setApiKey({ ...apiKey, secret: e.target.value })} />
+                    </Stack>
+                  </Box>
+                  <Button onClick={bindBinance}>绑定币安</Button>
+                </Dialog>
                 <Button variant={'outlined'} disabled>绑定 OKX</Button>
                 <Button onClick={() => window.open('https://github.com/0xSP4C3/fiapp.pro', '_black')}>审阅代码</Button>
               </FCard>

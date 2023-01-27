@@ -16,23 +16,23 @@ import './App.css';
 import { useUser } from '@/hooks/useUser';
 
 const MainContent = styled('main', {
-    shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== 'open',
 })<{
-    open?: boolean;
-}>(({theme, open}) => ({
-    flexGrow: 1,
+  open?: boolean;
+}>(({ theme, open }) => ({
+  flexGrow: 1,
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: `-${sideBarWidth}px`,
+  ...(open && {
     transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: `-${sideBarWidth}px`,
-    ...(open && {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
-    }),
+    marginLeft: 0,
+  }),
 }));
 
 const RouterPage = () => {
@@ -65,23 +65,23 @@ const RouterPage = () => {
         </Box>
       </Box>
     </>
-    )
-}
+  );
+};
 
 function App() {
 
-    return (
-        <Fragment>
-            <CssBaseline/>
-            <Notifications/>
-            <HotKeys/>
-            <SW/>
-            <BrowserRouter>
-                <RouterPage/>
-            </BrowserRouter>
+  return (
+    <Fragment>
+      <CssBaseline />
+      <Notifications />
+      <HotKeys />
+      <SW />
+      <BrowserRouter>
+        <RouterPage />
+      </BrowserRouter>
 
-        </Fragment>
-    );
+    </Fragment>
+  );
 }
 
 export default withErrorHandler(App, AppErrorBoundaryFallback);

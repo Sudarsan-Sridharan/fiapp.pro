@@ -131,6 +131,7 @@ function Header() {
   const detail = useMatch('/d/:name');
   const mdBreakDown = useMediaQuery((theme: any) => theme?.breakpoints.down('md'));
   const user = useUser();
+  const nav = useNavigate();
   const MainComponent = () => (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -191,7 +192,7 @@ function Header() {
                 <Asynchronous label={'搜索币种'} mode={'input'} />
               </Box>
             )}
-            <PopupState variant="popover" popupId="productMenu">
+            <PopupState variant='popover' popupId='productMenu'>
               {(popupState) => (
                 <React.Fragment>
                   <Button
@@ -268,6 +269,14 @@ function Header() {
                         <Menu {...bindMenu(popupState)}>
                           <MenuItem
                             onClick={() => {
+                              nav('/dashboard');
+                            }}
+                            sx={{ maxHeight: '30px' }}
+                          >
+                            <Typography variant={'body2'}>用户中心</Typography>
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => {
                               user.logout();
                               popupState.close();
                             }}
@@ -292,7 +301,7 @@ function Header() {
                 )}
               </Stack>
             ) : (
-              <PopupState variant="popover" popupId="communityMenu">
+              <PopupState variant='popover' popupId='communityMenu'>
                 {(popupState) => (
                   <React.Fragment>
                     <Button
@@ -339,7 +348,7 @@ function Header() {
         </Toolbar>
       </AppBar>
     </Box>
-  )
+  );
   return <MainComponent />;
 }
 

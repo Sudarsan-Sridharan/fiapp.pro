@@ -13,3 +13,8 @@
 .chart-container {
     flex: 1;
 }
+
+html body {
+    height: 100% !important;
+    background-color: #f2f2f2;
+}

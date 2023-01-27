@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Tab } from '@mui/material';
+import { Box, Card, Tab } from '@mui/material';
 
 import SelectCoin from '@/components/SelectCoin/SelectCoin';
 import RiskWarningTable from '@/components/Table/RiskWarning';
 import TrendingChangeTable from '@/components/Table/TrendingChange';
 import VolatilityTable from '@/components/Table/Volatility';
 import Monitor from '@/components/Monitor/Monitor';
+import PositionCalculator from '@/components/PositionCalculator/PositionCalculator';
 
 interface ITabList {
   label: string;
@@ -28,11 +29,14 @@ const AllTabTable = () => {
     { label: '风险预警', value: '2', element: <RiskWarningTable /> },
     { label: '动量检测', value: '3', element: <VolatilityTable /> },
     { label: '选币系统（内测中）', value: '4', element: <SelectCoin /> },
+    { label: '仓位计算器', value: '5', element: <PositionCalculator /> },
   ];
 
   return (
-    <Box
+    <Card
+      variant={'outlined'}
       sx={{
+        p: 2,
         '& .MuiTabPanel-root': {
           padding: 0,
           py: 2,
@@ -41,7 +45,7 @@ const AllTabTable = () => {
     >
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange} aria-label='lab API tabs example'>
             {tabList.map((item, index) => (
               <Tab key={index} label={item.label} value={item.value} />
             ))}
@@ -53,7 +57,7 @@ const AllTabTable = () => {
           </TabPanel>
         ))}
       </TabContext>
-    </Box>
+    </Card>
   );
 };
 

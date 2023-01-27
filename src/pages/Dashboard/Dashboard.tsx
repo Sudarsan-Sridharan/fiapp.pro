@@ -5,10 +5,7 @@ import { Box, Button, Card, Container, Dialog, Divider, Icon, Stack, TextField, 
 import { CurrencyBitcoin } from '@mui/icons-material';
 import Meta from '@/components/Meta';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
-import { useCoinList } from '@/hooks/useCoinList';
-import { green, red } from '@mui/material/colors';
-import { messageType } from '@/pages/Detail/Detail';
+import CoinListTable from '@/components/Table/CoinList';
 
 interface IFCard {
   title: string;
@@ -35,41 +32,10 @@ const FCard: React.FC<IFCard> = (props) => {
   );
 };
 
-const columns: GridColDef[] = [
-  {
-    field: 'name',
-    headerName: '名称',
-    width: 150,
-  },
-  {
-    field: 'coin_realtime_price',
-    headerName: '实时价格',
-    type: 'number',
-    width: 150,
-  },
-  {
-    field: 'trending_change',
-    headerName: '方向',
-    width: 150,
-    renderCell: (params) => <Typography
-      sx={{ color: params.value[0]?.current_trending === 1 ? green[500] : params.value[0]?.current_trending === 0 ? '' : red[500] }}>
-      {params.value[0]?.current_trending === 1 ? '多' : params.value[0]?.current_trending === 0 ? '' : '空'}
-    </Typography>,
-  },
-  {
-    field: 'risk_warning',
-    headerName: '风险',
-    width: 150,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${(params.value && params.value.length > 0) && messageType[params.value[0]?.description_type as keyof typeof messageType]}`,
-  },
-];
-
 const Dashboard = () => {
   const user = useUser();
   const token = user.value.token;
   const nav = useNavigate();
-  const coinList = useCoinList();
   const [bindBinanceDialog, setBindBinanceDialog] = useState(false);
   const [apiKey, setApiKey] = useState({
     key: '',
@@ -133,15 +99,7 @@ const Dashboard = () => {
             <Grid2 xs={12}>
               <FCard title={`消息通知`} subtitle={`订阅想要的币种，获得实时全平台信号推送`}>
                 <Box sx={{ height: '500px', width: '100%' }}>
-                  <DataGrid
-                    rows={coinList?.value ?? []}
-                    columns={columns}
-                    getRowId={(row) => row.name}
-                    checkboxSelection
-                    disableSelectionOnClick
-                    experimentalFeatures={{ newEditingApi: true }}
-                    components={{ Toolbar: GridToolbar }}
-                  />
+                  <CoinListTable checkboxSelection={true} />
                 </Box>
               </FCard>
             </Grid2>

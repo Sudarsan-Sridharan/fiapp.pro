@@ -71,9 +71,7 @@ const PositionCalculator = () => {
                   <Box>
 
                     <Typography variant={'h6'}>
-                      止损({(price.open / price.stop).toFixed(2)}%):
-                      ${((price.open / price.stop) * price.initOpen - price.initOpen).toFixed(2)}
-
+                      止损({(price.open / price.stop).toFixed(2)}%)
                     </Typography>
                   </Box>
                 </Box>

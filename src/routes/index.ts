@@ -46,6 +46,14 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/Dashboard')),
     path: '/dashboard',
   },
+  [Pages.Signal]: {
+    component: asyncComponentLoader(() => import('@/pages/Signal')),
+    path: '/signal',
+  },
+  [Pages.Feature]: {
+    component: asyncComponentLoader(() => import('@/pages/Feature')),
+    path: '/feature',
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',

@@ -14,6 +14,8 @@ enum Pages {
   Signup,
   Chart,
   Dashboard,
+  Signal,
+  Feature
 }
 
 type PathRouteCustomProps = {

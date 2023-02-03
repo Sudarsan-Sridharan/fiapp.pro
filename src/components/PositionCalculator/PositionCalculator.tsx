@@ -1,5 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Box, Card, CardContent, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { useUserAssert } from '@/hooks/useUserAssert';
+import { useUser } from '@/hooks/useUser';
+import NeedLogin from '@/components/Login/NeedLogin';
+import { useRecoilState } from 'recoil';
+import { TradingSignalAtom } from '@/components/Table/TradingSignal';
 
 interface priceState {
   open: number;
@@ -11,6 +16,9 @@ interface priceState {
 }
 
 const PositionCalculator = () => {
+  const { userAssert } = useUserAssert();
+  const userAssertInitOpen = parseInt(userAssert?.futureUsdtAsset?.balance ?? '0');
+  const [selectedRow, setSelectedRow] = useRecoilState(TradingSignalAtom);
   const [price, setPrice] = useState<priceState>({
     open: 0,
     close: 0,
@@ -20,17 +28,19 @@ const PositionCalculator = () => {
     initStop: 0,
   });
 
-  const localInitOpen = localStorage.getItem('initOpen');
-
-  const localInitLeverage = localStorage.getItem('initLeverage');
-
   useEffect(() => {
     setPrice({
       ...price,
-      initOpen: parseInt(localInitOpen ? localInitOpen : '0'),
-      initLeverage: parseInt(localInitLeverage ? localInitLeverage : '0'),
+      initOpen: userAssertInitOpen,
+      open: selectedRow?.open_price ?? 0,
+      stop: selectedRow?.stop_price ?? 0,
     });
-  }, [price.initOpen, localInitOpen, localInitLeverage, price]);
+  }, [userAssertInitOpen, selectedRow]);
+
+  const [position, setPosition] = useState({
+    hold: 0,
+    stop: 0,
+  });
 
   const handleChange = (prop: keyof priceState) => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -40,92 +50,76 @@ const PositionCalculator = () => {
     if (prop === 'initLeverage') localStorage.setItem('initLeverage', String(value));
   };
 
-  const fractal = (num: number) => {
-    if (num <= 1.01) {
-      return num;
-    }
-    const res = num - Math.trunc(num);
-    return 1 / (res * 100);
-  };
 
+  const user = useUser();
   return (
-    <Box>
-      <Typography
-        variant={'subtitle2'}>仓位计算器将会根据买卖信号自动做出判断，你可以在用户后台绑定交易所账户以便于自动计算。</Typography>
+    <>
+      {user.value.token ? (
+        <Box>
+          <Typography
+            variant={'subtitle2'}>
+            {userAssert ? '你已绑定交易所账户，程序将为你自动计算开仓大小' : '仓位计算器将会根据买卖信号自动做出判断，请在后台绑定交易所账户以便自动计算。'}
+          </Typography>
 
-      <Card sx={{ width: '100%', maxWidth: '500px', mt: 2 }} variant={'outlined'}>
-        <Box sx={{ p: 2 }}>
-          <Box display={'flex'}>
-            <Box width={'100%'}>
-              <Box width={'100%'} display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <Box>
-                  <Box display={'flex'} alignItems={'center'}>
-                    <Typography variant={'h6'}>持仓大小</Typography>
-                    <Typography variant={'h2'} sx={{ ml: 2 }} fontWeight={'bolder'}>
-                      $
-                      {price.open / price.stop > 1
-                        ? ((price.initOpen / price.initLeverage) / (price.open / price.stop)).toFixed()
-                        : (price.initOpen / price.initLeverage).toFixed(0)}
-                    </Typography>
-                  </Box>
-                  <Box>
+          <Card sx={{ width: '100%', maxWidth: '500px', mt: 2 }} variant={'outlined'}>
+            <Box sx={{ p: 2 }}>
+              <Box display={'flex'}>
+                <Box width={'100%'}>
+                  <Box width={'100%'} display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+                    <Box>
+                      <Box display={'flex'} alignItems={'center'}>
+                        <Typography variant={'h6'}>持仓大小</Typography>
+                        <Typography variant={'h2'} sx={{ ml: 2 }} fontWeight={'bolder'}>
+                          $
+                          {position.hold.toFixed()}
+                        </Typography>
+                      </Box>
+                      <Box>
+                      </Box>
+                    </Box>
 
-                    <Typography variant={'h6'}>
-                      止损({(price.open / price.stop).toFixed(2)}%)
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box>
-                  <Box>
-                    <TextField
-                      label={'现金'}
-                      value={price.initOpen}
-                      onChange={handleChange('initOpen')}
-                      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                      InputProps={{
-                        startAdornment: <InputAdornment position='start'>$</InputAdornment>,
-                      }}
-                    />
-                  </Box>
-
-                  <Box my={2}>
-                    <TextField
-                      label={'杠杆'}
-                      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                      value={price.initLeverage}
-                      onChange={handleChange('initLeverage')}
-                      InputProps={{
-                        startAdornment: <InputAdornment position='start'>X</InputAdornment>,
-                      }}
-                    />
+                    <Box>
+                      <Box>
+                        <TextField
+                          label={'现金'}
+                          value={price.initOpen}
+                          onChange={handleChange('initOpen')}
+                          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                          InputProps={{
+                            startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                          }}
+                        />
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
-          </Box>
-        </Box>
 
-        <CardContent>
-          <Stack spacing={2}>
-            <TextField
-              label={'开仓价格'}
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              fullWidth
-              value={price.open}
-              onChange={handleChange('open')}
-            />
-            <TextField
-              label={'止损价格'}
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              fullWidth
-              value={price.stop}
-              onChange={handleChange('stop')}
-            />
-          </Stack>
-        </CardContent>
-      </Card>
-    </Box>
+            <CardContent>
+              <Stack spacing={2}>
+                <TextField
+                  label={'开仓价格'}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  fullWidth
+                  value={price.open}
+                  onChange={handleChange('open')}
+                />
+                <TextField
+                  label={'止损价格'}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  fullWidth
+                  value={price.stop}
+                  onChange={handleChange('stop')}
+                />
+              </Stack>
+            </CardContent>
+          </Card>
+        </Box>
+      ) : (
+        <NeedLogin />
+      )}
+    </>
   );
 };
 

@@ -1,10 +1,20 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Container, Divider, Grid, OutlinedInput, Stack, Typography, useMediaQuery } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  OutlinedInput,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Meta from '@/components/Meta';
-import InventStart from '@/pages/Welcome/_inventStart';
 import Price from '@/pages/Welcome/_price';
 import ProductInfo from '@/pages/Welcome/_productInfo';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '@/hooks/useUser';
 import { KeyboardArrowRightOutlined } from '@mui/icons-material';
 import Chart from '@/pages/Welcome/_chart';
@@ -25,11 +35,24 @@ function Welcome() {
   const handleEmail = useCallback((e: string) => {
     setEmail(e);
   }, [email]);
-
+  const nav = useNavigate();
   return (
     <>
       <Meta title='量化交易系统' />
+      <Alert severity={'info'} sx={{
+        '& .MuiAlert-icon': {
+          display: 'flex',
+          alignSelf: 'center',
+        },
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant={'body1'}>
+            重磅，买卖信号已推出！
+          </Typography>
+          <Button variant={'contained'} size={'small'} onClick={() => nav('/signal')}>立即免费体验</Button>
+        </Box>
 
+      </Alert>
       <Box py={10} sx={{ background: 'linear-gradient(#f5f9fe, #fff)' }}>
         <Container maxWidth={'xl'}>
           <Grid container spacing={3}>
@@ -98,22 +121,10 @@ function Welcome() {
 
         <Divider sx={{ my: 5 }} />
 
-        <Container maxWidth={'xl'} sx={{ my: 5 }}>
-          <Stack
-            spacing={2}
-          >
-
-            <Box>
-              <AllTabTable />
-            </Box>
-
-          </Stack>
-        </Container>
-
-        <Container maxWidth={'xl'} sx={{ pb: 5 }}>
-          <Stack spacing={2}>
-            <InventStart />
-          </Stack>
+        <Container maxWidth={'xl'}>
+          <Box>
+            <AllTabTable />
+          </Box>
         </Container>
       </Box>
 

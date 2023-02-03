@@ -14,6 +14,9 @@ import { sideBarWidth } from '@/sections/Sidebar/Sidebar';
 import Header from '@/sections/Header';
 import './App.css';
 import { useUser } from '@/hooks/useUser';
+import useNotificationApi from '@/hooks/useNotificationApi';
+import noticeSound from './assets/sound/notice.mp4';
+
 
 const MainContent = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -52,7 +55,7 @@ const RouterPage = () => {
       {(!detailMatch && !isChartPage) ? (
         <>
           <Header />
-          <Toolbar sx={{ height: mdBreakDown ? 'auto' : '84px' }} />
+          <Toolbar sx={{ height: mdBreakDown ? 'auto' : '88px' }} />
         </>
       ) : <></>}
 
@@ -69,6 +72,22 @@ const RouterPage = () => {
 };
 
 function App() {
+  const notice = useNotificationApi();
+  useEffect(() => {
+    if (notice.isGranted && localStorage.getItem('notice') !== 'true') {
+      const sound: HTMLAudioElement = new Audio();
+      sound.src = noticeSound;
+      sound.load();
+      sound.play().then(() => {
+        console.log('play sound');
+      });
+      notice.pushNotification('买卖信号通知已开启。', {
+        body: '等待接收实时推送，请不要关闭浏览器窗口。',
+      }, '/signal');
+
+      localStorage.setItem('notice', 'true');
+    }
+  }, [notice]);
 
   return (
     <Fragment>

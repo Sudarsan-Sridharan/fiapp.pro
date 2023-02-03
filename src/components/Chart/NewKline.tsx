@@ -24,10 +24,6 @@ export const ChartComponent = (props: any) => {
   };
   const sendUrl = new URLSearchParams(conditions).toString();
 
-  const { data: klines } = useSWR<any>(`${domain}/Coin?${sendUrl}`, fetcher, {
-    refreshInterval: 1000 * 60 * 5,
-  });
-
   const { data: trendingChange } = useSWR<any>(`${domain}/TrendingChange?${sendUrl}`, fetcher, {
     refreshInterval: 1000 * 60 * 5,
   });
@@ -65,7 +61,12 @@ export const ChartComponent = (props: any) => {
     };
   });
 
-  const price = klines?.data?.data.coinKlines?.klines.map(
+  function timeToLocal(originalTime: number) {
+    const d = new Date(originalTime * 1000);
+    return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()) / 1000;
+  }
+
+  const price = props.klines?.data?.data.coinKlines?.klines.map(
     (item: {
       open_at: Date;
       open_bid: number;
@@ -74,7 +75,7 @@ export const ChartComponent = (props: any) => {
       lowest_bid: number;
     }) => {
       return {
-        time: timejs(new Date(item.open_at).toLocaleString()).unix(),
+        time: timeToLocal(timejs(new Date(item.open_at).toLocaleString()).unix()),
         open: item.open_bid,
         high: item.highest_bid,
         low: item.lowest_bid,

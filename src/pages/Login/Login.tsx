@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 import { Box, Button, Card, CardActions, CardContent, Stack, TextField, Typography } from '@mui/material';
 import { LoginOutlined } from '@mui/icons-material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
 import { domain } from '@/ network/fether';
@@ -17,6 +17,9 @@ interface ILoginFormInput {
 const Login = () => {
   const nav = useNavigate();
   const user = useUser();
+  const [searchParams] = useSearchParams();
+  const fiappRef = searchParams.get('fiappRef');
+
   const { register, handleSubmit, watch, formState: { errors } } = useForm<ILoginFormInput>();
   const onSubmit: SubmitHandler<ILoginFormInput> = data => axios.post(`${domain}/Authenticate/login`, data).then(res => {
     const token = res.data.token;
@@ -24,8 +27,11 @@ const Login = () => {
   }).catch(err => console.log(err));
 
   useEffect(() => {
-    user.value.token && nav('/dashboard');
+    if (user.value.token) {
+      fiappRef ? nav(fiappRef) : nav('/dashboard');
+    }
   }, [user.value.token, nav]);
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,6 +50,7 @@ const Login = () => {
                     message: '邮箱格式不正确',
                   },
                 })}
+                           inputProps={{ type: 'email' }}
                            error={!!errors.email}
                            helperText={errors.email?.message}
                            fullWidth />
@@ -53,6 +60,7 @@ const Login = () => {
                   required: '密码不能为空',
                   maxLength: 20,
                 })}
+                           inputProps={{ type: 'password' }}
                            error={!!errors.password}
                            helperText={errors.password?.message}
                            fullWidth />

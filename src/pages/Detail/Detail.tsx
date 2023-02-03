@@ -5,9 +5,8 @@ import {
   Divider,
   Grid,
   List as MList,
-  ListItem,
-  ListItemText,
   Paper,
+  Tab,
   Table,
   TableBody,
   TableCell,
@@ -23,6 +22,7 @@ import { domain, fetcher } from '@/ network/fether';
 import Kline from '@/components/Chart/Kline';
 import Meta from '@/components/Meta';
 import { useAPIQuery } from '@/hooks/useAPIQuery';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { green, lightGreen } from '@mui/material/colors';
 
 interface IKline {
@@ -83,6 +83,10 @@ const Detail = () => {
     });
   }, [APIQuery.value.timeframe, name]);
 
+  const [tabValue, setTabValue] = React.useState('1');
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
   return (
     <>
       <Meta title={name} description={`${name} 的最新量化数据`} />
@@ -91,90 +95,110 @@ const Detail = () => {
         <Grid item xs={12} md={8} xl={10}>
           <Kline name={name} height={`${(viewportHeight - 50).toString()}px`} />
         </Grid>
-
-        <Grid item xs={12} md={4} xl={2}>
-          <Paper variant={'outlined'} sx={{ height: '100vh', overflow: 'auto', borderRadius: 0 }}>
-            <MList dense sx={{ pt: 0 }}>
-              <ListItem sx={{ height: '32px' }}>
-                <ListItemText>市场一览</ListItemText>
-              </ListItem>
-              <Divider />
-              <TableContainer>
-                <Table size='small'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>商品代码</TableCell>
-                      <TableCell>方向</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody
-                    sx={{
-                      '& .MuiTableRow-root:hover': {
-                        backgroundColor: lightGreen[300],
-                      },
-                    }}
-                  >
-                    {coinList &&
-                      coinList?.data.data.map(
-                        (
-                          item: {
-                            name:
-                              | string
-                              | number
-                              | boolean
-                              | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-                              | React.ReactFragment
-                              | null
-                              | undefined;
-                            trending_change: any[];
+        <Grid item xs={12} md={4} xl={2} sx={{
+          '& .MuiTabs-root': {
+            maxHeight: '32px',
+            minHeight: '32px',
+          },
+          '& .MuiTab-root': {
+            height: '32px',
+            maxHeight: '32px',
+            minHeight: '32px',
+          },
+          '& .MuiTabPanel-root': {
+            p: 0,
+          },
+        }}>
+          <TabContext value={tabValue}>
+            <TabList onChange={handleChange}>
+              <Tab label={'市场'} value={'1'} />
+              <Tab label={'买卖信号'} value={'2'} onClick={() => nav('/signal')} />
+            </TabList>
+            <TabPanel value={'1'}>
+              <Paper variant={'outlined'} sx={{ height: 'calc(100vh - 32px)', overflow: 'auto', borderRadius: 0 }}>
+                <MList dense sx={{ pt: 0 }}>
+                  <Divider />
+                  <TableContainer>
+                    <Table size='small'>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>商品代码</TableCell>
+                          <TableCell>方向</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody
+                        sx={{
+                          '& .MuiTableRow-root:hover': {
+                            backgroundColor: lightGreen[300],
                           },
-                          i: React.Key | null | undefined,
-                        ) => (
-                          <>
-                            <TableRow
-                              key={i}
-                              sx={{
-                                borderLeft: item.name === name ? '1px solid blue' : 'none',
-                                backgroundColor: item.name === name ? '#f5f5f5' : 'none',
-                                bgcolor: item?.trending_change[0]?.current_trending === 1 ? green[500] : '',
-                              }}
-                            >
-                              <TableCell component='th' scope='row'>
-                                <Typography
-                                  variant={'body2'}
-                                  component={Link}
-                                  to={`/d/${item.name}?timeframe=${APIQuery.value.timeframe}`}
+                        }}
+                      >
+                        {coinList &&
+                          coinList?.data.data.map(
+                            (
+                              item: {
+                                name:
+                                  | string
+                                  | number
+                                  | boolean
+                                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+                                  | React.ReactFragment
+                                  | null
+                                  | undefined;
+                                trending_change: any[];
+                              },
+                              i: React.Key | null | undefined,
+                            ) => (
+                              <>
+                                <TableRow
+                                  key={i}
                                   sx={{
-                                    textDecoration: 'none',
-                                    color: item?.trending_change[0]?.current_trending === 1 ? 'white' : 'inherit',
+                                    borderLeft: item.name === name ? '1px solid blue' : 'none',
+                                    backgroundColor: item.name === name ? '#f5f5f5' : 'none',
+                                    bgcolor: item?.trending_change[0]?.current_trending === 1 ? green[500] : '',
                                   }}
                                 >
-                                  {item.name}
-                                </Typography>
-                              </TableCell>
-                              <TableCell component='th' scope='row'>
-                                <Typography
-                                  variant={'body2'}
-                                  sx={{
-                                    textDecoration: 'none',
-                                    color: item?.trending_change[0]?.current_trending === 1 ? 'white' : 'inherit',
-                                  }}
-                                >
-                                  {
-                                    item?.trending_change.length > 0 && (item?.trending_change[0]?.current_trending === -1 ? '空' : '多')
-                                  }
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                            <Divider />
-                          </>
-                        ),
-                      )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </MList>
-          </Paper>
+                                  <TableCell component='th' scope='row'>
+                                    <Typography
+                                      variant={'body2'}
+                                      component={Link}
+                                      to={`/d/${item.name}?timeframe=${APIQuery.value.timeframe}`}
+                                      sx={{
+                                        textDecoration: 'none',
+                                        color: item?.trending_change[0]?.current_trending === 1 ? 'white' : 'inherit',
+                                      }}
+                                    >
+                                      {item.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell component='th' scope='row'>
+                                    <Typography
+                                      variant={'body2'}
+                                      sx={{
+                                        textDecoration: 'none',
+                                        color: item?.trending_change[0]?.current_trending === 1 ? 'white' : 'inherit',
+                                      }}
+                                    >
+                                      {
+                                        item?.trending_change.length > 0 && (item?.trending_change[0]?.current_trending === -1 ? '空' : '多')
+                                      }
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                                <Divider />
+                              </>
+                            ),
+                          )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </MList>
+              </Paper>
+            </TabPanel>
+            <TabPanel value={'2'}>
+              买卖信号
+            </TabPanel>
+          </TabContext>
         </Grid>
       </Grid>
     </>

@@ -30,6 +30,7 @@ import useAltCoin from '@/hooks/useAltCoin';
 import { useUser } from '@/hooks/useUser';
 import useSidebar from '@/store/sidebar';
 import { timejs } from '@/utils/time';
+import RequestSwitch from '@/components/Notification/RequestSwitch';
 
 const linkButtonData = {
   data: [
@@ -188,47 +189,12 @@ function Header() {
 
           <Box display={'flex'} alignItems={'center'}>
             {!mdBreakDown && (
-              <Box sx={{ mr: 1 }}>
+              <Box sx={{ mr: 2 }}>
                 <Asynchronous label={'搜索币种'} mode={'input'} />
               </Box>
             )}
-            <PopupState variant='popover' popupId='productMenu'>
-              {(popupState) => (
-                <React.Fragment>
-                  <Button
-                    color={'inherit'}
-                    variant={'contained'}
-                    size={'small'}
-                    {...bindHover(popupState)}
-                    endIcon={<ArrowDropDown />}
-                  >
-                    量化产品
-                  </Button>
-                  <Menu {...bindMenu(popupState)}>
-                    {linkButtonData.data.map((item, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          textDecoration: 'none',
-                          color: 'inherit',
-                        }}
-                        component={Link}
-                        to={`${item.link}`}
-                      >
-                        <MenuItem
-                          onClick={popupState.close}
-                          sx={{
-                            height: '30px',
-                          }}
-                        >
-                          <Typography variant={'body2'}>{item.text}</Typography>
-                        </MenuItem>
-                      </Box>
-                    ))}
-                  </Menu>
-                </React.Fragment>
-              )}
-            </PopupState>
+
+            <RequestSwitch />
           </Box>
 
           <Box mr={1}>

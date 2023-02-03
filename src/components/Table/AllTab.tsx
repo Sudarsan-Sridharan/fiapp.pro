@@ -2,13 +2,10 @@ import React from 'react';
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Card, Tab } from '@mui/material';
-
-import SelectCoin from '@/components/SelectCoin/SelectCoin';
-import RiskWarningTable from '@/components/Table/RiskWarning';
 import TrendingChangeTable from '@/components/Table/TrendingChange';
-import VolatilityTable from '@/components/Table/Volatility';
 import Monitor from '@/components/Monitor/Monitor';
-import PositionCalculator from '@/components/PositionCalculator/PositionCalculator';
+import TradingSignal from '@/components/Table/TradingSignal';
+import NeedLogin from '@/components/Login/NeedLogin';
 
 interface ITabList {
   label: string;
@@ -25,15 +22,13 @@ const AllTabTable = () => {
 
   const tabList: ITabList[] = [
     { label: '全局监控（实时）', value: '0', element: <Monitor /> },
+    { label: '买卖信号', value: '6', element: <NeedLogin><TradingSignal /></NeedLogin> },
     { label: '趋势转换', value: '1', element: <TrendingChangeTable /> },
-    { label: '风险预警', value: '2', element: <RiskWarningTable /> },
-    { label: '动量检测', value: '3', element: <VolatilityTable /> },
-    { label: '选币系统（内测中）', value: '4', element: <SelectCoin /> },
-    { label: '仓位计算器', value: '5', element: <PositionCalculator /> },
   ];
 
   return (
     <Card
+      id={'all-tab-table'}
       variant={'outlined'}
       sx={{
         p: 2,

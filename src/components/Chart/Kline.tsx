@@ -103,7 +103,7 @@ const KlineChart: React.FC<IKline> = (props) => {
       </Box> : <></>}
       {klines ? (
         <Box>
-          <NewKline name={name} height={props.height ?? `500px`} />
+          <NewKline klines={klines} name={name} height={props.height ?? `500px`} />
         </Box>
       ) : (
         <Skeleton sx={{ height: `${props.height ?? `500px`}` }}></Skeleton>

@@ -66,6 +66,11 @@ const TradingSignalTable = () => {
       </Typography>,
     },
     {
+      field: 'timeframe',
+      headerName: '周期',
+      width: 150,
+    },
+    {
       field: 'open_time',
       headerName: '时间',
       width: 150,

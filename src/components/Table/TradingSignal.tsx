@@ -109,7 +109,7 @@ const TradingSignalTable = () => {
   };
 
   return (
-    <Box sx={{ height: 'calc(100vh - 200px)' }}>
+    <Box sx={{ height: 'calc(100vh - (88px + 51px))' }}>
       {signalData && (
         <DataGrid
           rows={signalData ?? []}

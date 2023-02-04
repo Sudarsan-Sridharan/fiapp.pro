@@ -39,8 +39,7 @@
     "react-router-dom": "^6.8.0",
     "recoil": "^0.7.6",
     "simpler-state": "^1.2.0",
-    "swr": "^2.0.3",
-    "use-mobile-detect-hook": "^1.0.5"
+    "swr": "^2.0.3"
   },
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",

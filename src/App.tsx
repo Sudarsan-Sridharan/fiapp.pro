@@ -15,6 +15,7 @@ import './App.css';
 import { useUser } from '@/hooks/useUser';
 import useNotificationApi from '@/hooks/useNotificationApi';
 import noticeSound from './assets/sound/notice.mp4';
+import SW from '@/sections/SW';
 
 
 const MainContent = styled('main', {
@@ -94,6 +95,7 @@ function App() {
       <CssBaseline />
       <Notifications />
       <HotKeys />
+      <SW />
       <BrowserRouter>
         <RouterPage />
       </BrowserRouter>

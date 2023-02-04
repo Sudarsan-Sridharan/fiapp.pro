@@ -72,6 +72,7 @@ const RouterPage = () => {
 
 function App() {
   const notice = useNotificationApi();
+
   useEffect(() => {
     if (notice.isGranted && localStorage.getItem('notice') !== 'true') {
       const sound: HTMLAudioElement = new Audio();

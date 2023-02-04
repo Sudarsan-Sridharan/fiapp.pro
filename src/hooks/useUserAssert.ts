@@ -21,15 +21,14 @@ interface IUserAssert {
   futureUsdtAsset?: IFutureUsdtAsset;
 }
 
+export const userAssertAtom = atom<IUserAssert>({
+  key: 'UserAssertAtom',
+  default: {
+    userFutureWalletAsset: '',
+    userSpotWalletAsset: '',
+  },
+});
 export const useUserAssert = () => {
-  const userAssertAtom = atom<IUserAssert>({
-    key: 'UserAssertAtom',
-    default: {
-      userFutureWalletAsset: '',
-      userSpotWalletAsset: '',
-    },
-  });
-
   const [userAssert, setUserAssert] = useRecoilState(userAssertAtom);
   const { data } = useSWR<any>('/BinanceSpot/user-assert', fetcher, { refreshInterval: 1000 * 5 });
 

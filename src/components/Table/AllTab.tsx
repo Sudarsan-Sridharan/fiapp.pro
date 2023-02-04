@@ -4,8 +4,6 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Card, Tab } from '@mui/material';
 import TrendingChangeTable from '@/components/Table/TrendingChange';
 import Monitor from '@/components/Monitor/Monitor';
-import TradingSignal from '@/components/Table/TradingSignal';
-import NeedLogin from '@/components/Login/NeedLogin';
 
 interface ITabList {
   label: string;
@@ -22,7 +20,6 @@ const AllTabTable = () => {
 
   const tabList: ITabList[] = [
     { label: '全局监控（实时）', value: '0', element: <Monitor /> },
-    { label: '买卖信号', value: '6', element: <NeedLogin><TradingSignal /></NeedLogin> },
     { label: '趋势转换', value: '1', element: <TrendingChangeTable /> },
   ];
 

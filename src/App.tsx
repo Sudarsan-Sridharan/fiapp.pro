@@ -9,7 +9,6 @@ import AppErrorBoundaryFallback from '@/error-handling/fallbacks/App';
 import Pages from '@/routes/Pages';
 import HotKeys from '@/sections/HotKeys';
 import Notifications from '@/sections/Notifications';
-import SW from '@/sections/SW';
 import { sideBarWidth } from '@/sections/Sidebar/Sidebar';
 import Header from '@/sections/Header';
 import './App.css';
@@ -94,7 +93,6 @@ function App() {
       <CssBaseline />
       <Notifications />
       <HotKeys />
-      <SW />
       <BrowserRouter>
         <RouterPage />
       </BrowserRouter>

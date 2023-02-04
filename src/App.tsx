@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter, useMatch } from 'react-router-dom';
 
-import { Box, styled, Toolbar, useMediaQuery } from '@mui/material';
+import { Box, Button, Stack, styled, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { withErrorHandler } from '@/error-handling';
@@ -16,7 +16,7 @@ import { useUser } from '@/hooks/useUser';
 import useNotificationApi from '@/hooks/useNotificationApi';
 import noticeSound from './assets/sound/notice.mp4';
 import SW from '@/sections/SW';
-
+import { BrowserView, MobileView } from 'react-device-detect';
 
 const MainContent = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -71,7 +71,7 @@ const RouterPage = () => {
   );
 };
 
-function App() {
+const PcComponents = () => {
   const notice = useNotificationApi();
 
   useEffect(() => {
@@ -101,6 +101,33 @@ function App() {
       </BrowserRouter>
 
     </Fragment>
+  );
+};
+
+const MobileComponents = () => {
+  return (
+    <>
+      <Stack spacing={2}>
+        <Typography>Fiapp.pro 手机端正在开发中，你可以加入以下频道获得我们的信号自动推送：</Typography>
+        <Button variant='contained' color='primary' href='https://kook.top/14JUwd'
+                target={'_blank'}>Kookapp（大陆用户推荐）</Button>
+        <Button variant='contained' color='primary' href='https://discord.gg/HZD7uw5Hp9'
+                target={'_blank'}>Discord（海外用户推荐）</Button>
+      </Stack>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <>
+      <BrowserView>
+        <PcComponents />
+      </BrowserView>
+      <MobileView>
+        <MobileComponents />
+      </MobileView>
+    </>
   );
 }
 

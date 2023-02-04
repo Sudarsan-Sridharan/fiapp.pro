@@ -116,6 +116,23 @@ function Welcome() {
 
 
       <Box sx={{ bgcolor: '#fff' }}>
+        <Alert severity={'info'} sx={{
+          '& .MuiAlert-icon': {
+            display: 'flex',
+            alignSelf: 'center',
+          },
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant={'body1'}>
+              加入官方的通知频道获取实时的信号推送
+            </Typography>
+            <Button sx={{ mx: 2 }} variant='outlined' color='primary' href='https://kook.top/14JUwd'
+                    target={'_blank'}>Kookapp（大陆用户推荐）</Button>
+            <Button variant='outlined' color='primary' href='https://discord.gg/HZD7uw5Hp9'
+                    target={'_blank'}>Discord（海外用户推荐）</Button>
+          </Box>
+
+        </Alert>
 
         <Chart />
 

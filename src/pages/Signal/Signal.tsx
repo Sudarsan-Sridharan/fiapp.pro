@@ -10,7 +10,7 @@ const Signal = () => {
       <Meta title={'买卖信号'} />
       <Container maxWidth={'xl'}>
         <Alert severity={'error'} variant={'outlined'}>
-          买卖信号（测试版）不对任何亏损负责，仅供参考
+          买卖信号（测试版）不对任何亏损负责，仅供参考。
         </Alert>
 
         <NeedLogin>

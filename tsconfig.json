@@ -7,9 +7,9 @@
       "DOM.Iterable",
       "ESNext"
     ],
-    "allowJs": true,
-    "skipLibCheck": false,
-    "esModuleInterop": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,16 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./",
-    "types": [
-      "vite-plugin-pwa/client"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    }
+    "jsx": "react-jsx"
   },
   "include": [
     "src"

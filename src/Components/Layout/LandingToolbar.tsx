@@ -2,7 +2,8 @@ import {Box, Button, Stack, styled, ToggleButtonGroup, Typography, useMediaQuery
 import {CurrencyBitcoinRounded, Paid} from '@mui/icons-material';
 import {useTranslation} from "react-i18next";
 import Community, {communityState} from "../Community/Community";
-import {useRecoilState} from "recoil";
+import {useSetRecoilState} from "recoil";
+import {Link, useNavigate} from "react-router-dom";
 
 const PointerTypography = styled(Typography)({
     cursor: 'pointer',
@@ -12,8 +13,9 @@ const TranslatingButtonGroup = () => {
     const {i18n} = useTranslation()
     return (
         <ToggleButtonGroup>
-            {[['cn', '中文'], ['en', 'English']].map(([lang, text]) => (
+            {[['zh', '中文'], ['en', 'English']].map(([lang, text]) => (
                 <Button variant={i18n.language === lang ? 'contained' : 'outlined'}
+                        key={text}
                         color={'primary'}
                         onClick={() => i18n.changeLanguage(lang)}>
                     {text}
@@ -23,10 +25,11 @@ const TranslatingButtonGroup = () => {
     )
 }
 
-const Toolbar = () => {
+const LandingToolbar = () => {
     const {t} = useTranslation()
-    const [open, setOpen] = useRecoilState(communityState)
+    const setOpen = useSetRecoilState(communityState)
     const isMobile = useMediaQuery((theme: any) => theme?.breakpoints.down('md'));
+    const nav = useNavigate()
 
     return (
         <Box sx={{
@@ -49,7 +52,7 @@ const Toolbar = () => {
                     <Paid sx={{
                         fontSize: 36,
                     }}/>
-                    <PointerTypography variant={"h4"}>
+                    <PointerTypography variant={"h4"} onClick={() => nav('/')}>
                         Fiapp.pro
                     </PointerTypography>
                 </Stack>}
@@ -67,14 +70,15 @@ const Toolbar = () => {
                         {t("Twitter")}
                     </PointerTypography>
                     {!isMobile && <Button variant={"contained"} size={"large"} color={'secondary'}
-                                          startIcon={<CurrencyBitcoinRounded/>} onClick={() => setOpen(true)}>
+                                          startIcon={<CurrencyBitcoinRounded/>}
+                                          component={Link}
+                                          to={'register'}>
                         {t("立即免费使用")}
                     </Button>}
-
                 </Stack>
             </Box>
         </Box>
     );
 };
 
-export default Toolbar;
+export default LandingToolbar;

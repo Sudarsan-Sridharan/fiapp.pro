@@ -26,6 +26,20 @@ i18n
                     "加入社区获取免费实时的买卖信号": "Join the community to get free real-time buy and sell signals",
                     "升级中，稍后再来查看": "Upgrading, come back later to check",
                     "获取免费的买卖信号": "Get free buy and sell signals",
+                    "创建账户": "Create an account",
+                    "注册 Fiapp.pro 会员": "Register for Fiapp.pro membership",
+                    "现在注册立即获得 30 天免费试用": "Register now to get 30 days free trial",
+                    "用户名": "Username",
+                    "密码": "Password",
+                    "邮箱": "Email",
+                    "已经有账户了？立即登录": "Already have an account? Login now",
+                    "用户名不能为空": "Username cannot be empty",
+                    "密码不能为空": "Password cannot be empty",
+                    "邮箱不能为空": "Email cannot be empty",
+                    "用户名不能超过20个字符": "Username cannot be more than 20 characters",
+                    "登录账户": "Login account",
+                    "没有账户？注册": "No account? Register",
+                    "登录 Fiapp.pro 会员": "Login Fiapp.pro membership",
                 }
             },
             zh: {
@@ -38,7 +52,7 @@ i18n
         interpolation: {
             escapeValue: false // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
         }
-    });
+    }).then(r => r);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>

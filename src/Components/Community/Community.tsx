@@ -25,10 +25,12 @@ const Community: React.FC = () => {
                 <Divider sx={{my: 2}}/>
 
                 <Stack spacing={2}>
-                    <Button variant={"contained"} size={"large"}>
+                    <Button variant={"contained"} size={"large"}
+                            onClick={() => window.open('https://kook.top/14JUwd', '_black')}>
                         {t("Kook（国内用户推荐）")}
                     </Button>
-                    <Button variant={"contained"} size={"large"}>
+                    <Button variant={"contained"} size={"large"}
+                            onClick={() => window.open('https://discord.gg/HZD7uw5Hp9', '_black')}>
                         {t("Discord（海外用户推荐）")}
                     </Button>
                 </Stack>

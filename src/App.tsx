@@ -1,4 +1,4 @@
-import {Box, Button, Paper, ThemeProvider, Tooltip, Typography} from '@mui/material';
+import {Box, Button, Paper, Stack, ThemeProvider, Tooltip, Typography} from '@mui/material';
 import Toolbar from './Components/Layout/Toolbar';
 import {theme} from "./Theme/Theme";
 import {ArrowCircleRightOutlined, CurrencyBitcoinRounded, Favorite} from "@mui/icons-material";
@@ -45,16 +45,26 @@ const Home = () => {
                     {t("量化交易系统")}<br/>
                 </Typography>
 
-                <Button variant={"contained"} size={"large"} color={'primary'}
-                        sx={theme => ({
-                            mt: 4,
-                            boxShadow: theme.shadows[6],
-                        })}
-                        onClick={() => setOpen(true)}
-                        startIcon={<CurrencyBitcoinRounded/>}
-                >
-                    {t("立即免费使用")}
-                </Button>
+                <Stack spacing={1} maxWidth={'800px'} direction={'row'} mt={4}>
+                    <Button variant={"contained"} size={"large"} color={'primary'}
+                            sx={theme => ({
+                                boxShadow: theme.shadows[6],
+                            })}
+                            onClick={() => setOpen(true)}
+                            startIcon={<CurrencyBitcoinRounded/>}
+                    >
+                        {t("立即免费使用")}
+                    </Button>
+                    <Button variant={"outlined"} size={"large"} color={'primary'}
+                            sx={theme => ({
+                                boxShadow: theme.shadows[0],
+                            })}
+                            onClick={() => setOpen(true)}
+                            endIcon={<ArrowCircleRightOutlined/>}
+                    >
+                        {t("获取免费买卖信号")}
+                    </Button>
+                </Stack>
             </Box>
             <Box mt={12}>
                 <Paper elevation={6} sx={{

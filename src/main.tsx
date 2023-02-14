@@ -25,14 +25,15 @@ i18n
                     "Discord（海外用户推荐）": "Discord (Recommended for Global users)",
                     "加入社区获取免费实时的买卖信号": "Join the community to get free real-time buy and sell signals",
                     "升级中，稍后再来查看": "Upgrading, come back later to check",
+                    "获取免费的买卖信号": "Get free buy and sell signals",
                 }
             },
-            cn: {
+            zh: {
                 translation: {}
             }
         },
-        lng: "cn", // if you're using a language detector, do not define the lng option
-        fallbackLng: "cn",
+        lng: "zh", // if you're using a language detector, do not define the lng option
+        fallbackLng: "zh",
 
         interpolation: {
             escapeValue: false // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape

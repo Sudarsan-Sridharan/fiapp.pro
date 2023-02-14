@@ -3,7 +3,7 @@ import Toolbar from './Components/Layout/Toolbar';
 import {theme} from "./Theme/Theme";
 import {ArrowCircleRightOutlined, CurrencyBitcoinRounded, Favorite} from "@mui/icons-material";
 import ChartImg from './assets/FireShot Capture 003.png'
-import React from "react";
+import React, {useEffect} from "react";
 import {grey} from "@mui/material/colors";
 import {useTranslation} from "react-i18next";
 import {RecoilRoot, useRecoilState} from "recoil";
@@ -62,7 +62,7 @@ const Home = () => {
                             onClick={() => setOpen(true)}
                             endIcon={<ArrowCircleRightOutlined/>}
                     >
-                        {t("获取免费买卖信号")}
+                        {t("获取免费的买卖信号")}
                     </Button>
                 </Stack>
             </Box>
@@ -99,6 +99,14 @@ const Home = () => {
 }
 
 function App() {
+    const userLang = navigator.language;
+    const {i18n} = useTranslation()
+    useEffect(() => {
+        if (userLang === 'zh-CN' || userLang === 'zh-TW' || userLang === 'zh-HK') {
+            i18n.changeLanguage('zh')
+        }
+    }, [i18n, userLang])
+
     return (
         <RecoilRoot>
             <ThemeProvider theme={theme}>

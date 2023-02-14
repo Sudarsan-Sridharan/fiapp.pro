@@ -39,6 +39,13 @@ const muiTheme = createTheme({
                 }
             }
         },
+        MuiModal: {
+            styleOverrides: {
+                root: {
+                    backdropFilter: 'blur(5px)',
+                }
+            }
+        },
         MuiButton: {
             styleOverrides: {
                 root: ({ownerState}) => ({

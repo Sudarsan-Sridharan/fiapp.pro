@@ -18,16 +18,14 @@ const Log = () => {
     const [fileName, setFileName] = useState<string>()
     const [contexts, setContexts] = useState<Array<string>>()
     useEffect(() => {
-        if (fileName) {
-            console.log(fileName)
+        if (!fileName) setContexts([])
 
-            setInterval(() => {
-                http.get(`/ServerLog/file?path=/root/.pm2/logs/${fileName}&token=${token}`).then(
-                    (res) => {
-                        setContexts(res.data.data)
-                    }
-                )
-            }, 5000)
+        if (fileName) {
+            http.get(`/ServerLog/file?path=/root/.pm2/logs/${fileName}&token=${token}`).then(
+                (res) => {
+                    setContexts(res.data.data)
+                }
+            )
         }
     }, [fileName])
     return (

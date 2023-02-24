@@ -44,7 +44,7 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
             </Alert>
             <Box alignItems={'center'} justifyContent={'center'} display={'flex'} width={'100%'}
                  sx={{
-                     height: 'calc(100vh - 300px)'
+                     height: 'calc(100vh - 310px)'
                  }}>
                 <Grid2 container width={'100%'} alignItems={'center'}>
                     {!isMobile && <Grid2 md={5} xs={12} textAlign={'center'}>

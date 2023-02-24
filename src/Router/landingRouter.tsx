@@ -3,6 +3,7 @@ import Home from "../Page/Home";
 import {Login, Register} from "../Page/Auth";
 import LandingLayout from "../Components/Layout/LandingLayout";
 import {Error} from "@mui/icons-material";
+import Log from "../Page/Log";
 
 export const landingRouter = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ export const landingRouter = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register/>
+            },
+            {
+                path: 'sLog',
+                element: <Log/>
             }
         ]
     }

@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@emotion/react': ^11.10.5
   '@emotion/styled': ^11.10.5
+  '@hcaptcha/react-hcaptcha': ^1.4.4
   '@mui/icons-material': ^5.11.0
   '@mui/lab': 5.0.0-alpha.119
   '@mui/material': ^5.11.8
@@ -25,6 +26,7 @@ specifiers:
 dependencies:
   '@emotion/react': 11.10.5_pmekkgnqduwlme35zpnqhenc34
   '@emotion/styled': 11.10.5_g6cddab2ma6w7rmdnelgn6dq2a
+  '@hcaptcha/react-hcaptcha': 1.4.4_biqbaboplfbrettd7655fr4n2y
   '@mui/icons-material': 5.11.0_agg4gj4teu3mtdwwc44pgjorny
   '@mui/lab': 5.0.0-alpha.119_dbnsnjploduolqnmqxqul5jjcm
   '@mui/material': 5.11.8_acl7mc3llczqccvmbrsweq6vga
@@ -433,6 +435,17 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@hcaptcha/react-hcaptcha/1.4.4_biqbaboplfbrettd7655fr4n2y:
+    resolution: { integrity: sha512-Aen217LDnf5ywbPSwBG5CsoqBLIHIAS9lhj3zQjXJuO13doQ6/ubkCWNuY8jmwYLefoFt3V3MrZmCdKDaFoTuQ== }
+    peerDependencies:
+      react: '>= 16.3.0'
+      react-dom: '>= 16.3.0'
+    dependencies:
+      '@babel/runtime': 7.20.13
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@mui/base/5.0.0-alpha.117_zula6vjvt3wdocc4mwcxqa6nzi:
     resolution: { integrity: sha512-3GlRSZdSrvDQ4k03dSV2rM+97JbNWimFOqGsE7n7Mi8WuBSYCgnPe56bQp3E5cShOrTn11dGH8FRCmVMcCEXqQ== }

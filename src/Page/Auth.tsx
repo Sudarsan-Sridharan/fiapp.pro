@@ -7,6 +7,8 @@ import {useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import React, {useState} from "react";
 import {LoadingButton} from "@mui/lab";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import {http} from "../Network/Network";
 
 export const Login = () => {
     return (
@@ -31,11 +33,26 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
     const isRegister = props.type === 'register'
     const nav = useNavigate()
     const {register, handleSubmit, watch, formState: {errors}} = useForm<IRegister>();
+    const [submitting, setSubmitting] = useState(false);
+    const [token, setToken] = useState<string | null>(null);
+
     const onSubmit: SubmitHandler<IRegister> = data => {
         setSubmitting(true)
-
+        if (token) {
+            // post with HCaptcha ekey header
+            http.post(`/g/api/user/${props.type}`, data, {
+                headers: {
+                    'g-recaptcha-response': token
+                }
+            }).then(r => {
+                console.log(r)
+            }).finally(() => setSubmitting(false))
+        }
     };
-    const [submitting, setSubmitting] = useState(false);
+
+    const handleVerificationSuccess = (token: string, ekey: string) => {
+        setToken(token)
+    }
 
     return (
         <>
@@ -89,7 +106,13 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
                                                error={!!errors.password}
                                                helperText={errors.password?.message}/>
 
-                                    <LoadingButton loading={submitting} variant={"contained"} type={"submit"} fullWidth
+                                    <HCaptcha
+                                        sitekey="0bad7e17-32a8-4c71-a26a-01be54426ef3"
+                                        onVerify={(token, ekey) => handleVerificationSuccess(token, ekey)}
+                                    />
+
+                                    <LoadingButton disabled={!token} loading={submitting} variant={"contained"}
+                                                   type={"submit"} fullWidth
                                                    sx={{
                                                        height: '56px'
                                                    }}>

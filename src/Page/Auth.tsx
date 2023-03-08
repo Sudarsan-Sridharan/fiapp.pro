@@ -20,6 +20,7 @@ interface IRegister {
     username?: string;
     password: string;
     email: string;
+    "g-recaptcha-response": string
 }
 
 interface IAuthLayout {
@@ -39,12 +40,9 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
     const onSubmit: SubmitHandler<IRegister> = data => {
         setSubmitting(true)
         if (token) {
+            data["g-recaptcha-response"] = token
             // post with HCaptcha ekey header
-            http.post(`/g/api/user/${props.type}`, data, {
-                headers: {
-                    'g-recaptcha-response': token
-                }
-            }).then(r => {
+            http.post(`/g/api/user/${props.type}`, data).then(r => {
                 console.log(r)
             }).finally(() => setSubmitting(false))
         }

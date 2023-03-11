@@ -1,10 +1,9 @@
 import {useTranslation} from "react-i18next";
 import {useRecoilState} from "recoil";
 import {communityState} from "../Components/Community/Community";
-import {Box, Button, Paper, Stack, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Paper, Stack, Typography} from "@mui/material";
 import {ArrowCircleRightOutlined, CurrencyBitcoinRounded} from "@mui/icons-material";
 import ChartImg from "../assets/FireShot Capture 003.png";
-import {grey} from "@mui/material/colors";
 import React from "react";
 import {Link} from "react-router-dom";
 
@@ -58,16 +57,12 @@ const Home = () => {
                         alignItems: 'center',
                         backdropFilter: 'blur(3px)',
                     }}>
-                        <Tooltip title={t("升级中，稍后再来查看")} arrow placement={"top"}>
-                            <Button variant={"contained"} size={"large"}
-                                    sx={{
-                                        cursor: 'not-allowed',
-                                        bgcolor: grey[600]
-                                    }}
-                                    endIcon={<ArrowCircleRightOutlined/>}>
-                                {t("解锁高级图表")}
-                            </Button>
-                        </Tooltip>
+                        <Button variant={"contained"} size={"large"}
+                                component={Link}
+                                to={'/d/BTCUSDT'}
+                                endIcon={<ArrowCircleRightOutlined/>}>
+                            {t("解锁高级图表")}
+                        </Button>
                     </Box>
                 </Paper>
             </Box>

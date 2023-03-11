@@ -8,30 +8,49 @@ import {RecoilRoot} from "recoil";
 import {theme} from "../../Theme/Theme";
 
 
-const LandingLayout = () => {
+interface ILandingLayout {
+    width?: string,
+    toolbar?: boolean,
+    footer?: boolean,
+}
+
+const LandingLayout: React.FC<ILandingLayout> = ({width, toolbar = true, footer = true}) => {
     return (
         <>
             <RecoilRoot>
                 <ThemeProvider theme={theme}>
-                    <Box width={'90%'} margin={'0 auto'}>
-                        <LandingToolbar/>
-                        <Box mt={'116px'}/>
+                    <Box width={width ?? '100%'} margin={'0 auto'}>
+                        {toolbar && (
+                            <>
+                                <LandingToolbar/>
+                                <Box mt={'96px'}/>
+                            </>
+                        )}
+
                         <Outlet/>
 
-                        <Box mt={12} mb={2}>
-                            <Typography variant={"body1"} alignItems={'center'} display={'flex'}
-                                        sx={{
-                                            color: grey[500]
-                                        }}
-                                        justifyContent={"center"} gap={1}>
-                                <Favorite/> by Fiapp.pro @ 2023
-                            </Typography>
-                        </Box>
+                        {
+                            footer && (
+                                <Footer/>
+                            )
+                        }
                     </Box>
                 </ThemeProvider>
             </RecoilRoot>
         </>
     );
 };
+
+const Footer = () => (
+    <Box mt={12} mb={2}>
+        <Typography variant={"body1"} alignItems={'center'} display={'flex'}
+                    sx={{
+                        color: grey[500]
+                    }}
+                    justifyContent={"center"} gap={1}>
+            <Favorite/> by Fiapp.pro @ 2023
+        </Typography>
+    </Box>
+)
 
 export default LandingLayout;

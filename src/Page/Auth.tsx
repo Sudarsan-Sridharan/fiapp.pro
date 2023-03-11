@@ -1,14 +1,15 @@
-import {Alert, Box, Container, Stack, TextField, Typography, useMediaQuery} from "@mui/material";
+import {Box, Card, Container, LinearProgress, Stack, TextField, Typography, useMediaQuery} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
 import SignSvg from "../assets/Bitcoin _Flatline.svg";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
-import React, {useState} from "react";
+import React, {Suspense, useState} from "react";
 import {LoadingButton} from "@mui/lab";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import {http} from "../Network/Network";
+import {useUser} from "../Hooks/useUser";
+import {IAuthType} from "../API/userAPI";
 
 export const Login = () => {
     return (
@@ -25,7 +26,7 @@ interface IRegister {
 
 interface IAuthLayout {
     img: string;
-    type: 'login' | 'register'
+    type: IAuthType
 }
 
 const AuthLayout: React.FC<IAuthLayout> = (props) => {
@@ -34,17 +35,14 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
     const isRegister = props.type === 'register'
     const nav = useNavigate()
     const {register, handleSubmit, watch, formState: {errors}} = useForm<IRegister>();
-    const [submitting, setSubmitting] = useState(false);
     const [token, setToken] = useState<string | null>(null);
+    const {i18n} = useTranslation()
+    const user = useUser()
 
-    const onSubmit: SubmitHandler<IRegister> = data => {
-        setSubmitting(true)
+    const onSubmit: SubmitHandler<IRegister> = async (data) => {
         if (token) {
             data["g-recaptcha-response"] = token
-            // post with HCaptcha ekey header
-            http.post(`/g/api/user/${props.type}`, data).then(r => {
-                console.log(r)
-            }).finally(() => setSubmitting(false))
+            await user.auth(data, props.type)
         }
     };
 
@@ -54,12 +52,9 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
 
     return (
         <>
-            <Alert variant={"outlined"} severity={"info"}>
-                目前仅支持邀请注册，如需注册请加入社区咨询管理员。
-            </Alert>
             <Box alignItems={'center'} justifyContent={'center'} display={'flex'} width={'100%'}
                  sx={{
-                     height: 'calc(100vh - 310px)'
+                     minHeight: 'calc(100vh - 310px)'
                  }}>
                 <Grid2 container width={'100%'} alignItems={'center'}>
                     {!isMobile && <Grid2 md={5} xs={12} textAlign={'center'}>
@@ -82,7 +77,20 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
                                 }}>
                                     {isRegister && t("现在注册立即获得 30 天免费试用")}
                                 </Typography>
+
+                                {
+                                    user.isLoggedIn() && <Card sx={{
+                                        p: 2,
+                                    }}>
+                                        <Typography variant={"body2"} sx={{
+                                            color: grey[500]
+                                        }}>
+                                            {t("您已经登录账号")} {user.get?.user.name}
+                                        </Typography>
+                                    </Card>
+                                }
                             </Stack>
+
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <Stack spacing={4} mt={6}>
                                     {isRegister && <TextField label={t("用户名")}
@@ -107,9 +115,10 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
                                     <HCaptcha
                                         sitekey="0bad7e17-32a8-4c71-a26a-01be54426ef3"
                                         onVerify={(token, ekey) => handleVerificationSuccess(token, ekey)}
+                                        languageOverride={i18n.language}
                                     />
 
-                                    <LoadingButton disabled={!token} loading={submitting} variant={"contained"}
+                                    <LoadingButton disabled={!token} loading={user.isLoading} variant={"contained"}
                                                    type={"submit"} fullWidth
                                                    sx={{
                                                        height: '56px'
@@ -136,8 +145,8 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
 
 export const Register = () => {
     return (
-        <>
+        <Suspense fallback={<LinearProgress/>}>
             <AuthLayout type={'register'} img={SignSvg}/>
-        </>
+        </Suspense>
     )
 }

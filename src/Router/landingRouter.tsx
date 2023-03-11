@@ -4,11 +4,12 @@ import {Login, Register} from "../Page/Auth";
 import LandingLayout from "../Components/Layout/LandingLayout";
 import {Error} from "@mui/icons-material";
 import Log from "../Page/Log";
+import Detail from "../Page/Detail";
 
 export const landingRouter = createBrowserRouter([
     {
         path: '/',
-        element: <LandingLayout/>,
+        element: <LandingLayout width={'90%'}/>,
         errorElement: <Error/>,
         children: [
             {
@@ -26,6 +27,17 @@ export const landingRouter = createBrowserRouter([
             {
                 path: 'sLog',
                 element: <Log/>
+            },
+        ],
+    },
+    {
+        path: '/',
+        element: <LandingLayout toolbar={false} footer={false}/>,
+        errorElement: <Error/>,
+        children: [
+            {
+                path: "/d/:name",
+                element: <Detail/>
             }
         ]
     }

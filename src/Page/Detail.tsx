@@ -32,6 +32,7 @@ import ChartToolbar from "../Components/Chart/ChartToolbar";
 import timejs from "../Unit/timejs";
 import useQuery from "../Hooks/useQuery";
 import exportAsImage from "../Unit/exportAsImage";
+import {Watermark} from "@hirohe/react-watermark";
 
 const StyledPaper = styled(Paper)({
     padding: '16px',
@@ -349,8 +350,10 @@ const Layout = (): JSX.Element => {
                                         </Stack>
 
                                         <Box ref={exportRef}>
-                                            <Chart height={containerMaxHeight} name={query.get.name}
-                                                   timeframe={query.get.timeframe}/>
+                                            <Watermark text="Fiapp.pro" gutter={60} opacity={0.15}>
+                                                <Chart height={containerMaxHeight} name={query.get.name}
+                                                       timeframe={query.get.timeframe}/>
+                                            </Watermark>
                                         </Box>
                                     </Stack>
                                 </Card>

@@ -4,6 +4,7 @@ specifiers:
   '@emotion/react': ^11.10.6
   '@emotion/styled': ^11.10.6
   '@hcaptcha/react-hcaptcha': ^1.4.4
+  '@hirohe/react-watermark': ^0.5.0
   '@mui/icons-material': ^5.11.11
   '@mui/lab': 5.0.0-alpha.122
   '@mui/material': ^5.11.12
@@ -30,6 +31,7 @@ dependencies:
   '@emotion/react': 11.10.6_pmekkgnqduwlme35zpnqhenc34
   '@emotion/styled': 11.10.6_oouaibmszuch5k64ms7uxp2aia
   '@hcaptcha/react-hcaptcha': 1.4.4_biqbaboplfbrettd7655fr4n2y
+  '@hirohe/react-watermark': 0.5.0_biqbaboplfbrettd7655fr4n2y
   '@mui/icons-material': 5.11.11_ao76n7r2cajsoyr3cbwrn7geoi
   '@mui/lab': 5.0.0-alpha.122_buaezdclapb5fiedfif4i2kehi
   '@mui/material': 5.11.12_xqeqsl5kvjjtyxwyi3jhw3yuli
@@ -433,6 +435,16 @@ packages:
       react-dom: '>= 16.3.0'
     dependencies:
       '@babel/runtime': 7.20.13
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@hirohe/react-watermark/0.5.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: { integrity: sha512-VB43IxKVTveUk7bjBZuG+0AYyyPx+GuMQ/0jMJZ8YIMgar5sZW3lPoegA3lCLOjIKj/TQs25fxU9aZpj2t70Dg== }
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false

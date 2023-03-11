@@ -68,12 +68,12 @@ const Toolbar = () => {
             desc: metaInfo.latestKline.lowest_bid
         },
         {
-            title: '交易量(BTC)',
-            desc: metaInfo.latestKline.volume_bid
+            title: `交易量(${metaInfo.name.split('USDT')[0]})`,
+            desc: metaInfo.latestKline.volume_bid.toFixed(2)
         },
         {
             title: '交易量(USDT)',
-            desc: metaInfo.latestKline.volume_bid * metaInfo.latestKline.open_bid
+            desc: (metaInfo.latestKline.volume_bid * metaInfo.latestKline.open_bid).toFixed(2)
         }
     ];
 

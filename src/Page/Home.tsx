@@ -3,7 +3,7 @@ import {useRecoilState} from "recoil";
 import {communityState} from "../Components/Community/Community";
 import {Box, Button, Paper, Stack, Typography} from "@mui/material";
 import {ArrowCircleRightOutlined, CurrencyBitcoinRounded} from "@mui/icons-material";
-import ChartImg from "../assets/FireShot Capture 003.png";
+import ChartImg from "../assets/11-3-2023_19351_fiapp.pro.jpeg";
 import React from "react";
 import {Link} from "react-router-dom";
 

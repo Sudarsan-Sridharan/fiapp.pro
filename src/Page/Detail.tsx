@@ -16,20 +16,22 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Tooltip,
     Typography,
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
-import {CloseOutlined, MenuOutlined, SearchOutlined} from "@mui/icons-material";
+import {CloseOutlined, DownloadOutlined, MenuOutlined, SearchOutlined} from "@mui/icons-material";
 import {coinAPI, coinListAPI, ICoinList, signalAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
 import timejs from "../Unit/timejs";
 import useQuery from "../Hooks/useQuery";
+import exportAsImage from "../Unit/exportAsImage";
 
 const StyledPaper = styled(Paper)({
     padding: '16px',
@@ -314,6 +316,9 @@ const Layout = (): JSX.Element => {
             name
         })
     }, [name])
+
+    const exportRef = useRef();
+
     return (
         <Box sx={{
             height: 'calc(100vh - 32px)',
@@ -324,19 +329,29 @@ const Layout = (): JSX.Element => {
                         <Toolbar/>
 
                         <Grid2 container>
-                            <Grid2 xs={"auto"} md={4}>
+                            <Grid2 xs={"auto"} md={3}>
                                 <LeftBar/>
                             </Grid2>
-                            <Grid2 xs={'auto'} md={8}>
+                            <Grid2 xs={'auto'} md={9}>
                                 <Card sx={{
                                     width: '98%',
                                     margin: '0 0 0 auto',
                                     height: '100%',
                                 }}>
                                     <Stack spacing={2} p={2}>
-                                        <ChartToolbar/>
-                                        <Chart height={containerMaxHeight} name={query.get.name}
-                                               timeframe={query.get.timeframe}/>
+                                        <Stack justifyContent={'space-between'} direction={'row'}>
+                                            <ChartToolbar/>
+                                            <Tooltip title={'导出图片'} arrow placement={"top"}>
+                                                <IconButton onClick={() => exportAsImage(exportRef.current)}>
+                                                    <DownloadOutlined/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Stack>
+
+                                        <Box ref={exportRef}>
+                                            <Chart height={containerMaxHeight} name={query.get.name}
+                                                   timeframe={query.get.timeframe}/>
+                                        </Box>
                                     </Stack>
                                 </Card>
                             </Grid2>

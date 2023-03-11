@@ -22,7 +22,7 @@ export const coinListAPI = (): ICoinList[] => {
 
 export type IKlineAPI = {
     name: string,
-    timeframe: '30M' | '1H' | '4H' | '1D'
+    timeframe: '30M' | '1H' | '4H' | '1D' | ''
 }
 
 interface IKlineList {
@@ -77,7 +77,7 @@ interface ISignal {
 }
 
 export const signalAPI = (data: IKlineAPI): ISignal[] => {
-    const {data: signalList} = useSWR<ILayout<ISignal[]>>(`/TradingSignal?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
+    const {data: signalList} = useSWR<ILayout<ISignal[]>>(`/TradingSignal?name=${data?.name}&timeframe=${data?.timeframe}`, fetcher, {
         refreshInterval: 1000 * 5
     })
 

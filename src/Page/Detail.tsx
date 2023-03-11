@@ -256,7 +256,7 @@ const RightBar = () => {
     const query = useQuery()
     const signalData = signalAPI({
         name: name ?? 'BTCUSDT',
-        timeframe: query.get.timeframe
+        timeframe: ''
     })
 
     return (

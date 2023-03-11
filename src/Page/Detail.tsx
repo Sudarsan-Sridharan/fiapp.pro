@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     ButtonGroup,
@@ -18,14 +19,16 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
 import {MenuOutlined, SearchOutlined} from "@mui/icons-material";
-import {coinAPI, coinListAPI} from "../API/coinAPI";
+import {coinAPI, coinListAPI, signalAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
+import timejs from "../Unit/timejs";
+import useQuery from "../Hooks/useQuery";
 
 const StyledPaper = styled(Paper)({
     padding: '16px',
@@ -40,9 +43,10 @@ const Toolbar = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
     const {name} = useParams()
+    const query = useQuery()
     const metaInfo = coinAPI({
         name: name ?? 'BTCUSDT',
-        timeframe: '30M'
+        timeframe: query.get.timeframe,
     })
 
     const toolbarData = metaInfo && [
@@ -79,7 +83,7 @@ const Toolbar = () => {
             }}>
                 <Grid2 container>
                     {toolbarData && toolbarData.map((item, index) => (
-                        <Grid2 xs={"auto"} md={2}>
+                        <Grid2 xs={"auto"} md={2} key={item.title + index}>
                             <Typography variant={'subtitle1'}>
                                 {item.title}
                             </Typography>
@@ -201,6 +205,13 @@ const RightBar = () => {
         '买卖信号', '趋势转换', '波动预警'
     ]
 
+    const {name} = useParams()
+    const query = useQuery()
+    const signalData = signalAPI({
+        name: name ?? 'BTCUSDT',
+        timeframe: query.get.timeframe
+    })
+
     return (
         <StyledPaper sx={{
             height: 'calc(100vh - 100px)',
@@ -219,6 +230,25 @@ const RightBar = () => {
                                     }}>{item}</Button>
                         ))}
                 </ButtonGroup>
+
+                <Stack spacing={1}>
+                    {
+                        signalData && signalData.map((item, index) => {
+                            const isBuy = item.direction === 1
+                            return (
+                                <Stack direction={"row"} key={item.name + index} spacing={1}>
+                                    <Alert sx={{width: '100%'}} severity={isBuy ? 'success' : 'error'}>
+                                        <Typography variant={'body2'} color={isBuy ? 'success' : 'error'}>
+                                            {isBuy ? '买入' : '卖出'} ({item.timeframe})
+                                        </Typography>
+                                        <Typography variant={'body2'}>
+                                            {timejs(item.created_at).fromNow()} - {timejs(item.created_at).format('YYYY/MM/DD HH:mm:ss')}
+                                        </Typography>
+                                    </Alert>
+                                </Stack>
+                            )
+                        })}
+                </Stack>
             </Stack>
         </StyledPaper>
     )
@@ -227,7 +257,16 @@ const RightBar = () => {
 
 const Layout = (): JSX.Element => {
     let {name} = useParams();
-    name = name?.toUpperCase() ?? 'BTCUSDT'
+
+    const query = useQuery()
+
+    useEffect(() => {
+        name = name?.toUpperCase() ?? 'BTCUSDT'
+        query.set({
+            ...query.get,
+            name
+        })
+    }, [name])
     return (
         <Box sx={{
             height: 'calc(100vh - 32px)',
@@ -249,7 +288,8 @@ const Layout = (): JSX.Element => {
                                 }}>
                                     <Stack spacing={2} p={2}>
                                         <ChartToolbar/>
-                                        <Chart height={containerMaxHeight} name={name} timeframe={'30M'}/>
+                                        <Chart height={containerMaxHeight} name={query.get.name}
+                                               timeframe={query.get.timeframe}/>
                                     </Stack>
                                 </Card>
                             </Grid2>

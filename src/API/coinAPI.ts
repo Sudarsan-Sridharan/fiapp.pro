@@ -1,9 +1,10 @@
 import {fetcher} from "../Network/Network";
 import useSWR from "swr";
 
-interface ICoinListLayout {
-    data: ICoinList[]
+interface ILayout<T> {
+    data: T
 }
+
 
 interface ICoinList {
     name: string,
@@ -12,7 +13,7 @@ interface ICoinList {
 
 
 export const coinListAPI = (): ICoinList[] => {
-    const {data: coinList} = useSWR<ICoinListLayout>('/coin', fetcher, {
+    const {data: coinList} = useSWR<ILayout<ICoinList[]>>('/coin', fetcher, {
         refreshInterval: 1000 * 30
     })
 
@@ -33,19 +34,11 @@ interface IKlineList {
     volume_bid: number
 }
 
-interface IKlineAPiLayout {
-    data: IKlineList[]
-}
-
 export const klineAPI = (data: IKlineAPI) => {
-    const {data: kline} = useSWR<IKlineAPiLayout>(`/kline?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
+    const {data: kline} = useSWR<ILayout<IKlineList[]>>(`/kline?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
         refreshInterval: 1000 * 5
     })
     return kline?.data
-}
-
-interface ICoinLayout {
-    data: ICoin
 }
 
 interface ICoin {
@@ -62,9 +55,31 @@ interface ICoin {
 
 
 export const coinAPI = (data: IKlineAPI): ICoin => {
-    const {data: coinList} = useSWR<ICoinLayout>(`/coin?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
-        refreshInterval: 1000 * 30
+    const {data: coinList} = useSWR<ILayout<ICoin>>(`/coin?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
+        refreshInterval: 1000 * 5
     })
 
     return coinList?.data
+}
+
+interface ISignal {
+    id: string;
+    created_at: string;
+    name: string;
+    timeframe: string;
+    open_time: string;
+    code: number;
+    open_price: number;
+    stop_price: number | null;
+    profit_price: number | null;
+    direction: number;
+    risk: number;
+}
+
+export const signalAPI = (data: IKlineAPI): ISignal[] => {
+    const {data: signalList} = useSWR<ILayout<ISignal[]>>(`/TradingSignal?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
+        refreshInterval: 1000 * 5
+    })
+
+    return signalList?.data
 }

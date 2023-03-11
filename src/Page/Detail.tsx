@@ -5,6 +5,7 @@ import {
     ButtonGroup,
     Card,
     Divider,
+    IconButton,
     OutlinedInput,
     Paper,
     Stack,
@@ -22,7 +23,7 @@ import {
 import React, {useEffect} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
-import {MenuOutlined, SearchOutlined} from "@mui/icons-material";
+import {CloseOutlined, MenuOutlined, SearchOutlined} from "@mui/icons-material";
 import {coinAPI, coinListAPI, ICoinList, signalAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
 import {Link, useNavigate, useParams} from "react-router-dom";
@@ -152,6 +153,14 @@ const LeftBar = () => {
                                placeholder={'搜索交易对'}
                                value={searchQuery}
                                onChange={handleSearchInput}
+                               endAdornment={
+                                   searchQuery && <IconButton size={'small'} onClick={() => {
+                                       setSearchQuery('')
+                                       setSearchResult(coinList)
+                                   }}>
+                                       <CloseOutlined/>
+                                   </IconButton>
+                               }
                                sx={{
                                    borderRadius: 10,
                                    bgcolor: grey[100],

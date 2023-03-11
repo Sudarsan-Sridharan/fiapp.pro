@@ -6,7 +6,7 @@ interface ILayout<T> {
 }
 
 
-interface ICoinList {
+export interface ICoinList {
     name: string,
     price: string,
 }

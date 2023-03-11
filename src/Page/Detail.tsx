@@ -23,7 +23,7 @@ import React, {useEffect} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
 import {MenuOutlined, SearchOutlined} from "@mui/icons-material";
-import {coinAPI, coinListAPI, signalAPI} from "../API/coinAPI";
+import {coinAPI, coinListAPI, ICoinList, signalAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
@@ -107,6 +107,42 @@ const containerMaxHeight = 'calc(100vh - 300px)'
 const LeftBar = () => {
     const coinList = coinListAPI()
     const nav = useNavigate()
+
+    const SEARCH_DELAY = 1000; // 1 second
+    let searchTimer: any;
+
+    function search(query: string, coins: ICoinList[]): ICoinList[] {
+        const normalizedQuery = query.toLowerCase().trim();
+        if (normalizedQuery === '') {
+            return coins;
+        }
+        return coins.filter((coin) =>
+            coin.name.toLowerCase().includes(normalizedQuery)
+        );
+    }
+
+    const [searchResult, setSearchResult] = React.useState<ICoinList[]>([]);
+    const [searchQuery, setSearchQuery] = React.useState('');
+
+    useEffect(() => {
+        if (!searchQuery) {
+            setSearchResult(coinList)
+        }
+    }, [coinList])
+
+    function handleSearchInput(event: { target: { value: string; }; }) {
+        const query = event.target.value.trim();
+        setSearchQuery(query)
+        // Clear the previous timer
+        clearTimeout(searchTimer);
+
+        // Set a new timer to delay the search function execution
+        searchTimer = setTimeout(() => {
+            const res = search(query, coinList);
+            setSearchResult(res)
+        }, SEARCH_DELAY);
+    }
+
     return (
         <StyledPaper>
             <Stack spacing={2}>
@@ -114,6 +150,8 @@ const LeftBar = () => {
                                fullWidth
                                startAdornment={<SearchOutlined/>}
                                placeholder={'搜索交易对'}
+                               value={searchQuery}
+                               onChange={handleSearchInput}
                                sx={{
                                    borderRadius: 10,
                                    bgcolor: grey[100],
@@ -163,7 +201,7 @@ const LeftBar = () => {
                             </TableHead>
                             <TableBody>
                                 {
-                                    coinList && coinList.map((item, index) => (
+                                    searchResult && searchResult.map((item, index) => (
                                         <TableRow
                                             key={item.name}
                                             sx={{

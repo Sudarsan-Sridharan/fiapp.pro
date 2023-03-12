@@ -24,15 +24,24 @@ import {
 import React, {useEffect, useRef} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
-import {CloseOutlined, DownloadOutlined, MenuOutlined, SearchOutlined} from "@mui/icons-material";
+import {
+    CloseOutlined,
+    DownloadOutlined,
+    HomeOutlined,
+    MenuOutlined,
+    MonitorOutlined,
+    SearchOutlined,
+    Translate
+} from "@mui/icons-material";
 import {coinAPI, coinListAPI, ICoinList, signalAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
 import timejs from "../Unit/timejs";
 import useQuery from "../Hooks/useQuery";
 import exportAsImage from "../Unit/exportAsImage";
 import {Watermark} from "@hirohe/react-watermark";
+import {useTranslation} from "react-i18next";
 
 const StyledPaper = styled(Paper)({
     padding: '16px',
@@ -52,30 +61,31 @@ const Toolbar = () => {
         name: name ?? 'BTCUSDT',
         timeframe: query.get.timeframe,
     })
+    const {t} = useTranslation()
 
     const toolbarData = metaInfo && [
         {
             title: metaInfo.name,
-            desc: '合约(30M)'
+            desc: `${t('合约')}(${query.get.timeframe})`
         },
         {
-            title: '价格',
+            title: t('价格'),
             desc: metaInfo.price
         },
         {
-            title: '最高价',
+            title: t('最高价'),
             desc: metaInfo.latestKline.highest_bid
         },
         {
-            title: '最低价',
+            title: t('最低价'),
             desc: metaInfo.latestKline.lowest_bid
         },
         {
-            title: `交易量(${metaInfo.name.split('USDT')[0]})`,
+            title: `${t('交易量')}(${metaInfo.name.split('USDT')[0]})`,
             desc: metaInfo.latestKline.volume_bid.toFixed(2)
         },
         {
-            title: '交易量(USDT)',
+            title: `${t('交易量')}(USDT)`,
             desc: (metaInfo.latestKline.volume_bid * metaInfo.latestKline.open_bid).toFixed(2)
         }
     ];
@@ -101,14 +111,15 @@ const Toolbar = () => {
             : <></>
     )
 }
-
 const leftBarFilterData = [
     "市场", "热门", "流动性", "波动率", "新趋势", "波动预警", "买卖信号"
 ]
 
 const containerMaxHeight = 'calc(100vh - 300px)'
-
 const LeftBar = () => {
+    const {t} = useTranslation();
+
+
     const coinList = coinListAPI()
     const nav = useNavigate()
 
@@ -180,7 +191,7 @@ const LeftBar = () => {
                                 minWidth: '60px',
                                 minHeight: '24px'
                             }}>
-                                {item}
+                                {t(item)}
                             </Typography>
                         </Grid2>
                     ))}
@@ -207,8 +218,8 @@ const LeftBar = () => {
                         }} size={'small'}>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>标的</TableCell>
-                                    <TableCell align="left">最新价</TableCell>
+                                    <TableCell>{t('标的')}</TableCell>
+                                    <TableCell align="left">{t('最新价')}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -261,7 +272,9 @@ const RightBar = () => {
         name: name ?? 'BTCUSDT',
         timeframe: ''
     })
-
+    const {t} = useTranslation(
+        
+    )
     return (
         <StyledPaper sx={{
             height: 'calc(100vh - 100px)',
@@ -277,7 +290,7 @@ const RightBar = () => {
                                     variant={index === 0 ? 'contained' : 'outlined'}
                                     sx={{
                                         borderRadius: 10
-                                    }}>{item}</Button>
+                                    }}>{t(item)}</Button>
                         ))}
                 </ButtonGroup>
 
@@ -305,6 +318,11 @@ const RightBar = () => {
 }
 
 
+interface INavBar {
+    link: string,
+    icon: JSX.Element
+}
+
 const Layout = (): JSX.Element => {
     let {name} = useParams();
 
@@ -319,52 +337,104 @@ const Layout = (): JSX.Element => {
     }, [name])
 
     const exportRef = useRef();
+    const location = useLocation();
+    const navBarData: INavBar[] = [
+        {
+            link: '/',
+            icon: <HomeOutlined/>,
+        },
+        {
+            link: location.pathname,
+            icon: <MonitorOutlined/>,
+        },
+    ]
+
+    const nav = useNavigate()
+
+
+    // set language
+    const {i18n} = useTranslation();
 
     return (
         <Box sx={{
             height: 'calc(100vh - 32px)',
         }}>
-            <Grid2 container>
-                <Grid2 xs={"auto"} md={9}>
-                    <Stack spacing={2}>
-                        <Toolbar/>
+            <Box sx={{
+                display: 'flex',
+                gap: 2,
+            }}>
+                <Box>
+                    <StyledPaper sx={{
+                        height: 'calc(100vh - 100px)'
+                    }}>
+                        <Stack spacing={2} height={'100%'} alignItems="center"
+                               justifyContent="space-between">
+                            <Stack>
+                                {navBarData.map((item, index) => (
+                                    <IconButton key={item.link + index} onClick={() => nav(item.link)} sx={{
+                                        bgcolor: location.pathname === item.link ? grey[100] : 'transparent',
+                                    }}>
+                                        {item.icon}
+                                    </IconButton>
+                                ))}
+                            </Stack>
+                            <Box>
+                                <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow placement={'top'}>
+                                    <IconButton
+                                        onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')}>
+                                        <Translate/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        </Stack>
+                    </StyledPaper>
+                </Box>
+                <Box sx={{
+                    flex: 1
+                }}>
+                    <Grid2 container>
+                        <Grid2 xs={"auto"} md={9}>
+                            <Stack spacing={2}>
+                                <Toolbar/>
 
-                        <Grid2 container>
-                            <Grid2 xs={"auto"} md={3}>
-                                <LeftBar/>
-                            </Grid2>
-                            <Grid2 xs={'auto'} md={9}>
-                                <Card sx={{
-                                    width: '98%',
-                                    margin: '0 0 0 auto',
-                                    height: '100%',
-                                }}>
-                                    <Stack spacing={2} p={2}>
-                                        <Stack justifyContent={'space-between'} direction={'row'}>
-                                            <ChartToolbar/>
-                                            <Tooltip title={'导出图片'} arrow placement={"top"}>
-                                                <IconButton onClick={() => exportAsImage(exportRef.current)}>
-                                                    <DownloadOutlined/>
-                                                </IconButton>
-                                            </Tooltip>
-                                        </Stack>
+                                <Grid2 container>
+                                    <Grid2 xs={"auto"} md={3}>
+                                        <LeftBar/>
+                                    </Grid2>
+                                    <Grid2 xs={'auto'} md={9}>
+                                        <Card sx={{
+                                            width: '98%',
+                                            margin: '0 0 0 auto',
+                                            height: '100%',
+                                        }}>
+                                            <Stack spacing={2} p={2}>
+                                                <Stack justifyContent={'space-between'} direction={'row'}>
+                                                    <ChartToolbar/>
+                                                    <Tooltip title={'导出图片'} arrow placement={"top"}>
+                                                        <IconButton onClick={() => exportAsImage(exportRef.current)}>
+                                                            <DownloadOutlined/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </Stack>
 
-                                        <Box ref={exportRef}>
-                                            <Watermark text="Fiapp.pro" gutter={60} opacity={0.15}>
-                                                <Chart height={containerMaxHeight} name={query.get.name}
-                                                       timeframe={query.get.timeframe}/>
-                                            </Watermark>
-                                        </Box>
-                                    </Stack>
-                                </Card>
-                            </Grid2>
+                                                <Box ref={exportRef}>
+                                                    <Watermark text="Fiapp.pro" gutter={60} opacity={0.15}>
+                                                        <Chart height={containerMaxHeight} name={query.get.name}
+                                                               timeframe={query.get.timeframe}/>
+                                                    </Watermark>
+                                                </Box>
+                                            </Stack>
+                                        </Card>
+                                    </Grid2>
+                                </Grid2>
+                            </Stack>
                         </Grid2>
-                    </Stack>
-                </Grid2>
-                <Grid2 xs={"auto"} md={3}>
-                    <RightBar/>
-                </Grid2>
-            </Grid2>
+                        <Grid2 xs={"auto"} md={3}>
+                            <RightBar/>
+                        </Grid2>
+                    </Grid2>
+                </Box>
+            </Box>
         </Box>
     );
 };

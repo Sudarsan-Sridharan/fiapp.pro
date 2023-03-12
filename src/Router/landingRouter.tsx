@@ -5,6 +5,7 @@ import LandingLayout from "../Components/Layout/LandingLayout";
 import {Error} from "@mui/icons-material";
 import Log from "../Page/Log";
 import Detail from "../Page/Detail";
+import Chart from "../Page/Chart";
 
 export const landingRouter = createBrowserRouter([
     {
@@ -40,5 +41,9 @@ export const landingRouter = createBrowserRouter([
                 element: <Detail/>
             }
         ]
+    },
+    {
+        path: '/chart',
+        element: <Chart/>
     }
 ])

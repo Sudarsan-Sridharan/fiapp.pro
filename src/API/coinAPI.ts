@@ -83,3 +83,23 @@ export const signalAPI = (data: IKlineAPI): ISignal[] => {
 
     return signalList?.data
 }
+
+interface ITrendChange {
+    id: string;
+    name: string;
+    timeframe: string;
+    open_price: number;
+    open_time: string;
+    direction: number;
+    risk: number;
+    strategy_code: number;
+    nameNavigation: any;
+}
+
+export const trendChangeAPI = (data: IKlineAPI): ITrendChange[] => {
+    const {data: trendChangeList} = useSWR<ILayout<ITrendChange[]>>(`/TrendingChange?name=${data?.name}&timeframe=${data?.timeframe}`, fetcher, {
+        refreshInterval: 1000 * 5
+    })
+
+    return trendChangeList?.data
+}

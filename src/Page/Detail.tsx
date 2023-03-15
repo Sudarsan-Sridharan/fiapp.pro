@@ -2,10 +2,11 @@ import {
     Alert,
     Box,
     Button,
-    ButtonGroup,
     Card,
     Divider,
     IconButton,
+    LinearProgress,
+    LinearProgressProps,
     OutlinedInput,
     Paper,
     Stack,
@@ -33,7 +34,7 @@ import {
     SearchOutlined,
     Translate
 } from "@mui/icons-material";
-import {coinAPI, coinListAPI, ICoinList, signalAPI} from "../API/coinAPI";
+import {coinAPI, coinListAPI, ICoinList, signalAPI, trendChangeAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
@@ -261,57 +262,176 @@ const LeftBar = () => {
     )
 }
 
-const RightBar = () => {
-    const buttonGroupData = [
-        '买卖信号', '趋势转换', '波动预警'
-    ]
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+    return (
+        <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <Box sx={{width: '100%', mr: 1}}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box>
+                <Typography sx={{
+                    color: grey[500],
+                    fontSize: '10px'
+                }
+                } color="text.secondary">{`${Math.round(
+                    props.value,
+                )}%`}</Typography>
+            </Box>
+        </Box>
+    );
+}
 
+interface IPosition {
+    outlined?: boolean,
+    stop: boolean
+}
+
+const Position: React.FC<IPosition> = (props): JSX.Element => {
+    const {name} = useParams()
+
+    return (
+        <StyledPaper elevation={props.outlined ? 0 : 2}>
+            <Stack spacing={1}>
+                <Box display={'flex'} justifyContent={'space-between'}>
+                    <Typography variant={'body2'}>做多{props.stop ? '平仓' : '持仓'} {name}</Typography>
+                    <Typography sx={{
+                        fontSize: '10px',
+                        color: grey[500]
+                    }}>8 小时前</Typography>
+                </Box>
+
+                <LinearProgressWithLabel value={60} color={'success'}/>
+
+                <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                    <Typography variant={"subtitle1"}>
+                        $540900
+                    </Typography>
+
+                    <Typography sx={{
+                        color: grey[500],
+                        fontSize: '10px'
+                    }}>
+                        收益
+                    </Typography>
+                </Stack>
+            </Stack>
+        </StyledPaper>
+    )
+}
+
+const Signal = () => {
     const {name} = useParams()
     const query = useQuery()
     const signalData = signalAPI({
         name: name ?? 'BTCUSDT',
         timeframe: ''
     })
+
+    return (
+        <>
+            <Stack spacing={1}>
+                {
+                    signalData && signalData.map((item, index) => {
+                        const isBuy = item.direction === 1
+                        return (
+                            <Stack direction={"row"} key={item.name + index} spacing={1}>
+                                <Alert sx={{width: '100%'}} severity={isBuy ? 'success' : 'error'}>
+                                    <Typography variant={'body2'} color={isBuy ? 'success' : 'error'}>
+                                        {isBuy ? '买入' : '卖出'} ({item.timeframe})
+                                    </Typography>
+                                    <Typography variant={'body2'}>
+                                        {timejs(item.created_at).fromNow()} - {timejs(item.created_at).format('YYYY/MM/DD HH:mm:ss')}
+                                    </Typography>
+                                </Alert>
+                            </Stack>
+                        )
+                    })}
+            </Stack>
+            <Box>
+                <Stack spacing={2}>
+                    {[0, 1, 2, 3].map((item, index) => (
+                        <Box sx={{
+                            filter: index > 0 ? 'grayscale(100%)' : '',
+                            opacity: index > 0 ? 0.4 : 1
+                        }}>
+                            <Position key={item + index} outlined={index > 0} stop={index > 0}/>
+                            {index > 0 && <Divider/>}
+                        </Box>
+                    ))}
+                </Stack>
+            </Box>
+        </>
+    )
+}
+
+const TrendChange = () => {
+    const {name} = useParams()
+    const query = useQuery()
+    const trendChangeData = trendChangeAPI({
+        name: name ?? 'BTCUSDT',
+        timeframe: ''
+    })
+
+    return (
+        <>
+            {trendChangeData && trendChangeData.map((item, index) => {
+                const isBull = item.direction === 1
+                return (
+                    <Stack key={item.name + index} spacing={2}>
+                        <Alert severity={isBull ? 'success' : 'error'}>
+                            <Typography variant={'body2'} color={isBull ? 'success' : 'error'}>
+                                {isBull ? '趋势转多' : '趋势转空'} ({item.timeframe})
+                            </Typography>
+                            <Typography variant={'body2'}>
+                                {timejs(item.open_time).fromNow()} - {timejs(item.open_time).format('YYYY/MM/DD HH:mm:ss')}
+                            </Typography>
+                        </Alert>
+                    </Stack>
+                )
+            })}
+        </>
+    )
+}
+
+const RightBar = () => {
+    const buttonGroupData: { name: string, render?: JSX.Element }[] = [
+        {name: '持仓信号（开发中）', render: <Signal/>}, {name: '趋势转换', render: <TrendChange/>}, {name: '波动预警'}
+    ]
+
     const {t} = useTranslation(
-        
+
     )
     return (
         <StyledPaper sx={{
-            height: 'calc(100vh - 100px)',
-            ml: 2
+            maxHeight: 'calc(100vh - 100px)',
+            ml: 2,
+            height: '100%',
+            overflowY: 'hidden',
+            ':hover': {
+                overflowY: 'auto'
+            }
         }}>
             <Stack spacing={2}>
-                <ButtonGroup fullWidth sx={{
-                    borderRadius: 10
-                }}>
-                    {
-                        buttonGroupData.map((item, index) => (
-                            <Button key={item + index}
-                                    variant={index === 0 ? 'contained' : 'outlined'}
-                                    sx={{
-                                        borderRadius: 10
-                                    }}>{t(item)}</Button>
-                        ))}
-                </ButtonGroup>
-
-                <Stack spacing={1}>
-                    {
-                        signalData && signalData.map((item, index) => {
-                            const isBuy = item.direction === 1
-                            return (
-                                <Stack direction={"row"} key={item.name + index} spacing={1}>
-                                    <Alert sx={{width: '100%'}} severity={isBuy ? 'success' : 'error'}>
-                                        <Typography variant={'body2'} color={isBuy ? 'success' : 'error'}>
-                                            {isBuy ? '买入' : '卖出'} ({item.timeframe})
-                                        </Typography>
-                                        <Typography variant={'body2'}>
-                                            {timejs(item.created_at).fromNow()} - {timejs(item.created_at).format('YYYY/MM/DD HH:mm:ss')}
-                                        </Typography>
-                                    </Alert>
-                                </Stack>
-                            )
-                        })}
-                </Stack>
+                {
+                    buttonGroupData.map((item, index) => (
+                        <Stack spacing={1} key={item.name + index}>
+                            <Button
+                                variant={index === 0 ? 'contained' : 'outlined'}
+                                sx={{
+                                    borderRadius: 10
+                                }}>{t(item.name)}</Button>
+                            <Stack spacing={1} sx={{
+                                maxHeight: '200px',
+                                height: '100%',
+                                overflowY: 'hidden',
+                                ':hover': {
+                                    overflowY: 'auto'
+                                }
+                            }}>
+                                {item.render}
+                            </Stack>
+                        </Stack>
+                    ))}
             </Stack>
         </StyledPaper>
     )
@@ -379,7 +499,8 @@ const Layout = (): JSX.Element => {
                                 ))}
                             </Stack>
                             <Box>
-                                <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow placement={'top'}>
+                                <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow
+                                         placement={'top'}>
                                     <IconButton
                                         onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')}>
                                         <Translate/>
@@ -411,7 +532,8 @@ const Layout = (): JSX.Element => {
                                                 <Stack justifyContent={'space-between'} direction={'row'}>
                                                     <ChartToolbar/>
                                                     <Tooltip title={'导出图片'} arrow placement={"top"}>
-                                                        <IconButton onClick={() => exportAsImage(exportRef.current)}>
+                                                        <IconButton
+                                                            onClick={() => exportAsImage(exportRef.current)}>
                                                             <DownloadOutlined/>
                                                         </IconButton>
                                                     </Tooltip>

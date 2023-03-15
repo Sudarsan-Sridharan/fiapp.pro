@@ -56,6 +56,7 @@ i18n
                     "最新价": "last price",
                     "时间": "time",
                     "趋势转换": "trend change",
+                    "收益": "profit"
                 }
             },
             zh: {

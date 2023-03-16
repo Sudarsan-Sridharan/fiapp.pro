@@ -4,6 +4,7 @@ import {IKlineAPI, klineAPI, signalAPI} from "../../API/coinAPI";
 import timejs from "../../Unit/timejs";
 import useChart from "../../Hooks/useChart";
 import useQuery from "../../Hooks/useQuery";
+import {Box, CircularProgress} from "@mui/material";
 
 interface IChart {
     height?: string,
@@ -21,7 +22,7 @@ const Chart: React.FC<IChart> = (props) => {
         timeframe: props.timeframe
     } as IKlineAPI)
 
-    const chartKline = kline && kline.map((item) => {
+    const chartKline = kline && kline.data && kline.data.map((item) => {
         return {
             close: item.close_bid,
             high: item.highest_bid,
@@ -119,7 +120,11 @@ const Chart: React.FC<IChart> = (props) => {
         }
     }, [chartKline, signalData])
 
-    return <div id={`_chart`} style={{height: props.height ?? '800px'}}/>;
+    return kline.isLoading
+        ? (<Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: props.height ?? '800px'}}>
+            <CircularProgress/>
+        </Box>)
+        : <div id={`_chart`} style={{height: props.height ?? '800px'}}/>
 }
 
 export default Chart

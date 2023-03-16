@@ -35,10 +35,16 @@ interface IKlineList {
 }
 
 export const klineAPI = (data: IKlineAPI) => {
-    const {data: kline} = useSWR<ILayout<IKlineList[]>>(`/kline?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
+    const {
+        data: kline,
+        isLoading
+    } = useSWR<ILayout<IKlineList[]>>(`/kline?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
         refreshInterval: 1000 * 5
     })
-    return kline?.data
+    return {
+        data: kline?.data,
+        isLoading
+    }
 }
 
 interface ICoin {

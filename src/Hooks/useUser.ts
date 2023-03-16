@@ -8,7 +8,7 @@ import {authAPI, IAuthRequest, IAuthType, IUserInfo, verifyTokenAPI} from "../AP
 export const useUser = () => {
     const [user, setUser] = useRecoilState(userAtom);
     const [error, setError] = useState<string | null>("");
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const isLogin = user && user?.data !== undefined;
 
@@ -24,6 +24,7 @@ export const useUser = () => {
     };
 
     const logout = () => {
+        setIsLoading(false)
         try {
             setUser(undefined);
             localStorage.removeItem("user");
@@ -37,6 +38,7 @@ export const useUser = () => {
         const userData = localStorage.getItem("user");
         if (userData) {
             const {data} = JSON.parse(userData);
+            setIsLoading(true)
             const res = await verifyTokenAPI(data.token)
 
             if (res.code !== 0) {
@@ -44,7 +46,10 @@ export const useUser = () => {
                 logout()
             }
             setUser(res)
+            setIsLoading(false)
         }
+
+        setIsLoading(false)
     };
 
     const get = user

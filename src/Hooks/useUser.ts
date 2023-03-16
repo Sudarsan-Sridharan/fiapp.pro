@@ -49,7 +49,7 @@ export const useUser = () => {
 
     const get = user
 
-    const tryItFreeNowLink = isLogin ? "/dashboard" : "/register";
+    const tryItFreeNowLink = isLogin ? "/d/BTCUSDT" : "/register";
 
     const set = (userData: IUserInfo) => {
         setUser(userData);

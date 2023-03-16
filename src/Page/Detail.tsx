@@ -26,6 +26,7 @@ import React, {useEffect, useRef} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
 import {
+    AccountCircleOutlined,
     CloseOutlined,
     DownloadOutlined,
     HomeOutlined,
@@ -43,6 +44,7 @@ import useQuery from "../Hooks/useQuery";
 import exportAsImage from "../Unit/exportAsImage";
 import {Watermark} from "@hirohe/react-watermark";
 import {useTranslation} from "react-i18next";
+import useUser from "../Hooks/useUser";
 
 const StyledPaper = styled(Paper)({
     padding: '16px',
@@ -470,11 +472,10 @@ const Layout = (): JSX.Element => {
     ]
 
     const nav = useNavigate()
-
-
     // set language
     const {i18n} = useTranslation();
 
+    const user = useUser();
     return (
         <Box sx={{
             height: 'calc(100vh - 32px)',
@@ -498,15 +499,18 @@ const Layout = (): JSX.Element => {
                                     </IconButton>
                                 ))}
                             </Stack>
-                            <Box>
+                            <Stack>
+                                <IconButton>
+                                    <AccountCircleOutlined onClick={() => nav(user.tryItFreeNowLink)}/>
+                                </IconButton>
                                 <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow
-                                         placement={'top'}>
+                                         placement={'right'}>
                                     <IconButton
                                         onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')}>
                                         <Translate/>
                                     </IconButton>
                                 </Tooltip>
-                            </Box>
+                            </Stack>
                         </Stack>
                     </StyledPaper>
                 </Box>

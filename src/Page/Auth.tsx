@@ -79,7 +79,7 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
                                 </Typography>
 
                                 {
-                                    user.isLogin && <Card onClick={() => nav('/dashboard')} sx={{
+                                    user.isLogin && <Card onClick={() => nav('/d/BTCUSDT')} sx={{
                                         p: 2,
                                         cursor: 'pointer'
                                     }}>

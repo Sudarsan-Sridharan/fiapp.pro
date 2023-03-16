@@ -39,7 +39,7 @@ import {coinAPI, coinListAPI, ICoinList, signalAPI, trendChangeAPI} from "../API
 import Chart from "../Components/Chart/Chart";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
-import timejs from "../Unit/timejs";
+import timejs, {timeframeToTargetTime} from "../Unit/timejs";
 import useQuery from "../Hooks/useQuery";
 import exportAsImage from "../Unit/exportAsImage";
 import {Watermark} from "@hirohe/react-watermark";
@@ -47,6 +47,7 @@ import {useTranslation} from "react-i18next";
 import useUser from "../Hooks/useUser";
 import {useRecoilState} from "recoil";
 import {accountDialogState} from "../Components/Account/AccountDialog";
+import useChart from "../Hooks/useChart";
 
 export const StyledPaper = styled(Paper)({
     padding: '16px',
@@ -326,6 +327,8 @@ const Position: React.FC<IPosition> = (props): JSX.Element => {
 const Signal = () => {
     const {name} = useParams()
     const query = useQuery()
+    const chart = useChart()
+
     const signalData = signalAPI({
         name: name ?? 'BTCUSDT',
         timeframe: ''
@@ -339,7 +342,19 @@ const Signal = () => {
                         const isBuy = item.direction === 1
                         return (
                             <Stack direction={"row"} key={item.name + index} spacing={1}>
-                                <Alert sx={{width: '100%'}} severity={isBuy ? 'success' : 'error'}>
+                                <Alert sx={{
+                                    width: '100%',
+                                    cursor: 'pointer'
+                                }} severity={isBuy ? 'success' : 'error'} onClick={
+                                    () => {
+                                        const targetTime = timeframeToTargetTime(item.timeframe, item.open_time)
+                                        query.set({
+                                            ...query.get,
+                                            timeframe: item.timeframe
+                                        })
+                                        chart.setTargetTimestamp(targetTime)
+                                    }
+                                }>
                                     <Typography variant={'body2'} color={isBuy ? 'success' : 'error'}>
                                         {isBuy ? '买入' : '卖出'} ({item.timeframe})
                                     </Typography>
@@ -371,6 +386,7 @@ const Signal = () => {
 const TrendChange = () => {
     const {name} = useParams()
     const query = useQuery()
+    const chart = useChart()
     const trendChangeData = trendChangeAPI({
         name: name ?? 'BTCUSDT',
         timeframe: ''
@@ -382,7 +398,20 @@ const TrendChange = () => {
                 const isBull = item.direction === 1
                 return (
                     <Stack key={item.name + index} spacing={2}>
-                        <Alert severity={isBull ? 'success' : 'error'}>
+                        <Alert severity={isBull ? 'success' : 'error'}
+                               sx={{
+                                   cursor: 'pointer'
+                               }}
+                               onClick={
+                                   () => {
+                                       const targetTime = timeframeToTargetTime(item.timeframe, item.open_time)
+                                       query.set({
+                                           ...query.get,
+                                           timeframe: item.timeframe
+                                       })
+                                       chart.setTargetTimestamp(targetTime)
+                                   }
+                               }>
                             <Typography variant={'body2'} color={isBull ? 'success' : 'error'}>
                                 {isBull ? '趋势转多' : '趋势转空'} ({item.timeframe})
                             </Typography>

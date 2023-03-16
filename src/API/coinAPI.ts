@@ -66,7 +66,7 @@ interface ISignal {
     id: string;
     created_at: string;
     name: string;
-    timeframe: string;
+    timeframe: IKlineAPI['timeframe'];
     open_time: string;
     code: number;
     open_price: number;
@@ -87,7 +87,7 @@ export const signalAPI = (data: IKlineAPI): ISignal[] => {
 interface ITrendChange {
     id: string;
     name: string;
-    timeframe: string;
+    timeframe: IKlineAPI['timeframe'];
     open_price: number;
     open_time: string;
     direction: number;

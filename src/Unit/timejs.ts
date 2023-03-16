@@ -10,3 +10,10 @@ dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 const timejs = dayjs
 export default timejs
+
+export const timeframeToTargetTime = (timeframe: string, open_time: string | Date) => {
+    const [addTimeNum, addTimeStr]: any = timeframe.match(/^(\d+)([a-zA-Z]+)$/)?.slice(1) ?? [30, 'M'];
+    const targetTime = timejs(open_time).add(Number(addTimeNum * 20), addTimeStr.toLowerCase()).valueOf()
+
+    return targetTime
+}

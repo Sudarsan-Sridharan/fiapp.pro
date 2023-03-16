@@ -2,6 +2,8 @@ import {Chart, dispose, init} from "klinecharts";
 import React, {useEffect, useRef} from "react";
 import {IKlineAPI, klineAPI, signalAPI} from "../../API/coinAPI";
 import timejs from "../../Unit/timejs";
+import useChart from "../../Hooks/useChart";
+import useQuery from "../../Hooks/useQuery";
 
 interface IChart {
     height?: string,
@@ -11,6 +13,9 @@ interface IChart {
 
 
 const Chart: React.FC<IChart> = (props) => {
+    const chartHook = useChart()
+    const query = useQuery()
+
     const kline = klineAPI({
         name: props.name,
         timeframe: props.timeframe
@@ -63,6 +68,7 @@ const Chart: React.FC<IChart> = (props) => {
             }
         }) : null
 
+
         const signalSell = signalData && signalData.length > 0 ? signalData.map((item) => {
             if (item.direction === -1) {
                 const [addTimeNum, addTimeStr]: any = item.timeframe.match(/^(\d+)([a-zA-Z]+)$/)?.slice(1) ?? [30, 'M'];
@@ -97,7 +103,11 @@ const Chart: React.FC<IChart> = (props) => {
             }
         }
 
-    }, [chartKline, signalData]);
+        if (chartHook.get.target.timestamp) {
+            chart.current?.scrollToTimestamp(chartHook.get.target.timestamp)
+        }
+
+    }, [chartKline, signalData, chartHook.get]);
 
     useEffect(() => {
         return () => {

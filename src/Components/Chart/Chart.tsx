@@ -110,6 +110,10 @@ const Chart: React.FC<IChart> = (props) => {
     }, [chartKline, signalData, chartHook.get]);
 
     useEffect(() => {
+        chartHook.setTargetTimestamp(null)
+    }, [query.get.name])
+
+    useEffect(() => {
         return () => {
             dispose(`_chart`);
         }

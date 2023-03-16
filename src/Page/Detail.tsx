@@ -116,7 +116,7 @@ const leftBarFilterData = [
     "市场", "热门", "流动性", "波动率", "新趋势", "波动预警", "买卖信号"
 ]
 
-const containerMaxHeight = 'calc(100vh - 300px)'
+export const containerMaxHeight = 'calc(100vh - 300px)'
 const LeftBar = () => {
     const {t} = useTranslation();
 

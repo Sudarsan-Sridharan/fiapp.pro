@@ -38,7 +38,6 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
     const [token, setToken] = useState<string | null>(null);
     const {i18n} = useTranslation()
     const user = useUser()
-
     const onSubmit: SubmitHandler<IRegister> = async (data) => {
         if (token) {
             data["g-recaptcha-response"] = token
@@ -54,7 +53,8 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
         <>
             <Box alignItems={'center'} justifyContent={'center'} display={'flex'} width={'100%'}
                  sx={{
-                     minHeight: 'calc(100vh - 310px)'
+                     minHeight: 'calc(100vh - 250px)',
+                     mt: '150px'
                  }}>
                 <Grid2 container width={'100%'} alignItems={'center'}>
                     {!isMobile && <Grid2 md={5} xs={12} textAlign={'center'}>
@@ -79,13 +79,14 @@ const AuthLayout: React.FC<IAuthLayout> = (props) => {
                                 </Typography>
 
                                 {
-                                    user.isLoggedIn() && <Card sx={{
+                                    user.isLogin && <Card onClick={() => nav('/dashboard')} sx={{
                                         p: 2,
+                                        cursor: 'pointer'
                                     }}>
                                         <Typography variant={"body2"} sx={{
                                             color: grey[500]
                                         }}>
-                                            {t("您已经登录账号")} {user.get?.user.name}
+                                            {t("您已经登录账户")} {user.get?.data?.userInfo?.username}
                                         </Typography>
                                     </Card>
                                 }

@@ -4,6 +4,7 @@ import {useTranslation} from "react-i18next";
 import Community, {communityState} from "../Community/Community";
 import {useSetRecoilState} from "recoil";
 import {Link, useNavigate} from "react-router-dom";
+import useUser from "../../Hooks/useUser";
 
 const PointerTypography = styled(Typography)({
     cursor: 'pointer',
@@ -30,6 +31,7 @@ const LandingToolbar = () => {
     const setOpen = useSetRecoilState(communityState)
     const isMobile = useMediaQuery((theme: any) => theme?.breakpoints.down('md'));
     const nav = useNavigate()
+    const user = useUser()
 
     return (
         <Box sx={{
@@ -72,7 +74,7 @@ const LandingToolbar = () => {
                     {!isMobile && <Button variant={"contained"} size={"large"} color={'secondary'}
                                           startIcon={<CurrencyBitcoinRounded/>}
                                           component={Link}
-                                          to={'register'}>
+                                          to={user.tryItFreeNowLink}>
                         {t("立即免费使用")}
                     </Button>}
                 </Stack>

@@ -4,7 +4,6 @@ import {Box, ThemeProvider, Typography} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Favorite} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
-import {RecoilRoot} from "recoil";
 import {theme} from "../../Theme/Theme";
 
 
@@ -14,29 +13,28 @@ interface ILandingLayout {
     footer?: boolean,
 }
 
+
 const LandingLayout: React.FC<ILandingLayout> = ({width, toolbar = true, footer = true}) => {
     return (
         <>
-            <RecoilRoot>
-                <ThemeProvider theme={theme}>
-                    <Box width={width ?? '100%'} margin={'0 auto'}>
-                        {toolbar && (
-                            <>
-                                <LandingToolbar/>
-                                <Box mt={'96px'}/>
-                            </>
-                        )}
+            <ThemeProvider theme={theme}>
+                <Box width={width ?? '100%'} margin={'0 auto'}>
+                    {toolbar && (
+                        <>
+                            <LandingToolbar/>
+                            <Box mt={'96px'}/>
+                        </>
+                    )}
 
-                        <Outlet/>
+                    <Outlet/>
 
-                        {
-                            footer && (
-                                <Footer/>
-                            )
-                        }
-                    </Box>
-                </ThemeProvider>
-            </RecoilRoot>
+                    {
+                        footer && (
+                            <Footer/>
+                        )
+                    }
+                </Box>
+            </ThemeProvider>
         </>
     );
 };

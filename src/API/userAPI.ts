@@ -25,7 +25,7 @@ export interface IUserInfo {
     msg: string;
 }
 
-export interface IUser {
+export interface IUserAuth {
     expiresAt: number
     token: string,
     user: {
@@ -38,15 +38,15 @@ export interface IUser {
     }
 }
 
-export type IUserOptional = Partial<IUser>;
+export type IUserOptional = Partial<IUserAuth>;
 
-export const authAPI = async (data: IAuthRequest, type: IAuthType): Promise<IUser> => {
+export const authAPI = async (data: IAuthRequest, type: IAuthType): Promise<IUserAuth> => {
     const response = await http.post(`/g/api/user/${type}`, data)
     return response.data
 }
 
 export const verifyTokenAPI = async (token: string): Promise<IUserInfo> => {
-    const response = await http.get(`/g/user/getUserInfo?auth_url=${"/user/getUserInfo"}&auth_method=GET`, {
+    const response = await http.get(`/g/api/user/getUser?auth_url=${"/user/getUserInfo"}&auth_method=GET`, {
         headers: {
             "x-token": token
         }

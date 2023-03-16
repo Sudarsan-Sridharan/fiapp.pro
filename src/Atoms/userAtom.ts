@@ -1,7 +1,7 @@
 import {atom} from "recoil";
-import {IUser} from "../API/userAPI";
+import {IUserInfo} from "../API/userAPI";
 
-const userAtom = atom<IUser | undefined>({
+const userAtom = atom<IUserInfo | undefined>({
     key: "userAtom",
     default: undefined
 })

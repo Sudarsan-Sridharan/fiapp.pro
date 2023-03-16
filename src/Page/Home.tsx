@@ -6,10 +6,12 @@ import {ArrowCircleRightOutlined, CurrencyBitcoinRounded} from "@mui/icons-mater
 import ChartImg from "../assets/11-3-2023_19351_fiapp.pro.jpeg";
 import React from "react";
 import {Link} from "react-router-dom";
+import useUser from "../Hooks/useUser";
 
 const Home = () => {
     const {t} = useTranslation();
     const [open, setOpen] = useRecoilState(communityState)
+    const user = useUser()
 
     return (
         <Box mt={24}>
@@ -26,7 +28,7 @@ const Home = () => {
                                 boxShadow: theme.shadows[6],
                             })}
                             component={Link}
-                            to={'/register'}
+                            to={user.tryItFreeNowLink}
                             startIcon={<CurrencyBitcoinRounded/>}
                     >
                         {t("立即免费使用")}

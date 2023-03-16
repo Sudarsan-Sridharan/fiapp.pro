@@ -4,6 +4,7 @@ import App from './App';
 import './index.css';
 import {initReactI18next} from "react-i18next";
 import i18n from "i18next";
+import {RecoilRoot} from "recoil";
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
@@ -71,8 +72,16 @@ i18n
         }
     }).then(r => r);
 
+interface IRecoilRootLayout {
+    children: React.ReactNode
+}
+
+const RecoilRootLayout: React.FC<IRecoilRootLayout> = (props) => <RecoilRoot>{props.children}</RecoilRoot>
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <App/>
+        <RecoilRootLayout>
+            <App/>
+        </RecoilRootLayout>
     </React.StrictMode>,
 );

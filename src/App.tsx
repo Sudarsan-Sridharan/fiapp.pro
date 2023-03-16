@@ -3,6 +3,9 @@ import {useTranslation} from "react-i18next";
 import {RouterProvider} from "react-router-dom";
 import {landingRouter} from "./Router/landingRouter";
 import useUser from "./Hooks/useUser";
+import AccountDialog from "./Components/Account/AccountDialog";
+import {theme} from "./Theme/Theme";
+import {ThemeProvider} from "@mui/material";
 
 
 function App() {
@@ -23,7 +26,12 @@ function App() {
     }, [i18n, userLang])
 
     return (
-        <RouterProvider router={landingRouter}/>
+        <>
+            <ThemeProvider theme={theme}>
+                <RouterProvider router={landingRouter}/>
+                <AccountDialog/>
+            </ThemeProvider>
+        </>
     );
 }
 

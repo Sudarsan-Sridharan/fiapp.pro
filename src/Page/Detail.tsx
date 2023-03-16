@@ -45,8 +45,10 @@ import exportAsImage from "../Unit/exportAsImage";
 import {Watermark} from "@hirohe/react-watermark";
 import {useTranslation} from "react-i18next";
 import useUser from "../Hooks/useUser";
+import {useRecoilState} from "recoil";
+import {accountDialogState} from "../Components/Account/AccountDialog";
 
-const StyledPaper = styled(Paper)({
+export const StyledPaper = styled(Paper)({
     padding: '16px',
 });
 
@@ -476,6 +478,9 @@ const Layout = (): JSX.Element => {
     const {i18n} = useTranslation();
 
     const user = useUser();
+
+    const [open, setOpen] = useRecoilState(accountDialogState);
+
     return (
         <Box sx={{
             height: 'calc(100vh - 32px)',
@@ -501,7 +506,13 @@ const Layout = (): JSX.Element => {
                             </Stack>
                             <Stack>
                                 <IconButton>
-                                    <AccountCircleOutlined onClick={() => nav(user.tryItFreeNowLink)}/>
+                                    <AccountCircleOutlined onClick={
+                                        () => {
+                                            user.isLogin
+                                                ? setOpen(true)
+                                                : nav('/register')
+                                        }
+                                    }/>
                                 </IconButton>
                                 <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow
                                          placement={'right'}>

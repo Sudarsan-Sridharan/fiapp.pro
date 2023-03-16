@@ -1,10 +1,9 @@
 import React from "react";
 import LandingToolbar from "./LandingToolbar";
-import {Box, ThemeProvider, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Favorite} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
-import {theme} from "../../Theme/Theme";
 
 
 interface ILandingLayout {
@@ -17,24 +16,23 @@ interface ILandingLayout {
 const LandingLayout: React.FC<ILandingLayout> = ({width, toolbar = true, footer = true}) => {
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <Box width={width ?? '100%'} margin={'0 auto'}>
-                    {toolbar && (
-                        <>
-                            <LandingToolbar/>
-                            <Box mt={'96px'}/>
-                        </>
-                    )}
 
-                    <Outlet/>
+            <Box width={width ?? '100%'} margin={'0 auto'}>
+                {toolbar && (
+                    <>
+                        <LandingToolbar/>
+                        <Box mt={'96px'}/>
+                    </>
+                )}
 
-                    {
-                        footer && (
-                            <Footer/>
-                        )
-                    }
-                </Box>
-            </ThemeProvider>
+                <Outlet/>
+
+                {
+                    footer && (
+                        <Footer/>
+                    )
+                }
+            </Box>
         </>
     );
 };

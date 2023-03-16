@@ -1,6 +1,6 @@
-import {Button, Dialog, IconButton, Stack, Typography} from "@mui/material";
+import {Button, Dialog, Stack, Typography} from "@mui/material";
 import useUser from "../../Hooks/useUser";
-import {AccountCircleOutlined, LogoutOutlined} from "@mui/icons-material";
+import {LogoutOutlined} from "@mui/icons-material";
 import {atom, useRecoilState} from "recoil";
 import {StyledPaper} from "../../Page/Detail";
 
@@ -30,9 +30,6 @@ const AccountDialog = () => {
 
     return (
         <>
-            <IconButton onClick={handleOpen}>
-                <AccountCircleOutlined/>
-            </IconButton>
             <Dialog open={open} onClose={handleClose}>
                 <StyledPaper>
                     <Stack spacing={1}>

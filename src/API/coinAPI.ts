@@ -6,14 +6,26 @@ interface ILayout<T> {
 }
 
 
-export interface ICoinList {
-    name: string,
-    price: string,
+export interface ICoin {
+    name: string;
+    exchange: string;
+    price: {
+        open: number;
+        name: string;
+        volume: number;
+        quoteVolume: number;
+    };
+    latestKline: {
+        highest_bid: number;
+        lowest_bid: number;
+        open_bid: number;
+        volume_bid: number;
+    };
 }
 
 
-export const coinListAPI = (): ICoinList[] => {
-    const {data: coinList} = useSWR<ILayout<ICoinList[]>>('/coin', fetcher, {
+export const coinListAPI = (): ICoin[] => {
+    const {data: coinList} = useSWR<ILayout<ICoin[]>>('/coin', fetcher, {
         refreshInterval: 1000 * 30
     })
 
@@ -45,18 +57,6 @@ export const klineAPI = (data: IKlineAPI) => {
         data: kline?.data,
         isLoading
     }
-}
-
-interface ICoin {
-    name: string;
-    exchange: string;
-    price: string;
-    latestKline: {
-        highest_bid: number;
-        lowest_bid: number;
-        open_bid: number;
-        volume_bid: number;
-    };
 }
 
 

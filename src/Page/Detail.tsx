@@ -35,7 +35,7 @@ import {
     SearchOutlined,
     Translate
 } from "@mui/icons-material";
-import {coinAPI, coinListAPI, ICoinList, signalAPI, trendChangeAPI} from "../API/coinAPI";
+import {coinAPI, coinListAPI, ICoin, signalAPI, trendChangeAPI} from "../API/coinAPI";
 import Chart from "../Components/Chart/Chart";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
@@ -76,7 +76,7 @@ const Toolbar = () => {
         },
         {
             title: t('价格'),
-            desc: metaInfo.price
+            desc: metaInfo.latestKline.open_bid
         },
         {
             title: t('最高价'),
@@ -132,7 +132,7 @@ const LeftBar = () => {
     const SEARCH_DELAY = 1000; // 1 second
     let searchTimer: any;
 
-    function search(query: string, coins: ICoinList[]): ICoinList[] {
+    function search(query: string, coins: ICoin[]): ICoin[] {
         const normalizedQuery = query.toLowerCase().trim();
         if (normalizedQuery === '') {
             return coins;
@@ -142,7 +142,7 @@ const LeftBar = () => {
         );
     }
 
-    const [searchResult, setSearchResult] = React.useState<ICoinList[]>([]);
+    const [searchResult, setSearchResult] = React.useState<ICoin[]>([]);
     const [searchQuery, setSearchQuery] = React.useState('');
 
     useEffect(() => {
@@ -214,7 +214,6 @@ const LeftBar = () => {
                     <TableContainer component={"div"} sx={{
                         overflowY: 'hidden',
                         maxHeight: containerMaxHeight,
-
                     }}>
                         <Table sx={{
                             maxWidth: '100%',
@@ -226,6 +225,7 @@ const LeftBar = () => {
                                 <TableRow>
                                     <TableCell>{t('标的')}</TableCell>
                                     <TableCell align="left">{t('最新价')}</TableCell>
+                                    <TableCell align="left">{t('成交额')}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -253,7 +253,10 @@ const LeftBar = () => {
                                                 </Link>
                                             </TableCell>
                                             <TableCell align="left">
-                                                {item.price}
+                                                {item.price.open}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {item.price.quoteVolume}
                                             </TableCell>
                                         </TableRow>
                                     ))

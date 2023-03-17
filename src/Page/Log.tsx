@@ -41,7 +41,9 @@ const Log = () => {
                                     return (
                                         <Grid2 xs={"auto"} key={i}>
                                             <Button variant={splitName[0].match('python') ? 'contained' : 'outlined'}
-                                                    onClick={() => setFileName(item.name)}>{item.name}</Button>
+                                                    onClick={() =>
+                                                        window.open(`https://api.fiapp.pro/ServerLog/file?path=/root/.pm2/logs/${item.name}&token=${token}`, '_blank')
+                                                    }>{item.name}</Button>
                                         </Grid2>
                                     )
                                 })

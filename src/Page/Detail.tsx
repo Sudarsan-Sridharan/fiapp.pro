@@ -119,8 +119,16 @@ const Toolbar = () => {
     )
 }
 const leftBarFilterData = [
-    "市场", "热门", "流动性", "波动率", "新趋势", "波动预警", "买卖信号"
+    "市场", "流动性", "波动率", "新趋势", "波动预警", "买卖信号"
 ]
+
+const sortQuoteVolume = (coins: ICoin[]): ICoin[] => {
+    const res = coins.sort((a, b) => {
+        return b.price.quoteVolume - a.price.quoteVolume
+    })
+
+    return res
+}
 
 export const containerMaxHeight = 'calc(100vh - 300px)'
 const LeftBar = () => {
@@ -144,7 +152,7 @@ const LeftBar = () => {
     }
 
     const [searchResult, setSearchResult] = React.useState<ICoin[]>([]);
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchQuery, setSearchQuery] = React.useState<object | string>('');
 
     useEffect(() => {
         if (!searchQuery) {
@@ -172,12 +180,20 @@ const LeftBar = () => {
                                fullWidth
                                startAdornment={<SearchOutlined/>}
                                placeholder={'搜索交易对'}
-                               value={searchQuery}
+                               value={typeof searchQuery === 'string' ? searchQuery : '流动性降序'}
                                onChange={handleSearchInput}
                                endAdornment={
                                    searchQuery && <IconButton size={'small'} onClick={() => {
                                        setSearchQuery('')
-                                       setSearchResult(coinList)
+                                       setSearchResult(coinList.sort((a, b) => {
+                                           if (a.name < b.name) {
+                                               return -1;
+                                           }
+                                           if (a.name > b.name) {
+                                               return 1;
+                                           }
+                                           return 0;
+                                       }))
                                    }}>
                                        <CloseOutlined/>
                                    </IconButton>
@@ -196,7 +212,12 @@ const LeftBar = () => {
                         <Grid2 xs={"auto"} md={2} key={item + index}>
                             <Typography variant={'body2'} key={item + index} sx={{
                                 minWidth: '60px',
-                                minHeight: '24px'
+                                minHeight: '24px',
+                                cursor: 'pointer'
+                            }} onClick={() => {
+                                const res = sortQuoteVolume(coinList)
+                                setSearchQuery(res)
+
                             }}>
                                 {t(item)}
                             </Typography>

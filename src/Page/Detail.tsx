@@ -39,7 +39,7 @@ import {coinAPI, coinListAPI, ICoin, signalAPI, trendChangeAPI} from "../API/coi
 import Chart from "../Components/Chart/Chart";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import ChartToolbar from "../Components/Chart/ChartToolbar";
-import timejs, {timeframeToTargetTime} from "../Unit/timejs";
+import timejs, {isEarlierThan1500X, timeframeToTargetTime} from "../Unit/timejs";
 import useQuery from "../Hooks/useQuery";
 import exportAsImage from "../Unit/exportAsImage";
 import {Watermark} from "@hirohe/react-watermark";
@@ -422,8 +422,12 @@ const TrendChange = () => {
         <>
             {trendChangeData && trendChangeData.map((item, index) => {
                 const isBull = item.direction === 1
+                const isEarlierThan1500 = isEarlierThan1500X(new Date(), item.timeframe)
                 return (
-                    <Stack key={item.name + index} spacing={2}>
+                    <Stack key={item.name + index} spacing={2} sx={{
+                        filter: !isEarlierThan1500 ? 'grayscale(100%)' : '',
+                        opacity: !isEarlierThan1500 ? 0.4 : 1
+                    }}>
                         <Alert severity={isBull ? 'success' : 'error'}
                                sx={{
                                    cursor: 'pointer'

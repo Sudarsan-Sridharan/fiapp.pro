@@ -95,7 +95,7 @@ interface ITrendChange {
     name: string;
     timeframe: IKlineAPI['timeframe'];
     open_price: number;
-    open_time: string;
+    open_time: Date;
     direction: number;
     risk: number;
     strategy_code: number;

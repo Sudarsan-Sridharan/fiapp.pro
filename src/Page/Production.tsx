@@ -6,6 +6,7 @@ import {
     CellTowerOutlined,
     CurrencyBitcoinRounded,
     GpsFixedOutlined,
+    RecommendOutlined,
     RunningWithErrorsOutlined,
     TrendingUpOutlined
 } from "@mui/icons-material";
@@ -45,7 +46,7 @@ const ProductionData: IProductionData[] = [
     {
         title: "智能推荐",
         description: "为用户提供个性化的投资建议，帮助用户做出更明智的投资决策。通过对用户的投资偏好、风险偏好、市场情况等多方面因素的分析，系统可以为用户推荐最适合的投资组合，提高投资效率。同时，智能推荐也可以根据市场变化对投资建议进行动态调整，帮助用户更好地适应市场变化，获取更高的投资收益。",
-        icon: <RunningWithErrorsOutlined/>
+        icon: <RecommendOutlined/>
     },
     {
         title: '机构服务',

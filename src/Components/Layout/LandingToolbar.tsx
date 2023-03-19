@@ -65,6 +65,11 @@ const LandingToolbar = () => {
                     <PointerTypography variant={"h6"} onClick={() => setOpen(true)}>
                         {t("社区")}
                     </PointerTypography>
+
+                    <PointerTypography variant={"h6"} onClick={() => nav('product')}>
+                        {t("产品")}
+                    </PointerTypography>
+
                     <Community/>
 
                     <PointerTypography variant={"h6"}

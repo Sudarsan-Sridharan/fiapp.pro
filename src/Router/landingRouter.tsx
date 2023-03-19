@@ -6,6 +6,7 @@ import {Error} from "@mui/icons-material";
 import Log from "../Page/Log";
 import Detail from "../Page/Detail";
 import Chart from "../Page/Chart";
+import Production from "../Page/Production";
 
 export const landingRouter = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ export const landingRouter = createBrowserRouter([
             {
                 path: 'sLog',
                 element: <Log/>
+            },
+            {
+                path: '/product',
+                element: <Production/>
             },
         ],
     },

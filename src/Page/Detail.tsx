@@ -395,10 +395,11 @@ const Signal = () => {
             <Box>
                 <Stack spacing={2}>
                     {[0, 1, 2, 3].map((item, index) => (
-                        <Box sx={{
-                            filter: index > 0 ? 'grayscale(100%)' : '',
-                            opacity: index > 0 ? 0.4 : 1
-                        }}>
+                        <Box key={index + item}
+                             sx={{
+                                 filter: index > 0 ? 'grayscale(100%)' : '',
+                                 opacity: index > 0 ? 0.4 : 1
+                             }}>
                             <Position key={item + index} outlined={index > 0} stop={index > 0}/>
                             {index > 0 && <Divider/>}
                         </Box>
@@ -564,14 +565,14 @@ const Layout = (): JSX.Element => {
                                 ))}
                             </Stack>
                             <Stack>
-                                <IconButton>
-                                    <AccountCircleOutlined onClick={
-                                        () => {
-                                            user.isLogin
-                                                ? setOpen(true)
-                                                : nav('/register')
-                                        }
-                                    }/>
+                                <IconButton onClick={
+                                    () => {
+                                        user.isLogin
+                                            ? setOpen(true)
+                                            : nav('/register')
+                                    }
+                                }>
+                                    <AccountCircleOutlined/>
                                 </IconButton>
                                 <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow
                                          placement={'right'}>

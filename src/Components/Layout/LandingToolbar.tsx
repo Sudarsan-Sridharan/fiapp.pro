@@ -1,10 +1,11 @@
 import {Box, Button, Stack, styled, ToggleButtonGroup, Typography, useMediaQuery} from '@mui/material';
-import {CurrencyBitcoinRounded, Paid} from '@mui/icons-material';
+import {CurrencyBitcoinRounded} from '@mui/icons-material';
 import {useTranslation} from "react-i18next";
 import Community, {communityState} from "../Community/Community";
 import {useSetRecoilState} from "recoil";
 import {Link, useNavigate} from "react-router-dom";
 import useUser from "../../Hooks/useUser";
+import FiappLogo from "../../assets/fiappLogo.webp"
 
 const PointerTypography = styled(Typography)({
     cursor: 'pointer',
@@ -51,9 +52,7 @@ const LandingToolbar = () => {
                 py: 2,
             })}>
                 {!isMobile && <Stack direction={"row"} alignItems={"center"} gap={1}>
-                    <Paid sx={{
-                        fontSize: 36,
-                    }}/>
+                    <img src={FiappLogo} width={60} height={60}/>
                     <PointerTypography variant={"h4"} onClick={() => nav('/')}>
                         Fiapp.pro
                     </PointerTypography>

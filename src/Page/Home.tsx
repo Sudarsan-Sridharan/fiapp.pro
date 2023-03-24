@@ -2,11 +2,12 @@ import {useTranslation} from "react-i18next";
 import {useRecoilState} from "recoil";
 import {communityState} from "../Components/Community/Community";
 import {Box, Button, Paper, Stack, Typography} from "@mui/material";
-import {ArrowCircleRightOutlined, CurrencyBitcoinRounded} from "@mui/icons-material";
+import {ArrowCircleRightOutlined} from "@mui/icons-material";
 import ChartImg from "../assets/11-3-2023_19351_fiapp.pro.jpeg";
 import React from "react";
 import {Link} from "react-router-dom";
 import useUser from "../Hooks/useUser";
+import FiappLogo from "../Components/Icon/FiappLogo";
 
 const Home = () => {
     const {t} = useTranslation();
@@ -29,8 +30,9 @@ const Home = () => {
                             })}
                             component={Link}
                             to={user.tryItFreeNowLink}
-                            startIcon={<CurrencyBitcoinRounded/>}
+                            startIcon={<FiappLogo/>}
                     >
+
                         {t("立即免费使用")}
                     </Button>
                     <Button variant={"outlined"} size={"large"} color={'primary'}

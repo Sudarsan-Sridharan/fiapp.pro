@@ -1,11 +1,12 @@
 import {Box, Button, Stack, styled, ToggleButtonGroup, Typography, useMediaQuery} from '@mui/material';
-import {CurrencyBitcoinRounded} from '@mui/icons-material';
 import {useTranslation} from "react-i18next";
 import Community, {communityState} from "../Community/Community";
 import {useSetRecoilState} from "recoil";
 import {Link, useNavigate} from "react-router-dom";
 import useUser from "../../Hooks/useUser";
-import FiappLogo from "../../assets/fiappLogo.webp"
+import Logo from "../../assets/fiappLogo.webp"
+import React from "react";
+import FiappLogo from "../Icon/FiappLogo";
 
 const PointerTypography = styled(Typography)({
     cursor: 'pointer',
@@ -52,7 +53,7 @@ const LandingToolbar = () => {
                 py: 2,
             })}>
                 {!isMobile && <Stack direction={"row"} alignItems={"center"} gap={1}>
-                    <img src={FiappLogo} width={60} height={60}/>
+                    <img src={Logo} width={60} height={60}/>
                     <PointerTypography variant={"h4"} onClick={() => nav('/')}>
                         Fiapp.pro
                     </PointerTypography>
@@ -76,7 +77,7 @@ const LandingToolbar = () => {
                         {t("Twitter")}
                     </PointerTypography>
                     {!isMobile && <Button variant={"contained"} size={"large"} color={'secondary'}
-                                          startIcon={<CurrencyBitcoinRounded/>}
+                                          startIcon={<FiappLogo/>}
                                           component={Link}
                                           to={user.tryItFreeNowLink}>
                         {t("立即免费使用")}

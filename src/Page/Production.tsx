@@ -4,7 +4,6 @@ import {useTranslation} from "react-i18next";
 import {
     BusinessOutlined,
     CellTowerOutlined,
-    CurrencyBitcoinRounded,
     GpsFixedOutlined,
     RecommendOutlined,
     RunningWithErrorsOutlined,
@@ -15,6 +14,7 @@ import React from "react";
 import {StyledPaper} from "./Detail";
 import {Link} from "react-router-dom";
 import useUser from "../Hooks/useUser";
+import FiappLogo from "../Components/Icon/FiappLogo";
 
 interface IProductionData {
     title: string
@@ -103,7 +103,7 @@ const Production = () => {
                             })}
                             component={Link}
                             to={user.tryItFreeNowLink}
-                            startIcon={<CurrencyBitcoinRounded/>}>
+                            startIcon={<FiappLogo/>}>
                         {t('立即免费使用')}
                     </Button>
                 </Box>

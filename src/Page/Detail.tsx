@@ -122,8 +122,8 @@ const leftBarFilterData = [
     "市场", "流动性", "波动率", "新趋势", "波动预警", "买卖信号"
 ]
 
-const sortQuoteVolume = (coins: ICoin[]): ICoin[] => {
-    const res = coins.sort((a, b) => {
+const sortQuoteVolume = (coins: ICoin[] | undefined): ICoin[] | undefined => {
+    const res = coins?.sort((a, b) => {
         return b.price.quoteVolume - a.price.quoteVolume
     })
 
@@ -141,18 +141,18 @@ const LeftBar = () => {
     const SEARCH_DELAY = 1000; // 1 second
     let searchTimer: any;
 
-    function search(query: string, coins: ICoin[]): ICoin[] {
+    function search(query: string, coins: ICoin[] | undefined): ICoin[] | undefined {
         const normalizedQuery = query.toLowerCase().trim();
         if (normalizedQuery === '') {
             return coins;
         }
-        return coins.filter((coin) =>
+        return coins?.filter((coin) =>
             coin.name.toLowerCase().includes(normalizedQuery)
         );
     }
 
-    const [searchResult, setSearchResult] = React.useState<ICoin[]>([]);
-    const [searchQuery, setSearchQuery] = React.useState<object | string>('');
+    const [searchResult, setSearchResult] = React.useState<ICoin[] | undefined>([]);
+    const [searchQuery, setSearchQuery] = React.useState<object | string | undefined>('');
 
     useEffect(() => {
         if (!searchQuery) {
@@ -185,7 +185,7 @@ const LeftBar = () => {
                                endAdornment={
                                    searchQuery && <IconButton size={'small'} onClick={() => {
                                        setSearchQuery('')
-                                       setSearchResult(coinList.sort((a, b) => {
+                                       setSearchResult(coinList?.sort((a, b) => {
                                            if (a.name < b.name) {
                                                return -1;
                                            }

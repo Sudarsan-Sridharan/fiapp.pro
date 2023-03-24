@@ -24,7 +24,7 @@ export interface ICoin {
 }
 
 
-export const coinListAPI = (): ICoin[] => {
+export const coinListAPI = (): ICoin[] | undefined => {
     const {data: coinList} = useSWR<ILayout<ICoin[]>>('/coin', fetcher, {
         refreshInterval: 1000 * 30
     })
@@ -60,7 +60,7 @@ export const klineAPI = (data: IKlineAPI) => {
 }
 
 
-export const coinAPI = (data: IKlineAPI): ICoin => {
+export const coinAPI = (data: IKlineAPI): ICoin | undefined => {
     const {data: coinList} = useSWR<ILayout<ICoin>>(`/coin?name=${data.name}&timeframe=${data.timeframe}`, fetcher, {
         refreshInterval: 1000 * 5
     })
@@ -82,7 +82,7 @@ interface ISignal {
     risk: number;
 }
 
-export const signalAPI = (data: IKlineAPI): ISignal[] => {
+export const signalAPI = (data: IKlineAPI): ISignal[] | undefined => {
     const {data: signalList} = useSWR<ILayout<ISignal[]>>(`/TradingSignal?name=${data?.name}&timeframe=${data?.timeframe}`, fetcher, {
         refreshInterval: 1000 * 5
     })
@@ -102,7 +102,7 @@ interface ITrendChange {
     nameNavigation: any;
 }
 
-export const trendChangeAPI = (data: IKlineAPI): ITrendChange[] => {
+export const trendChangeAPI = (data: IKlineAPI): ITrendChange[] | undefined => {
     const {data: trendChangeList} = useSWR<ILayout<ITrendChange[]>>(`/TrendingChange?name=${data?.name}&timeframe=${data?.timeframe}`, fetcher, {
         refreshInterval: 1000 * 5
     })

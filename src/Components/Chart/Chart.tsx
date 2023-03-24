@@ -50,7 +50,7 @@ const Chart: React.FC<IChart> = (props) => {
         chart.current = init(`_chart`);
         if (chart.current && chartKline) {
             chart.current.applyNewData(chartKline);
-            chart.current.setPriceVolumePrecision(pricePrecision, volumePrecision)
+            chart.current.setPriceVolumePrecision(pricePrecision ?? 0, volumePrecision ?? 0)
         }
 
         const signalBuy = signalData && signalData.length > 0 ? signalData.map((item) => {

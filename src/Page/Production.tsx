@@ -2,7 +2,6 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, Button, Container, Stack, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import {
-    BusinessOutlined,
     CellTowerOutlined,
     GpsFixedOutlined,
     RecommendOutlined,
@@ -48,11 +47,11 @@ const ProductionData: IProductionData[] = [
         description: "为用户提供个性化的投资建议，帮助用户做出更明智的投资决策。通过对用户的投资偏好、风险偏好、市场情况等多方面因素的分析，系统可以为用户推荐最适合的投资组合，提高投资效率。同时，智能推荐也可以根据市场变化对投资建议进行动态调整，帮助用户更好地适应市场变化，获取更高的投资收益。",
         icon: <RecommendOutlined/>
     },
-    {
-        title: '机构服务',
-        description: "为金融机构提供量化投资研究和交易策略定制服务。通过深入挖掘市场数据和应用先进的机器学习算法，我们可以为机构客户提供高质量的投资研究报告，帮助客户分析市场趋势和发现投资机会。同时，我们还可以根据客户的需求定制交易策略，帮助客户实现投资目标并提高投资效率。我们的机构服务旨在为客户提供一流的量化投资解决方案，帮助机构客户在竞争激烈的市场中取得成功。",
-        icon: <BusinessOutlined/>
-    }
+    // {
+    //     title: '机构服务',
+    //     description: "为金融机构提供量化投资研究和交易策略定制服务。通过深入挖掘市场数据和应用先进的机器学习算法，我们可以为机构客户提供高质量的投资研究报告，帮助客户分析市场趋势和发现投资机会。同时，我们还可以根据客户的需求定制交易策略，帮助客户实现投资目标并提高投资效率。我们的机构服务旨在为客户提供一流的量化投资解决方案，帮助机构客户在竞争激烈的市场中取得成功。",
+    //     icon: <BusinessOutlined/>
+    // }
 ]
 
 const Production = () => {

@@ -354,6 +354,7 @@ const Signal = () => {
     const {name} = useParams()
     const query = useQuery()
     const chart = useChart()
+    const {t} = useTranslation()
 
     const signalData = signalAPI({
         name: name ?? 'BTCUSDT',
@@ -382,7 +383,7 @@ const Signal = () => {
                                     }
                                 }>
                                     <Typography variant={'body2'} color={isBuy ? 'success' : 'error'}>
-                                        {isBuy ? '买入' : '卖出'} ({item.timeframe})
+                                        {isBuy ? t('买入') : t('卖出')} ({item.timeframe})
                                     </Typography>
                                     <Typography variant={'body2'}>
                                         {timejs(item.created_at).fromNow()} - {timejs(item.created_at).format('YYYY/MM/DD HH:mm:ss')}
@@ -392,20 +393,20 @@ const Signal = () => {
                         )
                     })}
             </Stack>
-            <Box>
-                <Stack spacing={2}>
-                    {[0, 1, 2, 3].map((item, index) => (
-                        <Box key={index + item}
-                             sx={{
-                                 filter: index > 0 ? 'grayscale(100%)' : '',
-                                 opacity: index > 0 ? 0.4 : 1
-                             }}>
-                            <Position key={item + index} outlined={index > 0} stop={index > 0}/>
-                            {index > 0 && <Divider/>}
-                        </Box>
-                    ))}
-                </Stack>
-            </Box>
+            {/*<Box>*/}
+            {/*    <Stack spacing={2}>*/}
+            {/*        {[0, 1, 2, 3].map((item, index) => (*/}
+            {/*            <Box key={index + item}*/}
+            {/*                 sx={{*/}
+            {/*                     filter: index > 0 ? 'grayscale(100%)' : '',*/}
+            {/*                     opacity: index > 0 ? 0.4 : 1*/}
+            {/*                 }}>*/}
+            {/*                <Position key={item + index} outlined={index > 0} stop={index > 0}/>*/}
+            {/*                {index > 0 && <Divider/>}*/}
+            {/*            </Box>*/}
+            {/*        ))}*/}
+            {/*    </Stack>*/}
+            {/*</Box>*/}
         </>
     )
 }
@@ -418,6 +419,7 @@ const TrendChange = () => {
         name: name ?? 'BTCUSDT',
         timeframe: ''
     })
+    const {t} = useTranslation()
 
     return (
         <>
@@ -444,7 +446,7 @@ const TrendChange = () => {
                                    }
                                }>
                             <Typography variant={'body2'} color={isBull ? 'success' : 'error'}>
-                                {isBull ? '趋势转多' : '趋势转空'} ({item.timeframe})
+                                {isBull ? t('趋势转多') : t('趋势转空')} ({item.timeframe})
                             </Typography>
                             <Typography variant={'body2'}>
                                 {timejs(item.open_time).fromNow()} - {timejs(item.open_time).format('YYYY/MM/DD HH:mm:ss')}
@@ -458,13 +460,11 @@ const TrendChange = () => {
 }
 
 const RightBar = () => {
+    const {t} = useTranslation()
     const buttonGroupData: { name: string, render?: JSX.Element }[] = [
-        {name: '持仓信号（开发中）', render: <Signal/>}, {name: '趋势转换', render: <TrendChange/>}, {name: '波动预警'}
+        {name: t("买卖信号"), render: <Signal/>}, {name: '趋势转换', render: <TrendChange/>}, {name: '波动预警'}
     ]
 
-    const {t} = useTranslation(
-
-    )
     return (
         <StyledPaper sx={{
             maxHeight: 'calc(100vh - 100px)',

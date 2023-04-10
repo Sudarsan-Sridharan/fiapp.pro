@@ -245,7 +245,7 @@ const LeftBar = () => {
                         }} size={'small'}>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{t('标的(usdt)')}</TableCell>
+                                    <TableCell>{t('标的')}(usdt)</TableCell>
                                     <TableCell align="left">{t('最新价')}</TableCell>
                                     <TableCell align="left">{t('成交额')}</TableCell>
                                 </TableRow>

@@ -26,7 +26,6 @@ import React, {useEffect, useRef} from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
 import {
-    AccountCircleOutlined,
     CloseOutlined,
     DownloadOutlined,
     HomeOutlined,
@@ -565,15 +564,15 @@ const Layout = (): JSX.Element => {
                                 ))}
                             </Stack>
                             <Stack>
-                                <IconButton onClick={
-                                    () => {
-                                        user.isLogin
-                                            ? setOpen(true)
-                                            : nav('/register')
-                                    }
-                                }>
-                                    <AccountCircleOutlined/>
-                                </IconButton>
+                                {/*<IconButton onClick={*/}
+                                {/*    () => {*/}
+                                {/*        user.isLogin*/}
+                                {/*            ? setOpen(true)*/}
+                                {/*            : nav('/register')*/}
+                                {/*    }*/}
+                                {/*}>*/}
+                                {/*    <AccountCircleOutlined/>*/}
+                                {/*</IconButton>*/}
                                 <Tooltip title={i18n.language === 'zh' ? 'English' : '中文'} arrow
                                          placement={'right'}>
                                     <IconButton

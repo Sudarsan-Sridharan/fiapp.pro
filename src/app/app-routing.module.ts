@@ -28,6 +28,11 @@ const routes: Routes = [
       {
         path: ':symbol',
         component: TvChartComponent
+      },
+      {
+        path: '',
+        redirectTo: '/chart/BTCUSDT',
+        pathMatch: 'full'
       }
     ]
   },

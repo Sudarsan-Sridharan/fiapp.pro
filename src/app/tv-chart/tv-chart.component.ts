@@ -37,18 +37,21 @@ export class TvChartComponent implements AfterViewInit {
     open: number;
     close: number;
   } | null = null
+  loading = true
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {
   }
 
   ngAfterViewInit(): void {
     this.route.paramMap.subscribe(params => {
-      if (this.symbol !== params.get('symbol') && this.chart) this.chart.remove();
-      this.symbol = params.get('symbol');
-      this.kline = []
+      const symbol = params.get('symbol');
+      if (this.chart) this.chart.remove();
+      this.symbol = symbol
 
       this.http.get<MarketData>(`https://api.fiapp.pro/kline?name=${this.symbol}&timeframe=30M`)
         .subscribe((response) => {
+
+
           const d = response.data.map((item): any => {
             return {
               time: (new Date(item.open_at).getTime() / 1000), open: item.open_bid,

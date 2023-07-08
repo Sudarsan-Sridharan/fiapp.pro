@@ -1,0 +1,33 @@
+<div class="flex flex-row gap-10">
+  <div class="flex-none">
+    <div class="border-r-2 border-accent-content/10 space-y-2">
+      <input class="input input-sm w-full input-bordered input-primary max-w-xs" placeholder="Search coins"
+             type="text"/>
+      <div class="overflow-hidden hover:overflow-y-auto" style="max-height: calc(100vh - 150px);min-width: 180px">
+        <table class="table table-pin-rows">
+          <div *ngIf="!coinList">
+            <span class="loading loading-ring loading-lg"></span>
+          </div>
+          <div *ngFor="let group of coinList">
+            <thead>
+            <tr>
+              <!-- 使用 *ngFor 指令遍历所有分组的名称，并将它们输出到表头中 -->
+              <th>{{ group.type }}</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let data of group.data" class="w-full ">
+            <!-- 使用 *ngFor 指令嵌套遍历所有分组和其中的资产数据，并将它们输出到表格中 -->
+            <tr class="hover:bg-accent cursor-pointer">
+              <td [routerLink]="data.name" class="rounded-xl" style="min-width: 180px">{{ data.name }}</td>
+            </tr>
+            </tbody>
+          </div>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grow" style="height: calc(100vh - 180px);">
+    <router-outlet></router-outlet>
+  </div>
+</div>

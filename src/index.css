@@ -1,8 +1,0 @@
-@font-face {
-    font-family: 'SF Pro Display Bold';
-    src: local('SF Pro Display Bold'), url('./assets/FontsFree-Net-SFProDisplay-Bold.ttf') format('truetype')
-}
-
-* body {
-    margin: 0
-}

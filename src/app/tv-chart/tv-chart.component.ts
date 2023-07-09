@@ -46,8 +46,7 @@ export class TvChartComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    // reset target signal
-    this.signalService.updateTargetSignal([])
+
   }
 
   ngAfterViewInit(): void {
@@ -168,23 +167,24 @@ export class TvChartComponent implements AfterViewInit, OnInit {
             barSpacing: 10,
           })
         })
-
-      this.signalService.clickSignal$.subscribe((index) => {
-        if (index !== null) {
-          this.signalService.targetSignal$.subscribe((targetSignal) => {
-            if (targetSignal !== null) {
-              const target = targetSignal[index]
-              if (target) {
-                this.chart?.timeScale().scrollToPosition(-target + 5, false)
-              }
-            }
-          })
-        }
-      })
     });
+
+    this.signalService.clickSignal$.subscribe((index) => {
+      if (index !== null) {
+        this.signalService.targetSignal$.subscribe((targetSignal) => {
+          if (targetSignal !== null) {
+            const target = targetSignal[index]
+            if (target) {
+              this.chart?.timeScale().scrollToPosition(-target + 10, false)
+            }
+          }
+        })
+      }
+    })
   }
 
   scrollToSignal() {
     this.chart?.timeScale().scrollToPosition(-30, true)
   }
+
 }

@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import {RouterSymbolService} from "./router-symbol.service";
+import * as dayjs from "dayjs";
+import {SignalService} from "./signal.service";
 
 interface PriceData {
   open: string;
@@ -26,22 +29,45 @@ interface IGroupedAssetData {
   data: AssetData[]
 }
 
+export interface TradingSignal {
+  statusCode: number;
+  msg: string;
+  data: {
+    id: string;
+    created_at: string;
+    name: string;
+    timeframe: string;
+    open_time: string;
+    code: number;
+    open_price: number;
+    stop_price: number;
+    profit_price: number | null;
+    direction: number;
+    risk: number;
+    liq: boolean;
+    nameNavigation: null | any;
+  }[];
+}
+
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss']
 })
 
-export class ChartComponent implements OnInit {
+export class ChartComponent implements AfterViewInit {
   coinList: IGroupedAssetData[] = [];
 
   symbol = ''
+  signals: TradingSignal["data"] = []
+  protected readonly dayjs = dayjs;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private routerSymbolService: RouterSymbolService,
+              private signalService: SignalService) {
   }
 
 
-  ngOnInit() {
+  ngAfterViewInit() {
 
     this.http.get<ApiResponse>('https://api.fiapp.pro/coin').subscribe((response) => {
       const sortedAssetData = response.data.sort((a, b) => a.name.localeCompare(b.name));
@@ -59,5 +85,19 @@ export class ChartComponent implements OnInit {
 
       this.coinList = groupedAssetDataArray;
     })
+
+    this.routerSymbolService.symbolName$.subscribe((symbol) => {
+      this.symbol = symbol
+
+      this.http.get<TradingSignal>(`https://api.fiapp.pro/TradingSignal?name=${symbol}&timeframe=30M`).subscribe((response) => {
+        this.signals = response.data
+        this.signalService.updateSignal(this.signals)
+      })
+
+    })
+  }
+
+  clickSignal(signalIndex: number) {
+    this.signalService.updateClickSignal(signalIndex)
   }
 }

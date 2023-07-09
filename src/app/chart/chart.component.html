@@ -1,6 +1,6 @@
 <div class="flex flex-row gap-10">
   <div class="flex-none">
-    <div class="border-r-2 border-accent-content/10 space-y-2">
+    <div class="border-r border-accent-content/10 space-y-2">
       <input class="input input-sm w-full input-bordered input-primary max-w-xs" placeholder="Search coins"
              type="text"/>
       <div class="overflow-hidden hover:overflow-y-auto" style="max-height: calc(100vh - 150px);min-width: 180px">
@@ -15,10 +15,10 @@
               <th>{{ group.type }}</th>
             </tr>
             </thead>
-            <tbody *ngFor="let data of group.data" class="w-full ">
-            <!-- 使用 *ngFor 指令嵌套遍历所有分组和其中的资产数据，并将它们输出到表格中 -->
-            <tr class="hover:bg-accent cursor-pointer">
-              <td [routerLink]="data.name" class="rounded-xl" style="min-width: 180px">{{ data.name }}</td>
+            <tbody *ngFor="let data of group.data" class="w-full">
+            <tr [routerLinkActive]="['bg-accent']" [routerLink]="['/chart', data.name]"
+                class="hover:bg-accent cursor-pointer">
+              <td class="rounded-xl" style="min-width: 180px">{{ data.name }}</td>
             </tr>
             </tbody>
           </div>
@@ -29,5 +29,23 @@
 
   <div class="grow" style="height: calc(100vh - 180px);">
     <router-outlet></router-outlet>
+  </div>
+
+  <div class=" space-y-2">
+    <div class="border-b">
+      Signals - Delay 1 hours
+    </div>
+    <div *ngFor="let item of signals;let i = index;">
+      <div
+        (click)="clickSignal(i)"
+        [ngClass]="{'shadow-md': i === 0, 'border-success hover:shadow-success/50': item.direction === 1, 'border-error hover:shadow-error/50': item.direction === -1}"
+        class="alert cursor-pointer hover:shadow-md">
+        <div>
+          <h3 class="font-bold">{{item.name}}</h3>
+          <div class="text-xs">{{dayjs(item.created_at).format('YYYY-MM-DD HH:mm')}} </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>

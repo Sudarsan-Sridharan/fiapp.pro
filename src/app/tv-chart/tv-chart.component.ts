@@ -1,7 +1,9 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {createChart} from "lightweight-charts";
+import {createChart, IChartApi, UTCTimestamp} from "lightweight-charts";
+import {RouterSymbolService} from "../chart/router-symbol.service";
+import {SignalService} from "../chart/signal.service";
 
 interface MarketData {
   statusCode: number;
@@ -27,10 +29,10 @@ interface MarketData {
   templateUrl: './tv-chart.component.html',
   styleUrls: ['./tv-chart.component.scss']
 })
-export class TvChartComponent implements AfterViewInit {
+export class TvChartComponent implements AfterViewInit, OnInit {
   symbol: string | null = '';
   kline: MarketData["data"] = []
-  chart: any = ''
+  chart: IChartApi | null = null
   currentPrice: {
     high: number;
     low: number;
@@ -39,7 +41,13 @@ export class TvChartComponent implements AfterViewInit {
   } | null = null
   loading = true
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {
+  constructor(private route: ActivatedRoute, private http: HttpClient, private routerSymbolService: RouterSymbolService,
+              private signalService: SignalService) {
+  }
+
+  ngOnInit() {
+    // reset target signal
+    this.signalService.updateTargetSignal([])
   }
 
   ngAfterViewInit(): void {
@@ -47,6 +55,7 @@ export class TvChartComponent implements AfterViewInit {
       const symbol = params.get('symbol');
       if (this.chart) this.chart.remove();
       this.symbol = symbol
+      this.routerSymbolService.updateSymbolName(symbol ?? 'BTCUSDT')
 
       this.http.get<MarketData>(`https://api.fiapp.pro/kline?name=${this.symbol}&timeframe=30M`)
         .subscribe((response) => {
@@ -61,7 +70,7 @@ export class TvChartComponent implements AfterViewInit {
 
           this.kline = response.data
 
-          this.chart = createChart('symbolChart', {
+          const chart = createChart('symbolChart', {
             watermark: {
               visible: true,
               fontSize: 24,
@@ -86,7 +95,7 @@ export class TvChartComponent implements AfterViewInit {
             }
           });
 
-
+          this.chart = chart
           const candlestickSeries = this.chart.addCandlestickSeries({
             upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
             wickUpColor: '#26a69a', wickDownColor: '#ef5350',
@@ -105,6 +114,50 @@ export class TvChartComponent implements AfterViewInit {
             }
           });
 
+          const markers: any = [];
+
+          this.signalService.signal$.subscribe((signal) => {
+            //sort signal by open_time
+            signal?.sort((a, b) => {
+              return new Date(a.open_time).getTime() - new Date(b.open_time).getTime()
+            })
+            signal?.map((item) => {
+              const isBuy = item.direction === 1
+              markers.push({
+                time: (new Date(item.open_time).getTime() / 1000) as UTCTimestamp,
+                position: isBuy ? 'belowBar' : 'aboveBar',
+                color: isBuy ? "green" : "red",
+                shape: isBuy ? 'arrowUp' : 'arrowDown',
+                text: isBuy ? 'Buy' : 'Sell',
+                size: 2,
+              })
+            })
+
+
+            const signals = signal
+            const marketData = response.data
+            if (signals && signals.length > 0 && marketData.length > 0) {
+              // Step 1: convert ISO date string to Unix timestamp
+              const utcSignals = signals.map(signal => ({...signal, created_at: Date.parse(signal.open_time) / 1000}));
+              const utcMarketData = marketData.map(md => ({...md, created_at: Date.parse(md.open_at) / 1000}));
+              // Step 2: sort market data by created_at in descending order
+              const sortedMarketData = utcMarketData.sort((a, b) => b.created_at - a.created_at);
+
+              // Step 3: find index of the last market data point
+              const lastMarketDataIndex = sortedMarketData.findIndex(md => md.created_at <= utcSignals[0].created_at);
+
+              // Step 4: find relative index of each signal
+              const relativeIndices = utcSignals.map(signal => {
+                const marketDataIndex = sortedMarketData.findIndex(md => md.created_at <= signal.created_at);
+                return marketDataIndex
+              });
+              this.signalService.updateTargetSignal(relativeIndices)
+            }
+
+          })
+
+          candlestickSeries.setMarkers(markers);
+
           candlestickSeries.applyOptions({
             priceFormat: {
               precision: 10,
@@ -115,6 +168,23 @@ export class TvChartComponent implements AfterViewInit {
             barSpacing: 10,
           })
         })
+
+      this.signalService.clickSignal$.subscribe((index) => {
+        if (index !== null) {
+          this.signalService.targetSignal$.subscribe((targetSignal) => {
+            if (targetSignal !== null) {
+              const target = targetSignal[index]
+              if (target) {
+                this.chart?.timeScale().scrollToPosition(-target + 5, false)
+              }
+            }
+          })
+        }
+      })
     });
+  }
+
+  scrollToSignal() {
+    this.chart?.timeScale().scrollToPosition(-30, true)
   }
 }

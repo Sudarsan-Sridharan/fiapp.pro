@@ -1,7 +1,7 @@
 <div *ngIf="currentPrice">
   {{symbol}}
   <span class="text-accent-content/50">
-    高 {{currentPrice.high}} 低 {{currentPrice.low}} 开 {{currentPrice.open}} 收 {{currentPrice.close}}
+    High {{currentPrice.high}} Low {{currentPrice.low}} Open {{currentPrice.open}} Close {{currentPrice.close}}
     ({{ ((currentPrice.close - currentPrice.open) / currentPrice.open * 100).toFixed(2) }}%)
   </span>
 </div>

@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
     {path: 'home', label: 'Home'},
     {path: 'chart', label: 'Chart'},
     {path: 'features', label: 'Features'},
-    {path: 'contact', label: 'Contact Us'},
+    // {path: 'contact', label: 'Contact Us'},
   ]
   currentLang = ''
   user: User | null | undefined = null

@@ -8,6 +8,7 @@ import {LoginService} from "./login.service";
 })
 export class LoginComponent {
   show: boolean = false;
+  protected readonly window = window;
 
   constructor(private loginService: LoginService, private renderer: Renderer2) {
     this.loginService.show$.subscribe(data => {
@@ -29,7 +30,6 @@ export class LoginComponent {
       this.renderer.removeClass(document.documentElement, 'overflow-hidden');
     }
   }
-
 
   close() {
     this.loginService.updateShow(false);

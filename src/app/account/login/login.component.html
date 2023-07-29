@@ -18,58 +18,31 @@
           </button>
 
         </div>
-        <div class="flex min-h-full flex-col justify-center p-6 lg:px-8  space-y-4">
+        <div class="flex min-h-full flex-col justify-center p-6 lg:px-8  mb-10 space-y-4">
 
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <img alt="Your Company" class="mx-auto h-10 w-auto"
                  src="assets/fiappLogo.webp">
-            <h2 class="text-center text-2xl font-bold leading-9 tracking-tight" translate>Sign in to your
-              account</h2>
+            <h2 class="text-center text-2xl font-bold leading-9 tracking-tight" translate>加入社区获取免费实时的买卖信号
+            </h2>
           </div>
 
-          <div class=" sm:mx-auto sm:w-full sm:max-w-sm space-y-10">
-            <form action="#" class="space-y-6" method="POST">
-              <div>
-                <label class="block text-sm font-medium leading-6" for="email" translate>Email
-                  address</label>
-                <div class="mt-2">
-                  <input autocomplete="email"
-                         class="input input-sm border-accent-content  w-full"
-                         id="email"
-                         name="email" required
-                         type="email">
-                </div>
-              </div>
+          <div class=" sm:mx-auto sm:w-full sm:max-w-sm space-y-5">
+            <div class="outline rounded px-2">
+              <label class="block text-sm font-medium leading-6" translate>绿色韭菜QQ群 912892769</label>
+            </div>
 
-              <div>
-                <div class="flex items-center justify-between">
-                  <label class="block text-sm font-medium leading-6" for="password"
-                         translate>Password</label>
-                  <div class="text-sm">
-                    <a class="font-semibold text-green-600" href="#" translate>Forgot
-                      password?</a>
-                  </div>
-                </div>
-                <div>
-                  <input autocomplete="current-password"
-                         class="input input-sm border-accent-content w-full"
-                         id="password" name="password" required
-                         type="password">
-                </div>
-              </div>
+            <div class="outline rounded px-2 cursor-pointer">
+              <label (click)="window.open('https://www.kookapp.cn/app/invite/14JUwd', '_black')"
+                     class="block text-sm font-medium leading-6"
+                     translate>Kook（大陆用户推荐）</label>
+            </div>
 
-              <div>
-                <button
-                  class="btn btn-sm btn-accent w-full"
-                  translate type="submit">
-                  Sign in
-                </button>
-              </div>
-            </form>
-
-            <p class="text-center text-sm text-gray-500" translate>
-              New account can start a 14 day free trial
-            </p>
+            <div class="outline rounded px-2 cursor-pointer">
+              <label (click)="window.open('https://discord.gg/J2CkCMdBgK', '_black')"
+                     class="block text-sm font-medium leading-6"
+                     translate>Discord（海外用户推荐）</label>
+            </div>
           </div>
         </div>
       </div>

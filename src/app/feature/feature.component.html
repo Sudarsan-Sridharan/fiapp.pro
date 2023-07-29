@@ -1,0 +1,29 @@
+<div class="my-10">
+  <div class="space-y-10">
+    <h1
+      class="text-5xl font-bold leading-tight"
+      translate>
+      <span class=" bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500" translate>
+        Professional level
+      </span> <br/>
+      <span translate>Quantitative financial algorithms</span>
+      <br/>
+      <span translate>Solutions</span>
+    </h1>
+    <div class="grid grid-cols-3 gap-10 ">
+      <div *ngFor="let item of features"
+           class="card w-96 bg-base-100 outline hover:shadow-success/50 shadow-md hover:shadow-2xl shadow-success/20">
+        <div class="card-body">
+          <h2 class="card-title" translate>{{
+            item.title
+            }}</h2>
+          <p class="text-sm" translate>
+            {{
+            item.description
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

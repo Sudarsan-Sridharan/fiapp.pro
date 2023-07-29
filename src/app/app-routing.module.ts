@@ -4,6 +4,7 @@ import {ChartComponent} from "./chart/chart.component";
 import {HomeComponent} from "./home/home.component";
 import {Title} from "@angular/platform-browser";
 import {TvChartComponent} from "./tv-chart/tv-chart.component";
+import {FeatureComponent} from "./feature/feature.component";
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -23,6 +24,11 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
 const routes: Routes = [
   {path: '', component: HomeComponent, title: 'Revolutionizing Trading',},
   {
+    path: 'home',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
     path: 'chart', component: ChartComponent, title: 'Professional chart',
     children: [
       {
@@ -31,11 +37,12 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/chart/BTCUSDT',
+        redirectTo: '/chart/AAVEUSDT',
         pathMatch: 'full'
       }
     ]
   },
+  {path: 'features', component: FeatureComponent, title: 'Features'},
 ];
 
 @NgModule({

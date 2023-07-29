@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@angular/animations':
     specifier: ^16.0.0
@@ -25,12 +29,21 @@ dependencies:
   '@angular/router':
     specifier: ^16.0.0
     version: 16.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(@angular/platform-browser@16.0.0)(rxjs@7.8.0)
+  '@auth0/auth0-angular':
+    specifier: ^2.2.1
+    version: 2.2.1(@angular/common@16.0.0)(@angular/core@16.0.0)(@angular/router@16.0.0)
   '@ng-icons/core':
     specifier: ^25.1.0
     version: 25.1.0
   '@ng-icons/material-icons':
     specifier: ^25.1.0
     version: 25.1.0
+  '@ngx-translate/core':
+    specifier: ^15.0.0
+    version: 15.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(rxjs@7.8.0)
+  '@ngx-translate/http-loader':
+    specifier: ^8.0.0
+    version: 8.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(@ngx-translate/core@15.0.0)(rxjs@7.8.0)
   dayjs:
     specifier: ^1.11.9
     version: 1.11.9
@@ -452,6 +465,24 @@ packages:
   /@assemblyscript/loader@0.10.1:
     resolution: { integrity: sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg== }
     dev: true
+
+  /@auth0/auth0-angular@2.2.1(@angular/common@16.0.0)(@angular/core@16.0.0)(@angular/router@16.0.0):
+    resolution: { integrity: sha512-ie9CMNOdQ3mkhhe09SEporCayDuuPYHNmctyHeV6caVgZVSSu9FlFt2ec6CkX27ufDq7yCdyJGnDixWxNtUG+Q== }
+    peerDependencies:
+      '@angular/common': '>=13'
+      '@angular/core': '>=13'
+      '@angular/router': '>=13'
+    dependencies:
+      '@angular/common': 16.0.0(@angular/core@16.0.0)(rxjs@7.8.0)
+      '@angular/core': 16.0.0(rxjs@7.8.0)(zone.js@0.13.0)
+      '@angular/router': 16.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(@angular/platform-browser@16.0.0)(rxjs@7.8.0)
+      '@auth0/auth0-spa-js': 2.1.1
+      tslib: 2.5.0
+    dev: false
+
+  /@auth0/auth0-spa-js@2.1.1:
+    resolution: { integrity: sha512-21qEf5Bjouy76CWd1gQgf/tT6iD513YFYaK0+3OF1nbwLtPFpxm5Ln94M7SCVFKfe5jbchWuEcIb1HLer3r6RA== }
+    dev: false
 
   /@babel/code-frame@7.22.5:
     resolution: { integrity: sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ== }
@@ -2050,6 +2081,34 @@ packages:
       typescript: 5.0.2
       webpack: 5.80.0(esbuild@0.17.18)
     dev: true
+
+  /@ngx-translate/core@15.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(rxjs@7.8.0):
+    resolution: { integrity: sha512-Am5uiuR0bOOxyoercDnAA3rJVizo4RRqJHo8N3RqJ+XfzVP/I845yEnMADykOHvM6HkVm4SZSnJBOiz0Anx5BA== }
+    engines: { node: ^16.13.0 || >=18.10.0 }
+    peerDependencies:
+      '@angular/common': '>=16.0.0'
+      '@angular/core': '>=16.0.0'
+      rxjs: ^6.5.5 || ^7.4.0
+    dependencies:
+      '@angular/common': 16.0.0(@angular/core@16.0.0)(rxjs@7.8.0)
+      '@angular/core': 16.0.0(rxjs@7.8.0)(zone.js@0.13.0)
+      rxjs: 7.8.0
+    dev: false
+
+  /@ngx-translate/http-loader@8.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(@ngx-translate/core@15.0.0)(rxjs@7.8.0):
+    resolution: { integrity: sha512-SFMsdUcmHF5OdZkL1CHEoSAwbP5EbAOPTLLboOCRRoOg21P4GJx+51jxGdJeGve6LSKLf4Pay7BkTwmE6vxYlg== }
+    engines: { node: ^16.13.0 || >=18.10.0 }
+    peerDependencies:
+      '@angular/common': '>=16.0.0'
+      '@angular/core': '>=16.0.0'
+      '@ngx-translate/core': '>=15.0.0'
+      rxjs: ^6.5.5 || ^7.4.0
+    dependencies:
+      '@angular/common': 16.0.0(@angular/core@16.0.0)(rxjs@7.8.0)
+      '@angular/core': 16.0.0(rxjs@7.8.0)(zone.js@0.13.0)
+      '@ngx-translate/core': 15.0.0(@angular/common@16.0.0)(@angular/core@16.0.0)(rxjs@7.8.0)
+      rxjs: 7.8.0
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: { integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g== }

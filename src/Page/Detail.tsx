@@ -118,7 +118,7 @@ const Toolbar = () => {
     )
 }
 const leftBarFilterData = [
-    "市场", "流动性", "波动率", "新趋势", "波动预警", "买卖信号"
+    "市场", "流动性", "波动率", "新趋势", "波动预警", "大数据分析"
 ]
 
 const sortQuoteVolume = (coins: ICoin[] | undefined): ICoin[] | undefined => {
@@ -461,7 +461,7 @@ const TrendChange = () => {
 const RightBar = () => {
     const {t} = useTranslation()
     const buttonGroupData: { name: string, render?: JSX.Element }[] = [
-        {name: t("买卖信号"), render: <Signal/>}, {name: '趋势转换', render: <TrendChange/>}, {name: '波动预警'}
+        {name: t("大数据分析"), render: <Signal/>}, {name: '趋势转换', render: <TrendChange/>}, {name: '波动预警'}
     ]
 
     return (
@@ -474,6 +474,15 @@ const RightBar = () => {
                 overflowY: 'auto'
             }
         }}>
+            <Box sx={{
+                fontSize: '14px',
+                bgcolor: "black",
+                color: 'white',
+                mb: 2,
+                p: 1
+            }}>
+                所有信号数据只是大数据分析下的展示效果，不可作为任何投资建议。
+            </Box>
             <Stack spacing={2}>
                 {
                     buttonGroupData.map((item, index) => (

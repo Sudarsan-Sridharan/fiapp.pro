@@ -43,6 +43,13 @@ const LandingToolbar = () => {
             left: 0,
             zIndex: 100,
         }}>
+            <Box sx={{
+                bgcolor: 'black',
+                color: 'white',
+                p: 1
+            }}>
+                Fiapp.pro 只提供大数据分析、量化，非金融产品，不涉及和管理任何他人资产，不提供任何投资建议，不接受任何形式的资金委托。
+            </Box>
             <Box sx={theme => ({
                 backdropFilter: 'blur(40px)',
                 boxShadow: theme.shadows[1],

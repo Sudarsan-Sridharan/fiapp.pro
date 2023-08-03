@@ -19,8 +19,8 @@ const Home = () => {
             <Box width={'80%'} margin={'0 auto'}>
                 <Typography variant={'h1'} fontWeight={900} lineHeight={1.3}>
                     {t("轻松抓住")}<br/>
-                    {t("所有标的市场")}<br/>
-                    {t("量化交易系统")}<br/>
+                    {t("所有数据市场")}<br/>
+                    {t("量化大数据系统")}<br/>
                 </Typography>
 
                 <Stack spacing={1} maxWidth={'800px'} direction={'row'} mt={4}>
@@ -42,7 +42,7 @@ const Home = () => {
                             onClick={() => setOpen(true)}
                             endIcon={<ArrowCircleRightOutlined/>}
                     >
-                        {t("获取免费的买卖信号")}
+                        {t("获取免费的大数据分析")}
                     </Button>
                 </Stack>
             </Box>

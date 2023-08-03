@@ -17,7 +17,7 @@ const Community: React.FC = () => {
         <Dialog open={open} onClose={() => setOpen(false)}>
             <Box p={5} py={10}>
                 <Typography variant={"h4"} fontWeight={900}>
-                    {t("加入社区获取免费实时的买卖信号")}
+                    {t("加入社区获取免费实时的大数据分析")}
                 </Typography>
                 <Divider sx={{my: 2}}/>
 

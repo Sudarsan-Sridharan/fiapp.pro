@@ -13,19 +13,19 @@ export class HomeComponent implements AfterViewInit {
   features = [
     {
       title: 'Real-time',
-      description: 'Provide real-time financial market data, including stocks, foreign exchange, futures, and more.',
+      description: 'Through big data analytics, we provide clients with real-time, comprehensive data insights to support quick and informed business decisions, seizing market opportunities.',
     },
     {
-      title: 'Trading',
-      description: 'Offer convenient financial trading functions for customers.'
+      title: 'Automatic processing',
+      description: 'Leveraging AI and machine learning technologies, we enable 24/7 automated data processing and analytics, providing efficient, stable and secure big data services to our clients.'
     },
     {
       title: 'Risk Management',
-      description: 'Monitor trading risks in real-time, set up warnings and stop-loss.',
+      description: 'Provide real-time monitoring of business risks, including alerts and response mechanisms, to help you better control business risks.',
     },
     {
       title: 'Reports',
-      description: 'Provide diverse reporting functions, helping customers understand their financial status.'
+      description: 'Provide diversified data analytics reporting functions with maximum transparency to fully inform clients on business operations.'
     }
   ]
 
@@ -53,7 +53,7 @@ export class HomeComponent implements AfterViewInit {
           horzAlign: 'center',
           vertAlign: 'center',
           color: 'rgba(0,0, 0, 0.2)',
-          text: '真实数据回测，已包含最高手续费和滑点。'
+          text: '基于实际数据的回测分析，考虑了各种成本因素的影响。'
         },
         rightPriceScale: {
           visible: true,

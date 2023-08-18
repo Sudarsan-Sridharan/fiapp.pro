@@ -40,8 +40,10 @@ export class AppComponent implements OnInit {
       console.log(token)
     })
 
+
     this.auth.user$.subscribe((user) => {
       this.user = user
+      console.log(user)
     })
   }
 

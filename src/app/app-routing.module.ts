@@ -22,7 +22,7 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent, title: 'Revolutionizing Trading',},
+  {path: '', component: HomeComponent, title: 'Revolutionary Data-driven',},
   {
     path: 'home',
     redirectTo: '',

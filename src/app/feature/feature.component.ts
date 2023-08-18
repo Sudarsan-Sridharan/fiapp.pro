@@ -8,24 +8,24 @@ import {Component} from '@angular/core';
 export class FeatureComponent {
   features = [
     {
-      title: 'Portfolio tracking',
-      description: "Real-time updates and display of the portfolio's real-time market value and profit/loss status, helping users better understand and manage their investment portfolio."
+      title: 'Business Monitoring',
+      description: "Real-time monitoring and visualization of key business metrics to help users better grasp and manage business operations."
     },
     {
-      title: 'Buy/sell signals',
-      description: 'Automatically execute trading strategies to help users achieve their investment goals more effectively. Based on pre-set buy/sell rules, the system can automatically identify market changes and take corresponding trading actions to control risks and achieve higher returns.'
+      title: 'Business Decision Support',
+      description: 'Automatically analyze data and generate business recommendations based on preset business rules to help users make more informed decisions. The system can automatically monitor market changes and provide corresponding business suggestions based on data insights to control risks and achieve business goals.'
     },
     {
-      title: 'Trend change',
-      description: 'Real-time identification of market trends helps users better grasp investment opportunities. By accurately locating market trends, users can adjust trading strategies in a timely manner, control risks, and achieve higher returns.'
+      title: 'Trend Analysis',
+      description: 'Real-time monitoring of market change trends to help users capitalize on business opportunities. Through accurate trend analysis, users can promptly adjust business strategies, control risks, and achieve business success.'
     },
     {
-      title: 'Volatility alert',
-      description: 'Real-time monitoring of market volatility helps users to timely understand market risks. By timely warning of market fluctuations, users can adjust investment strategies in a timely manner, prevent risks, and protect their investment portfolio.'
+      title: 'Business Risk Alerts',
+      description: 'Real-time monitoring of business risk indicators to help users stay informed of operational risks. Through risk alerts, users can promptly adjust business strategies, prevent risks, and ensure stable business operations.'
     },
     {
       title: 'Intelligent recommendation',
-      description: 'Provide personalized investment advice to users and help them make wiser investment decisions. By analyzing factors such as users\' investment preferences, risk preferences, and market conditions, the system can recommend the most suitable investment portfolio to users and improve investment efficiency.'
+      description: 'Provide personalized business decision suggestions based on factors like user preferences, risk appetite and market conditions, to help them make more informed choices. The system can analyze data and recommend optimal business solutions to improve decision-making efficiency.'
     }
   ];
 }

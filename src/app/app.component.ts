@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {LoginService} from "./account/login/login.service";
 import {AuthService, User} from "@auth0/auth0-angular";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -18,9 +19,10 @@ export class AppComponent implements OnInit {
   ]
   currentLang = ''
   user: User | null | undefined = null
+  plus: boolean = false
   protected readonly document = document
 
-  constructor(private translateService: TranslateService, private loginService: LoginService, public auth: AuthService) {
+  constructor(private translateService: TranslateService, private loginService: LoginService, public auth: AuthService, private httpClient: HttpClient) {
     this.translateService.addLangs(['en', 'zh-CN']);
     this.translateService.setDefaultLang('en');
 
@@ -36,14 +38,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.getAccessTokenSilently().subscribe((token) => {
-      console.log(token)
+    this.auth.getAccessTokenSilently().subscribe((token: string) => {
+      this.httpClient.get('http://localhost:5105/user/plus-info', {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+        }
+      }).subscribe((r: any) => {
+        this.plus = true
+      })
     })
-
 
     this.auth.user$.subscribe((user) => {
       this.user = user
-      console.log(user)
     })
   }
 

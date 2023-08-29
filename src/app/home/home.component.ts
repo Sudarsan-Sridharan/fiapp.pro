@@ -1,15 +1,16 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BaselineData, createChart, WhitespaceData} from "lightweight-charts";
 import {LoginService} from "../account/login/login.service";
 import {AuthService} from "@auth0/auth0-angular";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements AfterViewInit, OnInit {
   features = [
     {
       title: 'Real-time',
@@ -28,12 +29,17 @@ export class HomeComponent implements AfterViewInit {
       description: 'Provide diversified data analytics reporting functions with maximum transparency to fully inform clients on business operations.'
     }
   ]
-
-
+  public lang = ''
   private netUrl = '../assets/net.json'
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService, public auth: AuthService) {
+  constructor(private translateService: TranslateService, private httpClient: HttpClient, private loginService: LoginService, public auth: AuthService) {
 
+  }
+
+
+  ngOnInit() {
+    this.lang = this.translateService.currentLang
+    console.log(this.lang)
   }
 
   ngAfterViewInit(): void {

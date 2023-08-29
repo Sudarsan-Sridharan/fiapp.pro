@@ -14,6 +14,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {LoginComponent} from './account/login/login.component';
 import {AuthModule} from '@auth0/auth0-angular';
 import {FeatureComponent} from "./feature/feature.component";
+import {NgOptimizedImage} from "@angular/common";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -45,9 +46,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       domain: 'dev-pu4ruz7y.jp.auth0.com',
       clientId: 'p9AHse71tY4fAF1IgN5qs4lzy4NqLUV6',
       authorizationParams: {
-        redirect_uri: window.location.origin
-      }
+        redirect_uri: window.location.origin,
+        audience: 'fiapp-plus-user',
+      },
     }),
+    NgOptimizedImage,
   ],
   providers: [],
   bootstrap: [AppComponent]

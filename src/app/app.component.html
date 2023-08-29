@@ -3,26 +3,40 @@
 <div class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown">
-      <label class="btn btn-ghost lg:hidden" tabindex="0">
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 6h16M4 12h8m-8 6h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <label class="btn btn-ghost lg:hidden"
+             tabindex="0">
+        <svg class="h-5 w-5"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6h16M4 12h8m-8 6h16"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"/>
         </svg>
       </label>
-      <ul class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52" tabindex="0">
+      <ul class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          tabindex="0">
         <li *ngFor="let item of navLinks">
-          <a [routerLinkActive]="['bg-accent']" [routerLink]="['/', item.path]" translate>{{item.label}}</a>
+          <a [routerLinkActive]="['bg-accent']"
+             [routerLink]="['/', item.path]"
+             translate>{{item.label}}</a>
         </li>
         <li>
           <a (click)="openLogin()">免费信号</a>
         </li>
       </ul>
     </div>
-    <a class="btn btn-ghost normal-case text-xl" routerLink="">Fiapp.pro</a>
+    <a class="btn btn-ghost normal-case text-xl"
+       routerLink="">Fiapp.pro</a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li *ngFor="let item of navLinks">
-        <a [routerLinkActive]="['bg-accent']" [routerLink]="['/', item.path]" translate>{{item.label}}</a>
+        <a [routerLinkActive]="['bg-accent']"
+           [routerLink]="['/', item.path]"
+           translate>{{item.label}}</a>
       </li>
       <li>
         <a (click)="openLogin()">免费信号</a>
@@ -31,63 +45,124 @@
   </div>
   <div class="navbar-end">
     <div class="dropdown  dropdown-bottom dropdown-end">
-      <label class="btn m-1 btn-sm" tabindex="0">{{currentLang === 'zh-CN' ? '中文' : 'English'}}
+      <label class="btn m-1 btn-sm"
+             tabindex="0">{{currentLang === 'zh-CN' ? '中文' : 'English'}}
         <div *ngIf="currentLang ==='en'">
-          <svg fill="none" height="24" viewBox="0 0 48 48" width="24" xmlns="http://www.w3.org/2000/svg">
-            <rect fill="none" height="36" rx="3" stroke="#333" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="4" width="36"
-                  x="6" y="6"/>
-            <path d="M13 31V17H21" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-            <path d="M13 24H20.5" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-            <path d="M13 31H20.5" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-            <path d="M26 31L26 19" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-            <path d="M26 31L26 24.5C26 22.0147 28.0147 20 30.5 20V20C32.9853 20 35 22.0147 35 24.5L35 31" stroke="#333"
-                  stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+          <svg fill="none"
+               height="24"
+               viewBox="0 0 48 48"
+               width="24"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect fill="none"
+                  height="36"
+                  rx="3"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"
+                  width="36"
+                  x="6"
+                  y="6"/>
+            <path d="M13 31V17H21"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
+            <path d="M13 24H20.5"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
+            <path d="M13 31H20.5"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
+            <path d="M26 31L26 19"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
+            <path d="M26 31L26 24.5C26 22.0147 28.0147 20 30.5 20V20C32.9853 20 35 22.0147 35 24.5L35 31"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
           </svg>
         </div>
         <div *ngIf="currentLang === 'zh-CN'">
-          <svg fill="none" height="24" viewBox="0 0 48 48" width="24" xmlns="http://www.w3.org/2000/svg">
-            <rect fill="none" height="36" rx="3" stroke="#333" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="4" width="36"
-                  x="6" y="6"/>
+          <svg fill="none"
+               height="24"
+               viewBox="0 0 48 48"
+               width="24"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect fill="none"
+                  height="36"
+                  rx="3"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"
+                  width="36"
+                  x="6"
+                  y="6"/>
             <path
               d="M21 19.9389C20.6008 18.7746 19.403 16.737 17.0076 17.0281C14.6122 17.3193 12.8152 20.5211 13.0152 24.5962C13.2152 28.6714 15.4106 31 17.4068 31C19.8023 31 21 28.2056 21 28.2056"
-              stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-            <path d="M26 31L26 19" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-            <path d="M26 31L26 24.5C26 22.0147 28.0147 20 30.5 20V20C32.9853 20 35 22.0147 35 24.5L35 31" stroke="#333"
-                  stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+              stroke="#333"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="4"/>
+            <path d="M26 31L26 19"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
+            <path d="M26 31L26 24.5C26 22.0147 28.0147 20 30.5 20V20C32.9853 20 35 22.0147 35 24.5L35 31"
+                  stroke="#333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"/>
           </svg>
         </div>
 
       </label>
-      <ul class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52" tabindex="0">
+      <ul class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52 menu-sm"
+          tabindex="0">
         <li><a (click)="switchLang('zh-CN')">中文</a></li>
         <li><a (click)="switchLang('en')">English</a></li>
       </ul>
     </div>
 
-    <details *ngIf="auth.isAuthenticated$ | async; else loggedOut" class="dropdown">
-      <summary class="btn-sm btn-outline btn">
+    <details *ngIf="auth.isAuthenticated$ | async; else loggedOut"
+             class="dropdown">
+      <summary [ngClass]="plus ? 'border-orange-500' : ''"
+               class="btn-sm btn-outline btn lowercase">
         {{user?.nickname}}
+        <div *ngIf="plus"
+             class="badge bg-orange-500 text-white glass">Plus
+        </div>
       </summary>
-      <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-full">
+      <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-full menu-xs">
         <li (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })"><a translate>
           Logout
         </a></li>
       </ul>
     </details>
     <ng-template #loggedOut>
-      <a (click)="auth.loginWithRedirect()" class="btn btn-outline btn-sm" translate>Login</a>
+      <a (click)="auth.loginWithRedirect()"
+         class="btn btn-outline btn-sm"
+         translate>Login</a>
     </ng-template>
   </div>
 </div>
 
 <div class="mx-5 lg:mx-0">
-  <div class="container mx-auto">
+  <div class="mx-auto">
     <router-outlet></router-outlet>
   </div>
   <div class="text-center">
-    @2023 Fiapp.pro & <a href="https://singularity-robotics.com/" target="_blank">Singularity Robotics</a> All Rights
+    @2023 Fiapp.pro & <a href="https://singularity-robotics.com/"
+                         target="_blank">Singularity Robotics</a> All Rights
     Reserved.
   </div>
 </div>

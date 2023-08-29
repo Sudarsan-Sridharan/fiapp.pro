@@ -1,56 +1,132 @@
-<div class="pt-20" style="min-height: calc(100vh - 100px)">
-  <div class="max-w-screen space-y-36">
-    <div class=" grid lg:grid-cols-2 gap-10 md:grid-cols-1">
-      <div class="space-y-5">
-        <div class="rounded-lg bg-accent/30 text-accent-content/50 p-1">
-          <p translate>
-            Leverage our powerful big data analytics platform to uncover data value and empower your business decisions.
-          </p>
-        </div>
-        <h1 class="text-5xl font-bold" style="line-height: 1.1">
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500" translate>
+<div class="space-y-20 py-20">
+  <div class="space-y-20 container mx-auto">
+    <div class="max-w-screen">
+      <div class=" grid lg:grid-cols-2 gap-10 md:grid-cols-1">
+        <div class="space-y-5">
+          <div class="rounded-lg bg-accent/30 text-accent-content/50 p-1">
+            <p translate>
+              Leverage our powerful big data analytics platform to uncover data value and empower your business
+              decisions.
+            </p>
+          </div>
+          <h1 [ngClass]="{'leading-snug': lang === 'zh-CN'}"
+              class="text-5xl font-bold">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+                  translate>
               Data-driven decision making:
             </span>
-          <span translate>
+            <span translate>
          Leverage AI/ML for intelligent big data processing, maximizing value for critical business decisions.
 </span>
-        </h1>
-        <p class="text-base-content/50" translate>Our system can automatically analyze and learn from massive amounts of
-          data to identify important market trends, and make timely and accurate business decisions based on data
-          insights to achieve business goals.</p>
-        <div class="space-x-2">
-          <label (click)="auth.loginWithRedirect()" *ngIf="!(auth.isAuthenticated$ |async)"
-                 class=" btn btn-accent btn-sm"
-                 translate>Create account now
-            <ng-icon name="matArrowRightAltOutline"></ng-icon>
-          </label>
+          </h1>
+          <p class="text-base-content/50"
+             translate>Our system can automatically analyze and learn from massive amounts of
+                       data to identify important market trends, and make timely and accurate business decisions based
+                       on
+                       data
+                       insights to achieve business goals.</p>
+          <div class="space-x-2">
+            <label (click)="auth.loginWithRedirect()"
+                   *ngIf="!(auth.isAuthenticated$ |async)"
+                   class=" btn btn-accent btn-sm"
+                   translate>Create account now
+              <ng-icon name="matArrowRightAltOutline"></ng-icon>
+            </label>
 
-          <button
-            [ngClass]="{'btn-accent': auth.isAuthenticated$ | async, 'btn-outlined': !(auth.isAuthenticated$ | async)}"
-            class="btn btn-sm"
-            routerLink="/chart" translate>Professional chart
-            <ng-icon *ngIf="auth.isAuthenticated$ | async" name="matArrowRightAltOutline"></ng-icon>
-          </button>
+            <button
+              [ngClass]="{'btn-accent': auth.isAuthenticated$ | async, 'btn-outlined': !(auth.isAuthenticated$ | async)}"
+              class="btn btn-sm"
+              routerLink="/chart"
+              translate>Professional chart
+              <ng-icon *ngIf="auth.isAuthenticated$ | async"
+                       name="matArrowRightAltOutline"></ng-icon>
+            </button>
+          </div>
+
+
         </div>
 
 
-      </div>
-
-
-      <div>
-        <div class="h-full z-0" id="tvChart"></div>
+        <div>
+          <div class="h-5/6 z-0"
+               id="tvChart"></div>
+        </div>
       </div>
     </div>
 
-    <div>
-      <div class="divider"></div>
-      <div class="grid lg:grid-cols-4 gap-10  grid-cols-2">
-        <div *ngFor="let item  of features" class="space-y-0.5">
-          <h4 class="text-xl font-bold" translate>{{item.title}}</h4>
-          <p class="text-primary-content/50" translate>{{item.description}}</p>
-        </div>
+    <div class="space-y-5">
+      <div class="text-center text-sm text-gray-400">
+        Partner Network
       </div>
-      <div class="divider"></div>
+
+      <div class="flex justify-center gap-36 overflow-hidden hover:overflow-x-auto">
+        <img height="200"
+             ngSrc="assets/binance/binance-logos-variant-formats-2/binance-logos-idJz0XeOFB.svg"
+             width="200">
+
+        <img height="200"
+             ngSrc="assets/nasdaq/nasdaq-logos-variant-formats-1/nasdaq-logos-iddDbYz072.svg"
+             width="200">
+
+        <img height="150"
+             ngSrc="assets/bybit-com-logos-idLX6g_zQC.png"
+             width="150">
+      </div>
     </div>
   </div>
+
+  <div class="bg-gray-100 space-y-20 mt-20">
+    <div class=" container mx-auto py-20">
+      <div class="card shadow-md p-10 grid lg:grid-cols-2 gap-28 md:grid-cols-1">
+        <div class="bg-accent/10 flex justify-center rounded-3xl">
+          <img height="300"
+               ngSrc="assets/_05df8be6-1cb1-45d4-bc0e-2676e477a915_pixian.svg"
+               width="300">
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-xl font-bold">
+            选择您想要的行业数据
+          </div>
+
+          <div class="text-md text-gray-400">
+            完成设置后，调整策略参数，选择优化目标，开始量化。
+          </div>
+
+          <div class="divider py-5"></div>
+
+          <div class="space-y-5">
+            <div>
+              <span class="font-bold text-md">一体化流程：</span>
+              <span class="text-gray-400">通过我们的工具，您可以轻松掌握海量数据趋势，系统会自动优化分析方案，提升效率。</span>
+            </div>
+
+            <div>
+              <span class="font-bold text-md">快速量化：</span>
+              <span class="text-gray-400">您只需选择适合自己的分析策略，系统会自动执行，持续监控数据，无需您花费大量时间调整方案。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto space-y-5">
+    <div class="text-4xl font-bold max-w-md leading-snug">
+      选择我们作为您的大数据量化工具的优势
+    </div>
+
+    <div class="grid gap-2 md:grid-cols-2 sm:grid-cols-1 card shadow-md shadow-accent">
+      <div *ngFor="let item  of features"
+           class="space-y-0.5  card-body">
+        <h4 class="text-xl font-bold"
+            translate>{{item.title}}</h4>
+        <p class="text-primary-content/50"
+           translate>{{item.description}}</p>
+      </div>
+    </div>
+
+  </div>
+
+
 </div>

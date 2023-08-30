@@ -6,6 +6,10 @@ import {RouterSymbolService} from "../chart/router-symbol.service";
 import {SignalService} from "../chart/signal.service";
 import {CoinService} from "../services/coin.service";
 import {Kline} from "../services/websocket.service";
+import * as dayjs from "dayjs";
+import * as localizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localizedFormat)
 
 interface MarketData {
   statusCode: number;
@@ -44,6 +48,7 @@ export class TvChartComponent implements AfterViewInit, OnInit {
   loading = true
 
   lastKline: Kline | null = null
+  dayjs = dayjs
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private routerSymbolService: RouterSymbolService,
               private signalService: SignalService,
@@ -95,7 +100,12 @@ export class TvChartComponent implements AfterViewInit, OnInit {
             },
             timeScale: {
               borderColor: '#f2f2f2',
-            }
+            },
+            localization: {
+              timeFormatter: function (businessDayOrTimestamp: any) {
+                return dayjs(businessDayOrTimestamp * 1000).format('YYYY/MM/DD HH:mm:ss');
+              },
+            },
           });
 
           this.chart = chart
@@ -178,10 +188,16 @@ export class TvChartComponent implements AfterViewInit, OnInit {
             priceFormat: {
               precision: 10,
               minMove: 0.0000000001
-            }
+            },
           })
           this.chart.timeScale().applyOptions({
             barSpacing: 10,
+          })
+
+          this.chart.applyOptions({
+            localization: {
+              dateFormat: 'yyyy/MM/dd',
+            },
           })
         })
     });

@@ -15,6 +15,8 @@ import {LoginComponent} from './account/login/login.component';
 import {AuthModule} from '@auth0/auth0-angular';
 import {FeatureComponent} from "./feature/feature.component";
 import {NgOptimizedImage} from "@angular/common";
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {matSpaceDashboard} from "@ng-icons/material-icons/baseline";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -27,12 +29,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent,
     TvChartComponent,
     LoginComponent,
-    FeatureComponent
+    FeatureComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgIconsModule.withIcons({matLanguageOutline, matArrowRightAltOutline, matPersonAddAlt1Outline}),
+    NgIconsModule.withIcons({matLanguageOutline, matArrowRightAltOutline, matPersonAddAlt1Outline, matSpaceDashboard}),
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

@@ -1,9 +1,11 @@
-<div class="flex flex-row gap-10">
+<div class="flex flex-row gap-10 mx-5">
   <div class="flex-none">
     <div class="border-r border-accent-content/10 space-y-2 pr-5">
-      <input class="input input-sm w-full input-bordered input-primary max-w-xs" placeholder="Search coins"
+      <input class="input input-sm w-full input-bordered input-primary max-w-xs"
+             placeholder="Search coins"
              type="text"/>
-      <div class="overflow-hidden hover:overflow-y-auto" style="max-height: calc(100vh - 150px);min-width: 180px">
+      <div class="overflow-hidden hover:overflow-y-auto"
+           style="max-height: calc(100vh - 150px);min-width: 180px">
         <table class="table table-pin-rows">
           <div *ngIf="!coinList">
             <span class="loading loading-ring loading-lg"></span>
@@ -15,10 +17,13 @@
               <th>{{ group.type }}</th>
             </tr>
             </thead>
-            <tbody *ngFor="let data of group.data" class="w-full">
-            <tr [routerLinkActive]="['bg-accent']" [routerLink]="['/chart', data.name]"
+            <tbody *ngFor="let data of group.data"
+                   class="w-full">
+            <tr [routerLinkActive]="['bg-accent']"
+                [routerLink]="['/chart', data.name]"
                 class="hover:bg-accent cursor-pointer">
-              <td class="rounded-xl" style="min-width: 180px">{{ data.name }}</td>
+              <td class="rounded-xl"
+                  style="min-width: 180px">{{ data.name }}</td>
             </tr>
             </tbody>
           </div>
@@ -27,13 +32,15 @@
     </div>
   </div>
 
-  <div class="grow" style="height: calc(100vh - 180px);">
+  <div class="grow"
+       style="height: calc(100vh - 180px);">
     <router-outlet></router-outlet>
   </div>
 
   <div class="space-y-2 w-64 border-l pl-5">
     <div>
-      <div class="border-b pb-1" translate>
+      <div class="border-b pb-1"
+           translate>
         Signal - Delay 1 hour
       </div>
       <!--      <p class="text-accent-content/50 pt-1 text-xs" translate>-->

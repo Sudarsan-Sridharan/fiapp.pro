@@ -137,15 +137,24 @@
     </div>
 
     <details *ngIf="auth.isAuthenticated$ | async; else loggedOut"
-             class="dropdown">
+             class="dropdown dropdown-end"
+             tabindex="1">
       <summary [ngClass]="plus ? 'border-orange-500' : ''"
-               class="btn-sm btn-outline btn lowercase">
+               class="btn-sm btn-outline btn lowercase"
+      >
         {{user?.nickname}}
         <div *ngIf="plus"
              class="badge bg-orange-500 text-white glass">Plus
         </div>
       </summary>
-      <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-full menu-xs">
+      <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52 menu-sm"
+          tabindex="1">
+        <li>
+          <a [routerLinkActive]="['bg-accent']"
+             [routerLink]="'/dashboard'">
+            Dashboard
+          </a>
+        </li>
         <li (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })"><a translate>
           Logout
         </a></li>

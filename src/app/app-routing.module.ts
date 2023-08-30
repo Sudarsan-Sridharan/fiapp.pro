@@ -5,6 +5,7 @@ import {HomeComponent} from "./home/home.component";
 import {Title} from "@angular/platform-browser";
 import {TvChartComponent} from "./tv-chart/tv-chart.component";
 import {FeatureComponent} from "./feature/feature.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -43,6 +44,7 @@ const routes: Routes = [
     ]
   },
   {path: 'features', component: FeatureComponent, title: 'Features'},
+  {path: 'dashboard', component: DashboardComponent, title: 'Dashboard'},
 ];
 
 @NgModule({

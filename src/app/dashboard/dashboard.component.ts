@@ -20,8 +20,13 @@ export class DashboardComponent {
   ]
 
   dayjs = dayjs
+  title = 'socketrv';
+  content = '';
+  received: any = [];
+  sent: any = [];
 
-  constructor(private authService: AuthService, private router: Router, private translate: TranslateService) {
+  constructor(private authService: AuthService, private router: Router, private translate: TranslateService,
+  ) {
     authService.isAuthenticated$.subscribe(async (isAuthenticated) => {
       if (!isAuthenticated) {
         await this.router.navigate(['/'])
@@ -32,6 +37,6 @@ export class DashboardComponent {
       dayjs.locale(localZhLanguage)
       this.dayjs = dayjs
     }
-  }
 
+  }
 }

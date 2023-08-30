@@ -4,6 +4,8 @@ import {ActivatedRoute} from "@angular/router";
 import {RouterSymbolService} from "./router-symbol.service";
 import * as dayjs from "dayjs";
 import {SignalService} from "./signal.service";
+import {CoinService} from "../services/coin.service";
+import {Kline, WebsocketService} from "../services/websocket.service";
 
 interface PriceData {
   open: string;
@@ -60,16 +62,22 @@ export class ChartComponent implements AfterViewInit {
 
   symbol = ''
   signals: TradingSignal["data"] = []
+  names: any = []
+  content = '';
+  received: any = [];
+  sent: any = [];
+  lastKline: Kline | null = null
   protected readonly dayjs = dayjs;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private routerSymbolService: RouterSymbolService,
-              private signalService: SignalService) {
+              private signalService: SignalService,
+              private coinService: CoinService,
+              private WebsocketService: WebsocketService) {
   }
-
 
   ngAfterViewInit() {
 
-    this.http.get<ApiResponse>('https://api.fiapp.pro/coin').subscribe((response) => {
+    const coinList = this.http.get<ApiResponse>('https://api.fiapp.pro/coin').subscribe((response) => {
       const sortedAssetData = response.data.sort((a, b) => a.name.localeCompare(b.name));
 // 使用 reduce 方法将资产数据按照名称首字母分组，并将每个分组内的资产数据按照名称排序
       const groupedAssetData = sortedAssetData.reduce((groups, data) => {
@@ -84,6 +92,18 @@ export class ChartComponent implements AfterViewInit {
       const groupedAssetDataArray = Array.from(groupedAssetData).map(([type, data]) => ({type, data}));
 
       this.coinList = groupedAssetDataArray;
+
+      const nameSet = new Set(response.data.map(obj => obj.name));
+      this.names = Array.from(nameSet);
+
+      // ['1000LUNCUSDT', '1000SHIBUSDT', '1000XECUSDT', '1INCHUSDT', 'AAVEUSDT', 'ADAUSDT', 'AGIXUSDT'] to ws url format
+      const wsNames = this.names.map((name: string) => name.toLowerCase()).join('@kline_1m/');
+      this.WebsocketService.messages(`wss://stream.binance.com/stream?streams=${wsNames}`).subscribe(msg => {
+        this.received.push(msg);
+        if (msg.data.s === this.symbol) {
+          this.lastKline = msg.data.k
+        }
+      });
     })
 
     this.routerSymbolService.symbolName$.subscribe((symbol) => {
@@ -95,6 +115,7 @@ export class ChartComponent implements AfterViewInit {
       })
 
     })
+
   }
 
   clickSignal(signalIndex: number) {

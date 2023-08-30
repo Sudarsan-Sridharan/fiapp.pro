@@ -17,6 +17,7 @@ import {FeatureComponent} from "./feature/feature.component";
 import {NgOptimizedImage} from "@angular/common";
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {matSettings, matSpaceDashboard} from "@ng-icons/material-icons/baseline";
+import {WebsocketService} from "./services/websocket.service";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -58,7 +59,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     NgOptimizedImage,
   ],
-  providers: [],
+  providers: [WebsocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

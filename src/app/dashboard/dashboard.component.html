@@ -48,7 +48,8 @@
 
     <div class="space-y-10">
       <div>
-        <h1 class="text-3xl font-bold">
+        <h1 class="text-3xl font-bold"
+            translate>
           Dashboard
         </h1>
         <div class="text-gray-400">
@@ -58,21 +59,24 @@
 
       <div class="grid grid-cols-4 gap-5">
         <div class="card bg-gray-300 p-5 space-y-5">
-          <h2 class="text-sm">
+          <h2 class="text-sm"
+              translate>
             Subscription
           </h2>
 
           <div class="text-center text-3xl">
-            <del>VIP</del>
+            <del>PLUS</del>
           </div>
 
-          <div class="text-sm text-center">
+          <div class="text-sm text-center"
+               translate>
             Upgrade your plan to access this feature.
           </div>
         </div>
 
         <div class="card outline p-5 space-y-5">
-          <h2 class="text-sm">
+          <h2 class="text-sm"
+              translate>
             Sign in today
           </h2>
 
@@ -99,7 +103,8 @@
             </label>
           </div>
 
-          <div class="text-sm text-center">
+          <div class="text-sm text-center"
+               translate>
             Sign in today and get a free 1 day trial.
           </div>
         </div>
@@ -110,9 +115,10 @@
   <div class="drawer-side border-r sticky">
     <label class="drawer-overlay"
            for="my-drawer-2"></label>
-    <ul class="menu p-4 w-60 min-h-full text-base-content">
+    <ul class="menu p-4 w-60 min-h-full text-base-content space-y-2">
       <!-- Sidebar content here -->
-      <li *ngFor="let i of drawerList">
+      <li *ngFor="let i of drawerList"
+      >
         <a [routerLinkActive]="['bg-accent']"
            [routerLink]="i.route"
            class="rounded-xl">

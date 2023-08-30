@@ -16,7 +16,7 @@ import {AuthModule} from '@auth0/auth0-angular';
 import {FeatureComponent} from "./feature/feature.component";
 import {NgOptimizedImage} from "@angular/common";
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {matSpaceDashboard} from "@ng-icons/material-icons/baseline";
+import {matSettings, matSpaceDashboard} from "@ng-icons/material-icons/baseline";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -35,7 +35,10 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgIconsModule.withIcons({matLanguageOutline, matArrowRightAltOutline, matPersonAddAlt1Outline, matSpaceDashboard}),
+    NgIconsModule.withIcons({
+      matLanguageOutline, matArrowRightAltOutline, matPersonAddAlt1Outline, matSpaceDashboard,
+      matSettings
+    }),
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

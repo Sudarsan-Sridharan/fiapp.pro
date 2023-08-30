@@ -3,6 +3,8 @@ import {AuthService} from "@auth0/auth0-angular";
 import * as dayjs from "dayjs";
 import * as localizedFormat from 'dayjs/plugin/localizedFormat'
 import {Router} from "@angular/router";
+import * as localZhLanguage from 'dayjs/locale/zh-cn'
+import {TranslateService} from "@ngx-translate/core";
 
 dayjs.extend(localizedFormat)
 
@@ -19,12 +21,17 @@ export class DashboardComponent {
 
   dayjs = dayjs
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private translate: TranslateService) {
     authService.isAuthenticated$.subscribe(async (isAuthenticated) => {
       if (!isAuthenticated) {
         await this.router.navigate(['/'])
       }
     })
+
+    if (translate.currentLang === 'zh-CN') {
+      dayjs.locale(localZhLanguage)
+      this.dayjs = dayjs
+    }
   }
 
 }

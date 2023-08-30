@@ -97,11 +97,13 @@ export class ChartComponent implements AfterViewInit {
       this.names = Array.from(nameSet);
 
       // ['1000LUNCUSDT', '1000SHIBUSDT', '1000XECUSDT', '1INCHUSDT', 'AAVEUSDT', 'ADAUSDT', 'AGIXUSDT'] to ws url format
-      const wsNames = this.names.map((name: string) => name.toLowerCase()).join('@kline_1m/');
+      const wsNames = this.names.map((name: string) => name.toLowerCase()).join('@kline_30m/');
       this.WebsocketService.messages(`wss://stream.binance.com/stream?streams=${wsNames}`).subscribe(msg => {
         this.received.push(msg);
         if (msg.data.s === this.symbol) {
           this.lastKline = msg.data.k
+          this.coinService.updateCoinList(JSON.stringify(this.lastKline))
+          console.log(this.lastKline)
         }
       });
     })

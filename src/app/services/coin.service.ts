@@ -5,13 +5,17 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class CoinService {
-  private coinList = new BehaviorSubject<string>('BTCUSDT');
-  coinList$ = this.coinList.asObservable();
+  private lastKline = new BehaviorSubject<string>('BTCUSDT');
+  lastKline$ = this.lastKline.asObservable();
 
   constructor() {
   }
 
   updateCoinList(data: string) {
-    this.coinList.next(data);
+    try {
+      JSON.parse(data)
+      this.lastKline.next(data);
+    } catch (e) {
+    }
   }
 }

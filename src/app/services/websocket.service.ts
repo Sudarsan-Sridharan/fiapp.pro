@@ -20,11 +20,11 @@ export interface Kline {
   i: string;
   f: number;
   L: number;
-  o: string;
-  c: string;
-  h: string;
-  l: string;
-  v: string;
+  o: number;
+  c: number;
+  h: number;
+  l: number;
+  v: number;
   n: number;
   x: boolean;
   q: string;

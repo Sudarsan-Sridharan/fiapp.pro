@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {createChart, IChartApi, UTCTimestamp} from "lightweight-charts";
 import {RouterSymbolService} from "../chart/router-symbol.service";
 import {SignalService} from "../chart/signal.service";
+import {CoinService} from "../services/coin.service";
+import {Kline} from "../services/websocket.service";
 
 interface MarketData {
   statusCode: number;
@@ -41,12 +43,14 @@ export class TvChartComponent implements AfterViewInit, OnInit {
   } | null = null
   loading = true
 
+  lastKline: Kline | null = null
+
   constructor(private route: ActivatedRoute, private http: HttpClient, private routerSymbolService: RouterSymbolService,
-              private signalService: SignalService) {
+              private signalService: SignalService,
+              private coinService: CoinService) {
   }
 
   ngOnInit() {
-
   }
 
   ngAfterViewInit(): void {
@@ -102,6 +106,18 @@ export class TvChartComponent implements AfterViewInit, OnInit {
 
 
           candlestickSeries.setData(d);
+          this.coinService.lastKline$.subscribe((data) => {
+            const d: Kline = JSON.parse(data)
+            this.lastKline = d
+            console.log(this.lastKline)
+            candlestickSeries.update({
+              time: this.lastKline.t / 1000 as unknown as string ?? 0,
+              open: parseFloat(String(this.lastKline.o)) ?? 0,
+              high: parseFloat(String(this.lastKline.h)) ?? 0,
+              low: parseFloat(String(this.lastKline.l)) ?? 0,
+              close: parseFloat(String(this.lastKline.c)) ?? 0,
+            })
+          })
 
           const container = document.getElementById('symbolChart');
 
@@ -152,6 +168,7 @@ export class TvChartComponent implements AfterViewInit, OnInit {
               });
               this.signalService.updateTargetSignal(relativeIndices)
             }
+
 
           })
 

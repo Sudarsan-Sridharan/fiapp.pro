@@ -39,7 +39,7 @@
 
   <div class="space-y-2 w-64 border-l pl-5">
     <div>
-      <div>
+      <div *ngIf="lastKline?.s === symbol">
         Real-time price: {{lastKline?.c}}
       </div>
       <div class="border-b pb-1"

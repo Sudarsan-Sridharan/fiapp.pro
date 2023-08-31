@@ -120,13 +120,14 @@ export class TvChartComponent implements AfterViewInit, OnInit {
             const d: Kline = JSON.parse(data)
             this.lastKline = d
             console.log(this.lastKline)
-            candlestickSeries.update({
-              time: this.lastKline.t / 1000 as unknown as string ?? 0,
-              open: parseFloat(String(this.lastKline.o)) ?? 0,
-              high: parseFloat(String(this.lastKline.h)) ?? 0,
-              low: parseFloat(String(this.lastKline.l)) ?? 0,
-              close: parseFloat(String(this.lastKline.c)) ?? 0,
-            })
+            if (this.lastKline.s === this.symbol)
+              candlestickSeries.update({
+                time: this.lastKline.t / 1000 as unknown as string ?? 0,
+                open: parseFloat(String(this.lastKline.o)) ?? 0,
+                high: parseFloat(String(this.lastKline.h)) ?? 0,
+                low: parseFloat(String(this.lastKline.l)) ?? 0,
+                close: parseFloat(String(this.lastKline.c)) ?? 0,
+              })
           })
 
           const container = document.getElementById('symbolChart');
